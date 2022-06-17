@@ -1,0 +1,14 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+/* Hide update WordPress notice*/
+.update-nag.notice {
+    display: none;
+}
+
+/* Hide settings information */
+#setting-error-tgmpa {
+    display: none;
+}

@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+
+msgid "Entities"
+msgstr "Entitats"
+
+msgid "Hotels"
+msgstr "Hotels"
+
+msgid "Flights"
+msgstr "Vols"
+
+msgid "Add"
+msgstr "Afegir"
