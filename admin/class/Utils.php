@@ -18,7 +18,7 @@ class Utils {
      * @param bool $print
      * @return false|string|null
      */
-    function includeCustom($filePath, $variables = array(), $print = true)
+    public static function includeCustom($filePath, $variables = array(), $print = true)
     {
         $output = NULL;
         if(file_exists($filePath))
@@ -42,6 +42,21 @@ class Utils {
         }
 
         return $output;
+    }
 
+    /**
+     * @param $instance
+     * @param $className
+     * @return mixed
+     *
+     * PHP Custom object class typecasting
+     */
+    public static function objectToObject($instance, $className) {
+        return unserialize(sprintf(
+            'O:%d:"%s"%s',
+            strlen($className),
+            $className,
+            strstr(strstr(serialize($instance), '"'), ':')
+        ));
     }
 }

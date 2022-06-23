@@ -8,11 +8,16 @@ class Product
     // properties
     var $id;
     var $blog_id;
+    var $author_id;
+    var $date_created;
+    var $date_modified;
+    var $status;
     var $name;
     var $short_description;
     var $description;
-    var $base_price;
-    var $img_url;
+    var $price;
+    var $featured_image;
+    var $order;
 
     /**
      * Product constructor.
@@ -31,12 +36,33 @@ class Product
         $instance = new self();
         $instance->id = $row->id;
         $instance->blog_id = $row->blog_id;
+        $instance->date_created = $row->date_created;
+        $instance->date_modified = $row->date_modified;
+        $instance->status = $row->status;
+
         $instance->name = $row->name;
         $instance->short_description = $row->short_description;
         $instance->description = $row->description;
-        $instance->base_price = $row->base_price;
-        $instance->img_url = $row->img_url;
+        $instance->price = $row->price;
+        $instance->featured_image = $row->featured_image;
+        $instance->order = $row->order;
         return $instance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param mixed $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
     }
 
     /**
@@ -53,6 +79,38 @@ class Product
     public function getBlogId()
     {
         return $this->blog_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthorId()
+    {
+        return $this->author_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateCreated()
+    {
+        return $this->date_created;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateModified()
+    {
+        return $this->date_modified;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
@@ -82,17 +140,65 @@ class Product
     /**
      * @return mixed
      */
-    public function getBasePrice()
+    public function getPrice()
     {
-        return $this->base_price;
+        return $this->price;
     }
 
     /**
      * @return mixed
      */
-    public function getImgUrl()
+    public function getFeaturedImage()
     {
-        return $this->img_url;
+        return $this->featured_image;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param mixed $blog_id
+     */
+    public function setBlogId($blog_id)
+    {
+        $this->blog_id = $blog_id;
+    }
+
+    /**
+     * @param mixed $author_id
+     */
+    public function setAuthorId($author_id)
+    {
+        $this->author_id = $author_id;
+    }
+
+    /**
+     * @param mixed $date_created
+     */
+    public function setDateCreated($date_created)
+    {
+        $this->date_created = $date_created;
+    }
+
+    /**
+     * @param mixed $date_modified
+     */
+    public function setDateModified($date_modified)
+    {
+        $this->date_modified = $date_modified;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 
     /**
@@ -120,19 +226,19 @@ class Product
     }
 
     /**
-     * @param mixed $base_price
+     * @param mixed $price
      */
-    public function setBasePrice($base_price)
+    public function setPrice($price)
     {
-        $this->base_price = $base_price;
+        $this->price = $price;
     }
 
     /**
-     * @param mixed $img_url
+     * @param mixed $featured_image_url
      */
-    public function setImgUrl($img_url)
+    public function setFeaturedImage($featured_image)
     {
-        $this->img_url = $img_url;
+        $this->featured_image = $featured_image;
     }
 
     /*

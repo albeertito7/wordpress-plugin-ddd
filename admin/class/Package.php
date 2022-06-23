@@ -3,7 +3,7 @@
 /**
  * Class Package
  */
-class Package
+class Package extends Product
 {
 
 }
