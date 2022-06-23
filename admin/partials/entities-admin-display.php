@@ -12,7 +12,7 @@
  * @subpackage Entities/admin/partials
  */
 
-$paquets = json_decode(EntitiesController::getStaticPackages());
+$packages = EntitiesController::getStaticPackages();
 
 ?>
 
