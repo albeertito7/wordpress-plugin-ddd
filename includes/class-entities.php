@@ -146,15 +146,20 @@ class Entities {
     /**
      *
      */
-	private function load_controllers() {
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-controller.php';
-    }
-
     private function load_models() {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Utils.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Logger.php';
-	    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Product.php';
-        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Package.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Product.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Package.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Hotel.php';
+    }
+
+    /**
+     *
+     */
+	private function load_controllers() {
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/master-controller.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-controller.php';
     }
 
 	/**
