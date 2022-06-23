@@ -23,6 +23,7 @@ if (!isset($package)) {
         padding: 20px 15px;
         border: 1px solid black;
         border-radius: 10px;
+        margin: 40px 20px;
     }
 
     .card-1 > img {
@@ -47,13 +48,15 @@ if (!isset($package)) {
 <!-- Card -->
 <div class="entity-card card-1">
 
-    <img src="<?php echo get_home_url(); ?>/wp-content/plugins/entities/admin/../screenshot.jpg" alt="" />
+    <!--<img src="<?php echo get_home_url(); ?>/wp-content/plugins/entities/admin/../screenshot.jpg" alt="" />-->
+
+    <img src="<?php echo $package->getFeaturedImage(); ?>" alt="" />
 
     <h3><?php echo $package->getName(); ?></h3>
 
     <p><?php echo $package->getDescription(); ?></p>
 
-    <p><?php echo $package->getBasePrice(); ?>€</p>
+    <p><?php echo $package->getPrice(); ?>€</p>
 
     <button><?php _e('BUY NOW') ?></button>
 

@@ -17,8 +17,9 @@ $packages = EntitiesController::getStaticPackages();
 <div id="main-content" style="padding:100px;">
 
     <h1><?php _e('My Products'); ?></h1>
+    <hr />
 
-    <div class="package-grid" style="margin-top: 100px;">
+    <div class="package-grid" style="margin-top: 30px; display: flex; justify-content: space-evenly; align-self: center; flex-wrap: wrap;">
 
         <?php foreach($packages as $package) {
 
