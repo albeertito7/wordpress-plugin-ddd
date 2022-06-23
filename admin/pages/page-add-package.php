@@ -1,182 +1,364 @@
 <?php
+$type = "create";
 $id = "";
 $copyid="";
 $url = "";
-$fecha_creacion = "";
-$estado = "";
-$type = "add";
-$title = "";
-$descripcion_corta = "";
-$descripcion = "";
-$imagen_destacada = "";
-$imagenes = "";
-$tipo="0";
-$tipoviaje="";
-$zonas="";
-$destinos="";
+$date_created = "";
+$status = "";
+$name = "";
+$short_description = "";
+$description = "";
+$featured_image = "";
+//$gallery_images = "";
+$observations="";
+$price = "";
+$order = "";
 
-$lunes=true;
-$martes=true;
-$miercoles=true;
-$jueves=true;
-$viernes=true;
-$sabado=true;
-$domingo=true;
-
-$vmanual=false;
-
-$vueloVAuto=false;
-$horaMinimaFechaSalida="00:00:00";
-$horaMaximaFechaSalida="00:00:00";
-$horaMinimaFechaLlegada="00:00:00";
-$horaMaximaFechaLlegada="00:00:00";
-$soloVueloMismoDia=false;
-$soloVueloDiaSiguiente=false;
-$observaciones="";
-$observacionesbono="";
-
-if(isset($_GET["id"])) {
+if(isset($_GET["id"]))
+{
+    // Update/Edit package if 'id' exists
     $id = $_GET["id"];
-    $paquete = Paquete::getPaqueteById($id);
+    $package = EntitiesController::getPackageById($id);
+
     $type = "update";
-    $title = $paquete->getNombre();
-    $url = $paquete->getUrl();
-    $fecha_creacion = $paquete->getFechaCreacion();
-    $estado = $paquete->getEstado();
-    $descripcion_corta = $paquete->getDescripcionCorta();
-    $descripcion = $paquete->getDescripcion();
-    $imagen_destacada = $paquete->getImagenDestacada();
-    $imagenes = $paquete->getImagenes();
-    $tipo = $paquete->getTipo();
-    $tipoviaje=Paquete::getTiposViaje($id);
-    $zonas=Paquete::getZonas($id);
-    $destinos=Paquete::getDestinos($id);
-    $lunes = $paquete->getLunes();
-    $martes= $paquete->getMartes();
-    $miercoles = $paquete->getMiercoles();
-    $jueves= $paquete->getJueves();
-    $viernes = $paquete->getViernes();
-    $sabado = $paquete->getSabado();
-    $domingo = $paquete->getDomingo();
-    $observaciones= $paquete->getObservaciones();
-    $observacionesbono = $paquete->getObservacionesBono();
-    $vmanual=$paquete->getVManual();
-    $vueloVAuto=$paquete->getvueloVAuto();
-    $horaMinimaFechaSalida=$paquete->gethoraMinimaFechaSalida();
-    $horaMaximaFechaSalida=$paquete->gethoraMaximaFechaSalida();
-    $horaMinimaFechaLlegada=$paquete->gethoraMinimaFechaLlegada();
-    $horaMaximaFechaLlegada=$paquete->gethoraMaximaFechaLlegada();
-    $soloVueloMismoDia=$paquete->getsoloVueloMismoDia();
-    $soloVueloDiaSiguiente=$paquete->getsoloVueloDiaSiguiente();
+
+    $name = $package->getName();
+    $date_created = $package->getDateCreated();
+    $date_modified = $package->getDateModified();
+    $status = $package->getStatus();
+    $short_description = $package->getShortDescription();
+    $description = $package->getDescription();
+    $price = $package->getPrice();
+    $featured_image = $package->getFeaturedImage();
+    $order = $package->getOrder();
+    //$gallery_images = $package->getGalleryImages();
+    //$observations = $package->getObservations();
 }
 else if(isset($_GET["copyid"]))
 {
-    $copyid = $_GET["copyid"];
-    $paquete = Paquete::getPaqueteById($copyid);
-    $fecha_creacion = $paquete->getFechaCreacion();
-    $estado = $paquete->getEstado();
-    $descripcion_corta = $paquete->getDescripcionCorta();
-    $descripcion = $paquete->getDescripcion();
-    $imagen_destacada = $paquete->getImagenDestacada();
-    $imagenes = $paquete->getImagenes();
-    $tipo = $paquete->getTipo();
-    $tipoviaje=Paquete::getTiposViaje($copyid);
-    $zonas=Paquete::getZonas($copyid);
-    $destinos=Paquete::getDestinos($copyid);
-    $lunes = $paquete->getLunes();
-    $martes= $paquete->getMartes();
-    $miercoles = $paquete->getMiercoles();
-    $jueves= $paquete->getJueves();
-    $viernes = $paquete->getViernes();
-    $sabado = $paquete->getSabado();
-    $domingo = $paquete->getDomingo();
-    $vmanual=$paquete->getVManual();
-    $vueloVAuto=$paquete->getvueloVAuto();
-    $horaMinimaFechaSalida=$paquete->gethoraMinimaFechaSalida();
-    $horaMaximaFechaSalida=$paquete->gethoraMaximaFechaSalida();
-    $horaMinimaFechaLlegada=$paquete->gethoraMinimaFechaLlegada();
-    $horaMaximaFechaLlegada=$paquete->gethoraMaximaFechaLlegada();
-    $observaciones= $paquete->getObservaciones();
+    // copiar paquete
+    $id = $_GET["copyid"];
+    $package = EntitiesController::getPackageById($id);
+
+    $name = $package->getName();
+    $date_created = $package->getDateCreated();
+    $date_modified = $package->getDateModified();
+    $status = $package->getStatus();
+    $short_description = $package->getShortDescription();
+    $description = $package->getDescription();
+    $price = $package->getPrice();
+    $featured_image = $package->getFeaturedImage();
+    $order = $package->getOrder();
+    //$gallery_images = $package->getGalleryImages();
+    //$observations = $package->getObservations();
 }
 
 ?>
 
-<script>
-    var idpaquete="";
-    var myWindowC;
-    $(document).ready(function () {
-        idpaquete='<?php echo $id ?>';
-        if(idpaquete!="")
-        {
-            $("#divperiodo").css("display","");
-            $("#divduracio").css("display","");
-            $("#divVuelos").css("display","");
-            $("#divServicios").css("display","");
-            $("#divSeguros").css("display","");
-            $("#divCircuitos").css("display","");
-            $("#divHoteles").css("display","");
+<script type="application/javascript">
 
+    (function ($) {
 
-            $("#selTipo").removeAttr("disabled");
-            $("#selZona").removeAttr("disabled");
-            $("#selDestino").removeAttr("disabled");
-            $("[name='tipoPaquete']").attr("disabled","disabled");
+        function inicializarCargadorImagenes() {
+            /*Imagen Destacada*/
+            $('.upload_image_button').click(function( event ){
+                event.preventDefault();
+                openFrameMedia(false, "linkImage");
+            });
+
+            /*Gallery Images*/
+            $('.upload_image_gallery').click(function( event ){
+                event.preventDefault();
+                openFrameMedia(true, "gallery");
+            });
         }
 
-        paquetes.InitPaquete('<?php echo $imagen_destacada ?>', '<?php echo $imagenes ?>', '<?php echo $tipoviaje ?>', '<?php echo $zonas ?>', '<?php echo $destinos ?>',<?php echo $vmanual ?>);
+        function openFrameMedia(multiple, modeInsercio) {
+            //Uploading files
+            var file_frame;
 
-    });
+            // If the media frame already exists, reopen it.
+            if ( file_frame ) {
+                file_frame.open();
+                return;
+            }
 
+            // Create the media frame.
+            file_frame = wp.media.frames.file_frame = wp.media({
+                title: $( this ).data( 'uploader_title' ),
+                button: {
+                    text: $( this ).data( 'uploader_button_text' ),
+                },
+                multiple: (multiple) ? 'add' : false // Set to true to allow multiple files to be selected
+            });
 
+            // When an image is selected, run a callback.
+            file_frame.on( 'select', function() {
+                var attachments, attachment;
+                if(multiple) {
+                    attachments = file_frame.state().get('selection').map(
+                        function(attachment) {
+                            attachment.toJSON();
+                            return attachment;
+                        }
+                    );
+                } else {
+                    // We set multiple to false so only get one image from the uploader
+                    attachment = file_frame.state().get('selection').first().toJSON();
+                }
+
+                if(modeInsercio === "linkImage") {
+                    // Do something with attachment.id and/or attachment.url here
+                    $('#travelImage').val(attachment.url); //attach id to hidden input
+                    $('#travelImage').trigger("change");
+                    $('#uploaderImage .image-travel').remove(); //remove any previous preview images
+                    $('#uploaderImage').prepend('<img class="image-travel" src="' + attachment.url + '" style="max-width: 200px;">'); //show preview image
+                    $(".upload_image_button").hide();
+                    $(".remove_imagen_destacada").show();
+
+                }  else if(modeInsercio === "gallery") {
+                    var imagesId = [];
+                    for(var i=0; i<attachments.length; i++) {
+                        var image = {id: attachments[i].attributes.id, url: attachments[i].attributes.url};
+                        imagesId.push(image);
+                        var classImage = "image-travel-" + attachments[i].attributes.id;
+                        $('#' + classImage).remove();
+                        var divHtml = '<div id="' + classImage + '" style="float: left;padding: 10px;position:relative;">';
+                        divHtml += '<img class=' + classImage + ' src="' + attachments[i].attributes.url + '" style="max-width: 150px;"/>';
+                        divHtml += '<a href="#" data-idimage="' + attachments[i].attributes.id + '" id="remove_image_gallery" title="Borrar Imagen" class="remove_image_gallery">';
+                        divHtml += '<i class="fa fa-times-circle" aria-hidden="true" style="font-size: 20px;position: absolute;top: 0px;right: -3px;color: black;"></i></a>';
+                        divHtml += '</div>';
+                        $('#uploadImagesGallery').prepend(divHtml); //show preview image
+                    }
+                    $("#travelGalleryImages").val(JSON.stringify(imagesId));
+                    $('#travelGalleryImages').trigger("change");
+                }
+
+                initRemoveImages(modeInsercio);
+            });
+
+            // Finally, open the modal
+            file_frame.open();
+        }
+
+        function loadImages(imagen_destacada/*, imagenes*/) {
+            if(imagen_destacada !== "") {
+                $('#travelImage').val(imagen_destacada); //attach id to hidden input
+                $('#travelImage').trigger("change");
+                $('#uploaderImage .image-travel').remove(); //remove any previous preview images
+                $('#uploaderImage').prepend('<img class="image-travel" src="' + imagen_destacada + '" style="max-width: 200px;">'); //show preview image
+                $(".upload_image_button").hide();
+                $(".remove_imagen_destacada").show();
+                initRemoveImages("linkImage");
+            }
+
+            /*if(imagenes !== "") {
+                var imagesId = JSON.parse(imagenes)
+                for(var i=0; i<imagesId.length; i++) {
+                    var classImage = "image-travel-" + imagesId[i].id;
+                    $('#' + classImage).remove();
+                    var divHtml = '<div id="' + classImage + '" style="float: left;padding: 10px;position:relative;">';
+                    divHtml += '<img class=' + classImage + ' src="' + imagesId[i].url + '" style="max-width: 150px;"/>';
+                    divHtml += '<a href="#" data-idimage="' + imagesId[i].id + '" id="remove_image_gallery" title="Borrar Imagen" class="remove_image_gallery">';
+                    divHtml += '<i class="fa fa-times-circle" aria-hidden="true" style="font-size: 20px;position: absolute;top: 0px;right: -3px;color: black;"></i></a>';
+                    divHtml += '</div>';
+                    $('#uploadImagesGallery').prepend(divHtml); //show preview image
+                }
+                $("#travelGalleryImages").val(JSON.stringify(imagesId));
+                $('#travelGalleryImages').trigger("change");
+                initRemoveImages("gallery");
+            }*/
+        }
+
+        function initRemoveImages(modeInsercio) {
+            if(modeInsercio === "linkImage") {
+                $('.remove_imagen_destacada').click(function( event ){
+                    event.preventDefault();
+                    $('#travelImage').val(0);
+                    $('#travelImage').trigger("change");
+                    $('#uploaderImage .image-travel').remove();
+                    $(".upload_image_button").show();
+                    $(".remove_imagen_destacada").hide();
+                });
+
+            } else if(modeInsercio === "gallery") {
+                $('.remove_image_gallery').click(function (event) {
+                    event.preventDefault();
+                    var idImageInGallery = $(this).data('idimage');
+                    var classImage = "#image-travel-" + idImageInGallery;
+                    var jsonImages = JSON.parse($("#travelGalleryImages").val());
+
+                    for (var i = 0; i < jsonImages.length; i++) {
+                        if (jsonImages[i].id === idImageInGallery) {
+                            jsonImages.splice(i, 1);
+                        }
+                    }
+
+                    $('#travelGalleryImages').val(JSON.stringify(jsonImages));
+                    $('#travelGalleryImages').trigger("change");
+                    $('#uploadImagesGallery ' + classImage).remove();
+                });
+            }
+        }
+
+        $(document).ready(function () {
+
+            inicializarCargadorImagenes();
+            loadImages("<?php echo $featured_image; ?>");
+
+            $("form#create_package").submit(function (event) {
+                event.preventDefault();
+                debugger;
+                let ajaxRequest = {
+                    url: my_vars.ajaxurl,
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        action: "entities_controller",
+                        <?php if ($type == "create") { ?>
+                        type: "createPackage",
+                        <?php } elseif ($type == 'update') { ?>
+                        type: "updatePackage",
+                        id: <?php echo $id; ?>,
+                         <?php } ?>
+                        status: $("[name='status']").val(),
+                        name: $("[name='name'").val(),
+                        short_description: $("[name='short_description']").val(),
+                        description: $("[name='description']").val(),
+                        featured_image: $("[name='imagendestacada']").val(),
+                        observations: $("[name='observations']").val(),
+                        price: $("[name='price']").val(),
+                        order: $("[name='order']").val()
+                    }
+                };
+
+                $.ajax(ajaxRequest)
+                .done(function (response) {
+                    if(response.success) {
+                        swal.fire({
+                            icon: 'success',
+                            showConfirmButton: true,
+                            html: '<h4>Package <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
+                        }).then((result) => {
+                            if(result.isConfirmed && "<?php echo $type; ?>" === "create") {
+                                location.href = "admin.php?page=packages";
+                            }
+                        });
+                    }
+                })
+                .fail(function (response) {
+                })
+                .always(function (response) {
+                });
+            });
+
+            <?php if($type == "update") { ?>
+                $("#delete-action").click(function () {
+
+                    swal.fire({
+                        icon: "warning",
+                        showConfirmButton: true,
+                        showCancelButton: true,
+                        html: '<h4>Are you sure?</h4>',
+                        confirmButtonText: 'Yes, I am sure',
+                        cancelButtonText: "No, cancel it!"
+                    }).then((result) => {
+                        if(result.isConfirmed) {
+
+                            //openLoading("<h4>Deleting...</h4>");
+
+                            $.post({
+                                url: my_vars.ajaxurl,
+                                type: "post",
+                                data: {
+                                    action: "entities_controller",
+                                    type: "deletePackage",
+                                    id: <?php echo $id; ?>
+                                }
+                            }).done(function (response) {
+                                console.log("ajax deletePackage done");
+                                location.href = "admin.php?page=packages";
+                            }).fail(function (response) {
+                                console.log("ajax deletePackage fail");
+                            }).always(function (response) {
+                                //closeLoading();
+                                console.log("ajax deletePackage always");
+                            });
+                        }
+                    });
+                });
+            <?php } ?>
+
+        });
+
+    }(jQuery.noConflict()));
 
 </script>
+
 <style>
 
-    #divVManual  .k-listbox .k-item
-    {
-        line-height: 2.6em !important;
-        min-height: 2.6em !important;
-    }
+
 </style>
 
 <div class="wrap travel-management">
 
     <h1 class="wp-heading-inline">Añadir Paquete</h1>
 
-    <form id="paquete">
-        <input type="hidden" name="action" value="paquetes_controller" />
-        <input type="hidden" name="type" value="<?php echo $type ?>" />
-        <?php if(!empty($id)):?>
-            <input type="hidden" name="id" value="<?php echo $id ?>" />
-        <?php endif; ?>
-        <?php if(!empty($copyid)):?>
-            <input type="hidden" name="copyid" value="<?php echo $copyid ?>" />
-        <?php endif; ?>
+    <form id="create_package" name="create_package" method="post" action="admin.php">
+
         <div id="poststuff">
+
             <div id="post-body" class="metabox-holder columns-2">
+
                 <div id="post-body-content" style="position: relative;">
+
+                    <!-- Title -->
                     <div id="titlediv">
-                        <div id="titlewrap">
-                            <input type="text" name="post_title" size="30" value="<?php echo $title ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el título">
-                        </div>
+                        <label>
+                            <input type="text" name="name" size="30" value="<?php echo $name; ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
+                        </label>
                     </div>
-                    <div style="padding-top: 20px;">
+
+                    <!-- Short description -->
+                    <div>
                         <h3>Descripción corta</h3>
-                        <div>
-                            <input type="text" name="descripcioncorta" id="descripcionCorta" value="<?php echo $descripcion_corta ?>"/>
-                        </div>
+                        <label>
+                            <input type="text" name="short_description" id="short_description" value="<?php echo $short_description; ?>" autocomplete="off"/>
+                        </label>
                     </div>
-                    <div style="padding-top: 20px;">
+
+                    <!-- Price -->
+                    <div>
+                        <h3>Price (€)</h3>
+                        <label>
+                            <input type="number" name="price" id="price" value="<?php echo $price; ?>" autocomplete="off"/>
+                        </label>
+                    </div>
+
+                    <!-- Order -->
+                    <div>
+                        <h3>Order</h3>
+                        <label>
+                            <input type="number" name="order" id="order" value="<?php echo $order; ?>" autocomplete="off"/>
+                        </label>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
                         <h3>Descripción detallada</h3>
-                        <div>
-                            <?php echo wp_editor( stripslashes($descripcion), 'descripcion' ); ?>
-                        </div>
+                        <label>
+                            <?php echo wp_editor( stripslashes($description), 'description' ); ?>
+                        </label>
                     </div>
-                    <div style="padding-top: 20px;">
+
+                    <!-- Featured image -->
+                    <div>
                         <h3>Imagen destacada</h3>
                         <div id="imagen-destacada">
                             <div id="uploaderImage">
-                                <input type="hidden"  name="imagendestacada" id="travelImage" data-bind="value:imagendestacada" />
+                                <label>
+                                    <input type="hidden" name="imagendestacada" id="travelImage" data-bind="value:imagendestacada" />
+                                </label>
                             </div>
                             <div class="divImagenDestacada">
                                 <a href="#" class="upload_image_button">Añadir Imagen Destacada</a>
@@ -184,307 +366,88 @@ else if(isset($_GET["copyid"]))
                             </div>
                         </div>
                     </div>
-                    <div style="padding-top: 20px;">
-                        <h3>Imágenes</h3>
-                        <?php add_meta_box('custom_post_type_data_meta_box', 'Custom Post Type Data', array($this,'custom_post_type_data_meta_box'), 'custom_post_type', 'normal','high' ); ?>
-                        <div id="galeria-imagenes" class="postbox">
-                            <div class="galeria">
-                                <div class="acf-input">
-                                    <div id="acf-field_61126528b9861" class="acf-gallery ui-resizable" data-library="all" data-min="" data-max="" data-mime_types="" data-insert="append" data-columns="8" style="height:400px">
-                                        <div class="acf-gallery-main">
-                                            <div class="acf-gallery-attachments ui-sortable"></div>
-                                        </div>
-                                        <div class="acf-gallery-side">
-                                            <div class="acf-gallery-side-inner">
-                                                <div id="uploadImagesGallery">
-                                                    <input type="hidden"  name="imagenes" id="travelGalleryImages" data-bind="value:imagenes" />
-                                                </div>
-                                                <div class="acf-gallery-toolbar">
-                                                    <ul class="acf-hl">
-                                                        <li class="acf-fr">
-                                                            <a class="upload_image_gallery button-primary" href="#">Añadir imagenes</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    <!-- Considerations -->
                     <div>
-                        <div style="display:flex;flex-flow:row;width:100%;margin-bottom: 10px;margin-top: 30px;justify-content:center;">
-                            <div style="display:flex;flex-flow:column;width:16%;margin-top:7px;font-weight: bold;margin-right: 20px;">
-                                Días de la semana a utilizar:
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:2%;margin-top: 12px;">
-                                <input type="checkbox" id="chkLunes" name="chkLunes"  <?php echo ($lunes == true) ? "checked" : ""; ?>/>
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:10%;margin-top: 7px;">
-                                <label  for="chkLunes">Lunes</label>
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:2%;margin-top: 12px;">
-                                <input type="checkbox" id="chkMartes" name="chkMartes" <?php echo ($martes == true) ? "checked" : ""; ?>  />
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:10%;margin-top: 7px;">
-                                <label  for="chkMartes">Martes</label>
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:2%;margin-top: 12px;">
-                                <input type="checkbox" id="chkMiercoles" name="chkMiercoles" <?php echo ($miercoles == true) ? "checked" : ""; ?> />
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:10%;margin-top: 7px;">
-                                <label  for="chkMiercoles">Miércoles</label>
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:2%;margin-top: 12px;">
-                                <input type="checkbox" id="chkJueves" name="chkJueves" <?php echo ($jueves == true) ? "checked" : ""; ?> />
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:10%;margin-top: 7px;">
-                                <label  for="chkJueves">Jueves</label>
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:2%;margin-top: 12px;">
-                                <input type="checkbox" id="chkViernes" name="chkViernes" <?php echo ($viernes == true) ? "checked" : ""; ?> />
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:10%;margin-top: 7px;">
-                                <label  for="chkViernes">Viernes</label>
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:2%;margin-top: 12px;">
-                                <input type="checkbox" id="chkSabado" name="chkSabado" <?php echo ($sabado == true) ? "checked" : ""; ?> />
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:10%;margin-top: 7px;">
-                                <label  for="chkSabado">Sábado</label>
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:2%;margin-top: 12px;">
-                                <input type="checkbox" id="chkDomingo" name="chkDomingo" <?php echo ($domingo == true) ? "checked" : ""; ?>  />
-                            </div>
-                            <div style="display:flex;flex-flow:column;width:10%;margin-top: 7px;">
-                                <label  for="chkDomingo">Domingo</label>
-                            </div>
-                        </div>
+                        <h3>Observaciones</h3>
+                        <label>
+                            <?php echo wp_editor( $observations, 'observations' ); ?>
+                        </label>
                     </div>
 
-
-                    <div id="divperiodo" style="padding-top: 20px;display:none;">
-                        <h3>
-                            Periodos reserva paquete
-                        </h3>
-                        <div style="border-style:solid;padding: 12px;border-width:1px;border-color:lightgrey;">
-                            <div id="gridDataEstancia"></div>
-                        </div>
-                    </div>
-
-                    <div id="divduracio" style="padding-top: 20px;display:none;">
-                        <h3>
-                            Duración Paquetes
-                        </h3>
-                        <div style="border-style:solid;padding: 12px;border-width:1px;border-color:lightgrey;">
-                            <div id="gridDuracio"></div>
-                        </div>
-
-                    </div>
-
-                    <div  id="divCircuitos" style="padding-top: 20px;display:none;">
-                        <h3>Circuitos</h3>
-                        <div>
-                            <div style="width: 100%;">
-                                <div><input id="searchCircuitos" autocomplete="off" style="width:100%;" class="k-textbox search-box" placeholder="Buscar circuitos..." /></div>
-                                <div style="display: flex;">
-                                    <select id="lista-circuitos" style="width: 50%;"></select>
-                                    <select id="selected-circuitos" style="width: 50%;"></select>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="margin-top:10px">
-                            <input type="checkbox" id="chkVManual" name="chkVManual" <?php echo ($vmanual == true) ? "checked" : ""; ?>><label for="chkVManual">Vuelos Manuales durante el Circuito</label>
-                        </div>
-                    </div>
-                    <div id="divVuelos" style="padding-top: 20px;display:none;">
-
-                        <div id="divVManual" style="display:none;">
-                            <h3>VUELOS Manuales durante el Circuito</h3>
-                            <div>
-                                <div style="width: 100%;">
-                                    <div><input id="searchVuelosm" autocomplete="off" style="width:100%;" class="k-textbox search-box" placeholder="Buscar vuelos manuales..." /></div>
-                                    <div style="display: flex;">
-                                        <select id="lista-vuelosm" style="width: 50%;"></select>
-                                        <select id="selected-vuelosm" style="width: 50%;"></select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h3>VUELOS cuando el Paquete está en primera posición</h3>
-                        <div>
-                            <div style="width: 100%;">
-                                <div><input id="searchVuelos" autocomplete="off" style="width:100%;" class="k-textbox search-box" placeholder="Buscar vuelos..." /></div>
-                                <div style="display: flex;">
-                                    <select id="lista-vuelos" style="width: 50%;"></select>
-                                    <select id="selected-vuelos" style="width: 50%;"></select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h3>VUELOS cuando el Paquete está en el resto de posiciones</h3>
-                        <div>
-                            <div style="width: 100%;">
-                                <div><input id="searchVuelosr" autocomplete="off" style="width:100%;" class="k-textbox search-box" placeholder="Buscar vuelos..." /></div>
-                                <div style="display: flex;">
-                                    <select id="lista-vuelosr" style="width: 50%;"></select>
-                                    <select id="selected-vuelosr" style="width: 50%;"></select>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="padding:15px;border-style:solid;border-width:1px;border-color:lightgray;margin-top:15px;">
-                            <div>
-                                <input type="checkbox" <?php echo ($vueloVAuto == true) ? "checked" : ""; ?> id="chkVVueltaAuto" name="chkVVueltaAuto" ><label for="chkVVueltaAuto" style="font-weight:bold;">VUELO de vuelta a casa (generado automáticamente por el motor) </label>
-                                <input id="btnConfHoraPaquet" type="button" codi="--" horaMinimaFechaSalida="<?php echo $horaMinimaFechaSalida ?>" horaMaximaFechaSalida="<?php echo $horaMaximaFechaSalida ?>" horaMinimaFechaLlegada="<?php echo $horaMinimaFechaLlegada ?>" horaMaximaFechaLlegada="<?php echo $horaMaximaFechaLlegada ?>"   soloVueloMismoDia="<?php echo $soloVueloMismoDia ?>" solovuelodiasiguiente="<?php echo $soloVueloDiaSiguiente ?>" resto="0" onclick="CanviarHora(this);" value="Configurar Horas" class="button button-primary" style="margin-left:10px" >
-                            </div>
-                            <div>
-                                <label id="lblHoras" >Horas salida (<?php echo substr($horaMinimaFechaSalida,0,-3) ?> / <?php echo substr($horaMaximaFechaSalida,0,-3) ?>) Horas llegada (<?php echo substr($horaMinimaFechaLlegada,0,-3) ?> / <?php echo substr($horaMaximaFechaLlegada,0,-3) ?>) <?php   echo ($soloVueloMismoDia == '1') ? " , Sólo vuelos del mismo día" : ""; ?> <?php   echo ($soloVueloDiaSiguiente == '1') ? " , Sólo vuelos el día siguiente" : ""; ?></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="divHoteles" style="padding-top: 5px;display:none;">
-                        <h3>Hoteles</h3>
-                        <div>
-                            <div style="width: 100%;">
-                                <div><input id="searchHoteles" autocomplete="off" style="width:100%;" class="k-textbox search-box" placeholder="Buscar hoteles..." /></div>
-                                <div style="display: flex;">
-                                    <select id="lista-hoteles" style="width: 50%;"></select>
-                                    <select id="selected-hoteles" style="width: 50%;"></select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="divServicios" style="padding-top: 20px;display:none;">
-                        <h3>Otros Servicios</h3>
-                        <div>
-                            <div style="width: 100%;">
-                                <div><input id="searchServicios" autocomplete="off" style="width:100%;" class="k-textbox search-box" placeholder="Buscar servicios..." /></div>
-                                <div style="display: flex;">
-                                    <select id="lista-servicios" style="width: 50%;"></select>
-                                    <select id="selected-servicios" style="width: 50%;"></select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="divSeguros" style="padding-top: 20px;display:none;">
-                        <h3>Seguros</h3>
-                        <div>
-                            <div style="width: 100%;">
-                                <div><input id="searchSeguros" autocomplete="off" style="width:100%;" class="k-textbox search-box" placeholder="Buscar seguros..." /></div>
-                                <div style="display: flex;">
-                                    <select id="lista-seguros" style="width: 50%;"></select>
-                                    <select id="selected-seguros" style="width: 50%;"></select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--div id="divPaqueteVinculado" style="padding-top: 20px;display:none;">
-                        <h3>Extensiones</h3>
-                        <div>
-                            <div style="width: 100%;">
-                                <div><input id="searchPVinculado" autocomplete="off" style="width:100%;" class="k-textbox search-box" placeholder="Buscar extensiones..." /></div>
-                                <div style="display: flex;">
-                                    <select id="lista-pvinculado" style="width: 50%;"></select>
-                                    <select id="selected-pvinculado" style="width: 50%;"></select>
-                                </div>
-                            </div>
-                        </div>
-                    </div-->
-                    <div style="padding-top: 20px;">
-                        <h3>Observaciones para el bono</h3>
-                        <div>
-                            <?php echo wp_editor( $observacionesbono, 'observacionesb' ); ?>
-                        </div>
-                    </div>
-                    <div style="padding-top: 20px;">
-                        <h3>Observaciones internas</h3>
-                        <div>
-                            <?php echo wp_editor( $observaciones, 'observaciones' ); ?>
-                        </div>
-                    </div>
-                    <div id="logs" style="padding-top: 20px;">
-                        <h3>Logs</h3>
-                        <div id="gridlogs"></div>
-                    </div>
                 </div><!-- /post-body-content -->
-                <div id="postbox-container-1" class="postbox-container">
-                    <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
-                        <div id="submitdiv" class="postbox">
-                            <div class="postbox-header">
-                                <h2 class="hndle ui-sortable-handle">Guardar</h2>
-                            </div>
-                            <div class="inside">
-                                <?php if(!empty($fecha_creacion)): ?>
-                                    <div style="padding: 10px; display: flex; align-items: center; justify-content: space-between;">
-                                        <div>
-                                            <span>Fecha creación:</span>
-                                        </div>
-                                        <div>
-                                            <span><?php echo $fecha_creacion ?></span>
-                                        </div>
 
-                                    </div>
-                                <?php endif; ?>
-                                <div style="padding: 10px;align-items: center; justify-content: space-between;">
-                                    <div>
-                                        <select  id="selTipo" style="width:100%"  disabled="disabled"></select>
-                                    </div>
+                <div id="postbox-container-1" class="postbox-container">
+
+                    <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
+
+                        <div id="submitdiv" class="postbox">
+
+                            <div class="postbox-header">
+                                <h2 class="handle ui-sortable-handle">Guardar</h2>
+                            </div>
+
+                            <div class="inside">
+
+                                <!-- Fecha de creación -->
+                                <div style="padding: 10px 10px 5px; display: flex; align-items: center; justify-content: space-between;">
+                                    <span>Fecha creación:</span>
+                                    <span><?php echo $date_created; ?></span>
                                 </div>
-                                <div style="padding: 10px;align-items: center; justify-content: space-between;">
-                                    <div>
-                                        <select  id="selZona" style="width:100%" disabled="disabled"></select>
-                                    </div>
+
+                                <!-- Fecha de modificación -->
+                                <div style="padding: 5px 10px; display: flex; align-items: center; justify-content: space-between;">
+                                    <span>Fecha modificación:</span>
+                                    <span><?php echo $date_modified; ?></span>
                                 </div>
-                                <div style="padding: 10px;align-items: center; justify-content: space-between;">
-                                    <div>
-                                        <select  id="selDestino" style="width:100%" disabled="disabled"></select>
-                                    </div>
-                                </div>
-                                <div style="display: none">
-                                    <div>
-                                        <span>Tipo Paquete: </span>
-                                    </div>
-                                    <div>
-                                        <select name="tipoPaquete" style="width:120px;">
-                                            <option value="0"  <?php echo ($tipo == "0") ? "selected" : ""; ?>>Principal</option>
-                                            <option value="1" <?php echo ($tipo == "1") ? "selected" : ""; ?>>Extensión</option>
-                                        </select>
-                                    </div>
-                                </div>
+
+                                <!-- Status -->
                                 <div style="padding: 10px; display: flex; align-items: center; justify-content: space-between;">
-                                    <div>
-                                        <span>Estado: </span>
-                                    </div>
-                                    <div>
-                                        <select name="estado">
-                                            <option value="borrador" <?php echo ($estado == "borrador") ? "selected" : ""; ?>>Borrador</option>
-                                            <option value="publicada" <?php echo ($estado == "publicada") ? "selected" : ""; ?>>Publicada</option>
-                                            <option value="despublicada" <?php echo ($estado == "despublicada") ? "selected" : ""; ?>>Despublicada</option>
+                                    <span>Estado: </span>
+                                    <label>
+                                        <select name="status">
+                                            <option value="draft" <?php echo ($status == "draft") ? "selected" : ""; ?>>Draft</option>
+                                            <option value="publish" <?php echo ($status == "publish") ? "selected" : ""; ?>>Publish</option>
+                                            <option value="pending" <?php echo ($status == "pending") ? "selected" : ""; ?>>Pending</option>
                                         </select>
-                                    </div>
+                                    </label>
                                 </div>
+
                                 <div id="major-publishing-actions">
-                                    <div id="delete-action">
-                                        <a class="submitdelete deletion" href="#" style="color: red;">Eliminar</a>
-                                    </div>
-                                    <div id="publishing-action">
-                                        <?php if(!empty($id)): ?>
-                                            <input type="button" name="custom-duplicate" id="custom-duplicate" class="button button-primary" value="Duplicar">
+
+                                    <?php if ($type == "update") { ?>
+                                        <div id="delete-action" style="display: inline-block; float: none !important;">
+                                            <a class="submitdelete deletion" href="#" style="color: red;">Eliminar</a>
+                                        </div>
+                                    <?php } ?>
+
+                                    <div id="publishing-action" style="float: none !important; display: inline-flex; justify-self: right;">
+
+                                        <?php if($type == "update"): ?>
+                                            <!--<input type="button" name="custom-duplicate" id="custom-duplicate" class="button button-primary" value="Duplicar">-->
                                             <input type="submit" name="custom-update" id="custom-update" class="button button-primary" value="Actualizar">
                                         <?php else: ?>
                                             <input type="submit" name="custom-publish" id="custom-publish" class="button button-primary" value="Guardar">
                                         <?php endif; ?>
+
                                     </div>
-                                    <div class="clear"></div>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div><!-- /post-body -->
+
             <br class="clear">
+
         </div><!-- /poststuff -->
+
     </form>
+
 </div>

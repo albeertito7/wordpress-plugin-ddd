@@ -5,13 +5,15 @@ $blog_id = get_current_blog_id();
 ?>
 
 <div class="wrap">
-    <h1>Page Packages</h1>
+
+    <h1 style="margin-bottom: 20px;">Page Packages</h1>
 
     <div id="grid"></div>
 
 </div>
 
 <style type="text/css">
+
     .customer-photo {
         display: inline-block;
         width: 32px;
@@ -80,4 +82,38 @@ $blog_id = get_current_blog_id();
         margin-left: 0;
         width: 100%;
     }
+
+    .action-grid-button {
+        font-size: 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+        color: white;
+        outline: none;
+        text-align: center;
+        padding: .375rem .75rem
+        font-weight: 400;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    .k-grid tbody td>.k-button {
+        color: white;
+        background-image: none;
+    }
+
+    .action-grid-button.edit-package, .k-grid tbody td>.k-grid-edit {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .action-grid-button.copy-package, .k-grid tbody td>.k-grid-copy  {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #212529;
+    }
+
+    .action-grid-button.delete-package, .k-grid tbody td>.k-grid-delete, .k-grid tbody td>.k-grid-remove {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
 </style>
