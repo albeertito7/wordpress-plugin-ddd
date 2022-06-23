@@ -52,8 +52,6 @@ class Entities_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		load_template(plugin_dir_path( __FILE__ ) . 'partials/my-template.php');
-
 	}
 
 	/**
