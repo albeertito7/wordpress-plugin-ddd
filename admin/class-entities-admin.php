@@ -112,34 +112,53 @@ class Entities_Admin {
      */
 	public function enqueue_plugins() {
 
-	    $plugins_dir = plugin_dir_url( __FILE__ ) . 'plugins/';
-
-        /* jQuery */
-        wp_enqueue_script( 'script-jquery', $plugins_dir . 'jquery/jquery-3.6.0.min.js', array( 'jquery' ), $this->version, false );
+	    $plugins_dir = plugin_dir_url( __DIR__ ) . 'plugins/';
 
         /* Kendo scripts */
-        wp_enqueue_script( 'script-kendo', $plugins_dir . 'kendo/kendo.all.min.js', '', $this->version, false );
-        wp_enqueue_script( 'script-jszip', $plugins_dir . 'kendo/jszip.min.js', '', $this->version, false );
+        wp_enqueue_script( 'kendo-all-js', $plugins_dir . 'kendo/kendo.all.min.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script( 'kendo-jszip-js', $plugins_dir . 'kendo/jszip.min.js', array( 'jquery' ), $this->version, false );
 
         /* Kendo styles */
-        wp_enqueue_style( 'style-kendo-common', $plugins_dir . 'kendo/styles/kendo.common.min.css', array( 'kendo-common' ), $this->version, 'all' );
-        wp_enqueue_style( 'style-kendo-default', $plugins_dir . 'kendo/styles/kendo.default.min.css', array( 'kendo-default' ), $this->version, 'all' );
+        wp_enqueue_style( 'kendo-common-styles', $plugins_dir . 'kendo/styles/kendo.common.min.css', array(), $this->version, false );
+        wp_enqueue_style( 'style-kendo-custom', $plugins_dir . 'kendo/styles/kendo.default.min.css', array(), $this->version, false );
+
+        /* Font Awesome */
+        wp_enqueue_style('style-entities-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css', $this->version, false);
+
+        /* Sweetalert2 */
+        //wp_enqueue_script('script-entities-es6-promise', $plugins_dir . 'sweetalert2/es6-promise.min.js', array(), $this->version, false);
+        wp_enqueue_script('script-entities-sweetalert2', $plugins_dir . 'sweetalert2/sweetalert2.all.min.js', array(), $this->version, false);
+        //wp_enqueue_style('style-entities-sweetalert2', $plugins_dir . 'sweetalert2/sweetalert2.min.css', array(), $this->version, false);
     }
 
     /**
-     *
+     * Building the plugin WordPress menu
      */
 	public function add_plugin_menu() {
 
 	    add_menu_page('Travel Manager', 'Travel Manager', 'custom_manage_options', 'travel-manager', array($this->router, 'match_request'), 'dashicons-database', 3);
         add_submenu_page('travel-manager', 'Escritori', 'Escritori', 'custom_manage_options', 'travel-manager', '', 1);
-	    add_submenu_page('travel-manager', 'Paquets', 'Tots els paquets', 'custom_manage_options', 'packages', array($this->router, 'match_request'), 2);
-        add_submenu_page('travel-manager', 'Afegeix', 'Afegeix un paquet', 'custom_manage_options', 'add-package', array($this->router, 'match_request'), 3);
 
+        /* Packages */
+        add_submenu_page('travel-manager', 'Paquets', 'Paquets', 'custom_manage_options', 'packages', array($this->router, 'match_request'), 2);
+        add_submenu_page('packages', 'Afegeix un paquet', 'Afegeix un paquet', 'custom_manage_options', 'add-package', array($this->router, 'match_request'), 3);
+
+        /* Hotels */
+        add_submenu_page('travel-manager', 'Hotels', 'Hotels', 'custom_manage_options', 'hotels', array($this->router, 'match_request'), 3);
+        add_submenu_page('hotels', 'Afegeix un hotel', 'Afegeix un hotel', 'custom_manage_options', 'add-hotel', array($this->router, 'match_request'), 3);
+
+        /* Activities */
+        add_submenu_page('travel-manager', 'Activitats', 'Activitats', 'custom_manage_options', 'activities', array($this->router, 'match_request'), 3);
+        add_submenu_page('activities', 'Afegeix una activitat', 'Afegeix una activitat', 'custom_manage_options', 'add-activity', array($this->router, 'match_request'), 3);
+
+        /* Flights */
+        add_submenu_page('travel-manager', 'Vols', 'Vols', 'custom_manage_options', 'flights', array($this->router, 'match_request'), 3);
+        add_submenu_page('flights', 'Afegeix un vol', 'Afegeix un vol', 'custom_manage_options', 'add-flight', array($this->router, 'match_request'), 3);
     }
 
     /**
-     *
+     * Adding custom plugin page templates,
+     * to visualize the entities at the front-end
      */
     public function add_page_templates() {
 
