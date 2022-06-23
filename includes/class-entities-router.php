@@ -8,7 +8,8 @@ class EntitiesRouter
     /**
      * match_request
      */
-    public function match_request() {
+    public function match_request()
+    {
         $page = $_GET['page'];
         $type = $_GET['type'];
 
@@ -19,6 +20,9 @@ class EntitiesRouter
                     break;
                 case 'add-package':
                     include plugin_dir_path( dirname(__FILE__ ) ) . '\admin\pages\page-add-package.php';
+                    break;
+                case 'add-hotel':
+                    include plugin_dir_path( dirname(__FILE__ ) ) . '\admin\pages\page-add-hotel.php';
                     break;
                 default:
                     include plugin_dir_path( dirname(__FILE__ ) ) . '\admin\partials\entities-admin-display.php';
