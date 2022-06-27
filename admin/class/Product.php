@@ -17,7 +17,7 @@ class Product
     var $description;
     var $price;
     var $featured_image;
-    var $order;
+    var $custom_order;
 
     /**
      * Product constructor.
@@ -45,7 +45,7 @@ class Product
         $instance->description = $row->description;
         $instance->price = $row->price;
         $instance->featured_image = $row->featured_image;
-        $instance->order = $row->order;
+        $instance->custom_order = $row->custom_order;
         return $instance;
     }
 
@@ -54,15 +54,15 @@ class Product
      */
     public function getOrder()
     {
-        return $this->order;
+        return $this->custom_order;
     }
 
     /**
      * @param mixed $order
      */
-    public function setOrder($order)
+    public function setOrder($custom_order)
     {
-        $this->order = $order;
+        $this->custom_order = $custom_order;
     }
 
     /**

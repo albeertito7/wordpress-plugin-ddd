@@ -30,9 +30,13 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-/* Remove plugins addons */
-
+/* Remove plugin add-ons */
 global $wpdb;
+
+/*$table_name = $wpdb->prefix . 'entities_config';
+
+$wpdb->query( "DROP TABLE IF EXISTS $table_name" );*/
+
 $table_name = $wpdb->prefix . 'entities_packages';
 
 $wpdb->query( "DROP TABLE IF EXISTS $table_name" );
@@ -40,6 +44,14 @@ $wpdb->query( "DROP TABLE IF EXISTS $table_name" );
 $table_name = $wpdb->prefix . 'entities_hotels';
 
 $wpdb->query( "DROP TABLE IF EXISTS $table_name" );
+
+/*$table_name = $wpdb->prefix . 'entities_flights';
+
+$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
+
+$table_name = $wpdb->prefix . 'entities_activites';
+
+$wpdb->query( "DROP TABLE IF EXISTS $table_name" );*/
 
 //delete_option("my_plugin_db_version");
 

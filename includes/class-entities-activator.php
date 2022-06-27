@@ -36,9 +36,22 @@ class Entities_Activator {
         global $wpdb;
 
         $charset_collate = $wpdb->get_charset_collate();
-        $table_name = $wpdb->prefix . 'entities_packages';
 
-        /* Creation of the entities packages table */
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+        /*$table_name = $wpdb->prefix . 'entities_config';
+        $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+              id mediumint(9) NOT NULL AUTO_INCREMENT,
+              blog_id int NOT NULL,
+              theme mediumint(9) NOT NULL DEFAULT 0,
+              date_created datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+              date_modified datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+              PRIMARY KEY  (id)
+            ) $charset_collate;";
+
+        dbDelta( $sql );*/
+
+        $table_name = $wpdb->prefix . 'entities_packages';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,
               blog_id int NOT NULL,
@@ -48,20 +61,17 @@ class Entities_Activator {
               name tinytext NOT NULL,
               short_description tinytext,
               description text,
-              price int NOT NULL DEFAULT O,
+              price int NOT NULL DEFAULT 0,
               featured_image text,
               gallery_images text,
               observations text,
-              order mediumint(9) DEFAULT -1
+              custom_order mediumint(9) DEFAULT -1,
               PRIMARY KEY  (id)
             ) $charset_collate;";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
 
         $table_name = $wpdb->prefix . 'entities_hotels';
-
-        /* Creation of the entities packages table */
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,
               blog_id int NOT NULL,
@@ -71,15 +81,59 @@ class Entities_Activator {
               name tinytext NOT NULL,
               short_description tinytext,
               description text,
-              price int NOT NULL DEFAULT O,
+              price int NOT NULL DEFAULT 0,
               featured_image text,
               gallery_images text,
               observations text,
-              order mediumint(9) DEFAULT -1
+              custom_order mediumint(9) DEFAULT -1,
+              date_entrance datetime,
+              date_departure datetime,
               PRIMARY KEY  (id)
             ) $charset_collate;";
 
         dbDelta( $sql );
+
+        /*$table_name = $wpdb->prefix . 'entities_flights';
+
+        $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+              id mediumint(9) NOT NULL AUTO_INCREMENT,
+              blog_id int NOT NULL,
+              status varchar(20) DEFAULT 'draft' NOT NULL,
+              date_created datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+              date_modified datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+              name tinytext NOT NULL,
+              short_description tinytext,
+              description text,
+              price int NOT NULL DEFAULT 0,
+              featured_image text,
+              gallery_images text,
+              observations text,
+              custom_order mediumint(9) DEFAULT -1
+              PRIMARY KEY  (id)
+            ) $charset_collate;";
+
+        dbDelta( $sql );
+
+        $table_name = $wpdb->prefix . 'entities_activities';
+
+        $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+              id mediumint(9) NOT NULL AUTO_INCREMENT,
+              blog_id int NOT NULL,
+              status varchar(20) DEFAULT 'draft' NOT NULL,
+              date_created datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+              date_modified datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+              name tinytext NOT NULL,
+              short_description tinytext,
+              description text,
+              price int NOT NULL DEFAULT 0,
+              featured_image text,
+              gallery_images text,
+              observations text,
+              custom_order mediumint(9) DEFAULT -1
+              PRIMARY KEY  (id)
+            ) $charset_collate;";
+
+        dbDelta( $sql );*/
 	}
 
 }

@@ -160,6 +160,7 @@ class Entities {
 	private function load_controllers() {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/master-controller.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-controller.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-hotels-controller.php';
     }
 
 	/**
@@ -198,7 +199,7 @@ class Entities {
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
         // add the plugin menu
-        $this->loader->add_action('init', $plugin_admin, 'add_plugin_menu');
+        $this->loader->add_action('admin_menu', $plugin_admin, 'add_plugin_menu');
 
         // add custom page templates
         $this->loader->add_action('init', $plugin_admin, 'add_page_templates');

@@ -18,39 +18,39 @@ if(isset($_GET["id"]))
 {
     // Update/Edit package if 'id' exists
     $id = $_GET["id"];
-    $package = EntitiesController::getPackageById($id);
+    $hotel = EntitiesHotelsController::getHotelById($id);
 
     $type = "update";
 
-    $name = $package->getName();
-    $date_created = $package->getDateCreated();
-    $date_modified = $package->getDateModified();
-    $status = $package->getStatus();
-    $short_description = $package->getShortDescription();
-    $description = $package->getDescription();
-    $price = $package->getPrice();
-    $featured_image = $package->getFeaturedImage();
-    $order = $package->getOrder();
-    //$gallery_images = $package->getGalleryImages();
-    //$observations = $package->getObservations();
+    $name = $hotel->getName();
+    $date_created = $hotel->getDateCreated();
+    $date_modified = $hotel->getDateModified();
+    $status = $hotel->getStatus();
+    $short_description = $hotel->getShortDescription();
+    $description = $hotel->getDescription();
+    $price = $hotel->getPrice();
+    $featured_image = $hotel->getFeaturedImage();
+    $order = $hotel->getOrder();
+    //$gallery_images = $hotel->getGalleryImages();
+    //$observations = $hotel->getObservations();
 }
 else if(isset($_GET["copyid"]))
 {
     // copiar paquete
     $id = $_GET["copyid"];
-    $package = EntitiesController::getPackageById($id);
+    $hotel = EntitiesHotelsController::getHotelById($id);
 
-    $name = $package->getName();
-    $date_created = $package->getDateCreated();
-    $date_modified = $package->getDateModified();
-    $status = $package->getStatus();
-    $short_description = $package->getShortDescription();
-    $description = $package->getDescription();
-    $price = $package->getPrice();
-    $featured_image = $package->getFeaturedImage();
-    $order = $package->getOrder();
-    //$gallery_images = $package->getGalleryImages();
-    //$observations = $package->getObservations();
+    $name = $hotel->getName();
+    $date_created = $hotel->getDateCreated();
+    $date_modified = $hotel->getDateModified();
+    $status = $hotel->getStatus();
+    $short_description = $hotel->getShortDescription();
+    $description = $hotel->getDescription();
+    $price = $hotel->getPrice();
+    $featured_image = $hotel->getFeaturedImage();
+    $order = $hotel->getOrder();
+    //$gallery_images = $hotel->getGalleryImages();
+    //$observations = $hotel->getObservations();
 }
 
 ?>
@@ -214,11 +214,11 @@ else if(isset($_GET["copyid"]))
                     type: "post",
                     dataType: "json",
                     data: {
-                        action: "entities_controller",
+                        action: "entities_hotels_controller",
                         <?php if ($type == "create") { ?>
-                        type: "createPackage",
+                        type: "createHotel",
                         <?php } elseif ($type == 'update') { ?>
-                        type: "updatePackage",
+                        type: "updateHotel",
                         id: <?php echo $id; ?>,
                         <?php } ?>
                         status: $("[name='status']").val(),
@@ -228,7 +228,7 @@ else if(isset($_GET["copyid"]))
                         featured_image: $("[name='imagendestacada']").val(),
                         observations: $("[name='observations']").val(),
                         price: $("[name='price']").val(),
-                        order: $("[name='order']").val()
+                        custom_order: $("[name='order']").val()
                     }
                 };
 
@@ -238,10 +238,10 @@ else if(isset($_GET["copyid"]))
                             swal.fire({
                                 icon: 'success',
                                 showConfirmButton: true,
-                                html: '<h4>Package <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
+                                html: '<h4>Hotel <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
                             }).then((result) => {
                                 if(result.isConfirmed && "<?php echo $type; ?>" === "create") {
-                                    location.href = "admin.php?page=packages";
+                                    location.href = "admin.php?page=hotels";
                                 }
                             });
                         }
@@ -271,18 +271,18 @@ else if(isset($_GET["copyid"]))
                             url: my_vars.ajaxurl,
                             type: "post",
                             data: {
-                                action: "entities_controller",
-                                type: "deletePackage",
+                                action: "entities_hotels_controller",
+                                type: "deleteHotel",
                                 id: <?php echo $id; ?>
                             }
                         }).done(function (response) {
-                            console.log("ajax deletePackage done");
-                            location.href = "admin.php?page=packages";
+                            console.log("ajax deleteHotel done");
+                            location.href = "admin.php?page=hotels";
                         }).fail(function (response) {
-                            console.log("ajax deletePackage fail");
+                            console.log("ajax deleteHotel fail");
                         }).always(function (response) {
                             //closeLoading();
-                            console.log("ajax deletePackage always");
+                            console.log("ajax deleteHotel always");
                         });
                     }
                 });
@@ -297,12 +297,15 @@ else if(isset($_GET["copyid"]))
 
 <style>
 
+    .block-field {
+        margin-bottom: 40px;
+    }
 
 </style>
 
 <div class="wrap travel-management">
 
-    <h1 class="wp-heading-inline">Añadir Paquete</h1>
+    <h1 class="wp-heading-inline">Add Hotel</h1>
 
     <form id="create_package" name="create_package" method="post" action="admin.php">
 
@@ -313,47 +316,48 @@ else if(isset($_GET["copyid"]))
                 <div id="post-body-content" style="position: relative;">
 
                     <!-- Title -->
-                    <div id="titlediv">
+                    <div id="titlediv" class="block-field">
                         <label>
-                            <input type="text" name="name" size="30" value="<?php echo $name; ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
+                            <input type="text" name="name" size="30" value="<?php echo $name; ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Add a name">
                         </label>
                     </div>
 
                     <!-- Short description -->
-                    <div>
-                        <h3>Descripción corta</h3>
+                    <div class="block-field">
+                        <h3>Short Description</h3>
                         <label>
-                            <input type="text" name="short_description" id="short_description" value="<?php echo $short_description; ?>" autocomplete="off"/>
+                            <input type="text" name="short_description" id="short_description" value="<?php echo $short_description; ?>" autocomplete="off" placeholder="Add a short description"/>
                         </label>
                     </div>
 
                     <!-- Price -->
-                    <div>
+                    <div class="block-field">
                         <h3>Price (€)</h3>
                         <label>
-                            <input type="number" name="price" id="price" value="<?php echo $price; ?>" autocomplete="off"/>
+                            <input type="number" name="price" id="price" value="<?php echo $price; ?>" autocomplete="off" placeholder=""/>
                         </label>
                     </div>
 
                     <!-- Order -->
-                    <div>
+                    <div class="block-field">
                         <h3>Order</h3>
+                        <p>Custom order to visualize the hotels at the front-end.</p>
                         <label>
-                            <input type="number" name="order" id="order" value="<?php echo $order; ?>" autocomplete="off"/>
+                            <input type="number" name="order" id="order" value="<?php echo $order; ?>" autocomplete="off" placeholder=""/>
                         </label>
                     </div>
 
                     <!-- Description -->
-                    <div>
-                        <h3>Descripción detallada</h3>
+                    <div class="block-field">
+                        <h3>Detailed Description</h3>
                         <label>
                             <?php echo wp_editor( stripslashes($description), 'description' ); ?>
                         </label>
                     </div>
 
                     <!-- Featured image -->
-                    <div>
-                        <h3>Imagen destacada</h3>
+                    <div class="block-field">
+                        <h3>Featured Image</h3>
                         <div id="imagen-destacada">
                             <div id="uploaderImage">
                                 <label>
@@ -368,8 +372,9 @@ else if(isset($_GET["copyid"]))
                     </div>
 
                     <!-- Considerations -->
-                    <div>
-                        <h3>Observaciones</h3>
+                    <div class="block-field">
+                        <h3>Considerations</h3>
+                        <p>Insights to be taken into account by the customer.</p>
                         <label>
                             <?php echo wp_editor( $observations, 'observations' ); ?>
                         </label>

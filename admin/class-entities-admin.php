@@ -40,6 +40,9 @@ class Entities_Admin {
 	 */
 	private $version;
 
+    /**
+     * @var EntitiesRouter
+     */
 	private $router;
 
 	/**
@@ -100,19 +103,29 @@ class Entities_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/entities-admin.js', array( 'jquery' ), $this->version, false );
-
-        wp_localize_script($this->plugin_name, 'my_vars', array(
+        wp_localize_script( $this->plugin_name, 'my_vars', array(
             'ajaxurl' => admin_url('admin-ajax.php')
         ));
 
+        wp_enqueue_script( 'script-entities-utils', plugin_dir_url( __FILE__ ) . 'js/utils.js', array( 'jquery' ), $this->version, false );
+
+        $page = $_GET['page'];
+        switch($page) {
+            case "packages":
+                wp_enqueue_script( "script-entities-packages", plugin_dir_url( __FILE__ ) . 'js/packages.js', array( 'jquery' ), $this->version, false );
+                break;
+            case "hotels":
+                 wp_enqueue_script( "script-entities-hotels", plugin_dir_url( __FILE__ ) . 'js/hotels.js', array( 'jquery' ), $this->version, false );
+                break;
+        }
 	}
 
     /**
      *
      */
-	public function enqueue_plugins() {
+    public function enqueue_plugins() {
 
-	    $plugins_dir = plugin_dir_url( __DIR__ ) . 'plugins/';
+        $plugins_dir = plugin_dir_url( __DIR__ ) . 'plugins/';
 
         /* Kendo scripts */
         wp_enqueue_script( 'kendo-all-js', $plugins_dir . 'kendo/kendo.all.min.js', array( 'jquery' ), $this->version, false );
@@ -126,9 +139,9 @@ class Entities_Admin {
         wp_enqueue_style('style-entities-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css', $this->version, false);
 
         /* Sweetalert2 */
-        //wp_enqueue_script('script-entities-es6-promise', $plugins_dir . 'sweetalert2/es6-promise.min.js', array(), $this->version, false);
+        wp_enqueue_script('script-entities-es6-promise', $plugins_dir . 'sweetalert2/es6-promise.min.js', array(), $this->version, false);
         wp_enqueue_script('script-entities-sweetalert2', $plugins_dir . 'sweetalert2/sweetalert2.all.min.js', array(), $this->version, false);
-        //wp_enqueue_style('style-entities-sweetalert2', $plugins_dir . 'sweetalert2/sweetalert2.min.css', array(), $this->version, false);
+        wp_enqueue_style('style-entities-sweetalert2', $plugins_dir . 'sweetalert2/sweetalert2.min.css', array(), $this->version, false);
     }
 
     /**
@@ -136,24 +149,24 @@ class Entities_Admin {
      */
 	public function add_plugin_menu() {
 
-	    add_menu_page('Travel Manager', 'Travel Manager', 'custom_manage_options', 'travel-manager', array($this->router, 'match_request'), 'dashicons-database', 3);
-        add_submenu_page('travel-manager', 'Escritori', 'Escritori', 'custom_manage_options', 'travel-manager', '', 1);
+	    add_menu_page('Travel Manager', 'Travel Manager', 'administrator', 'travel-manager', array($this->router, 'match_request'), 'dashicons-database', 0);
+        add_submenu_page('travel-manager', 'Desktop', 'Desktop', 'administrator', 'travel-manager', '', 1);
 
-        /* Packages */
-        add_submenu_page('travel-manager', 'Paquets', 'Paquets', 'custom_manage_options', 'packages', array($this->router, 'match_request'), 2);
-        add_submenu_page('packages', 'Afegeix un paquet', 'Afegeix un paquet', 'custom_manage_options', 'add-package', array($this->router, 'match_request'), 3);
+        // Packages
+        add_submenu_page('travel-manager', 'Packages', 'Packages', 'administrator', 'packages', array($this->router, 'match_request'), 2);
+        add_submenu_page('packages', 'Add a package', 'Add a package', 'administrator', 'add-package', array($this->router, 'match_request'), -1);
 
-        /* Hotels */
-        add_submenu_page('travel-manager', 'Hotels', 'Hotels', 'custom_manage_options', 'hotels', array($this->router, 'match_request'), 3);
-        add_submenu_page('hotels', 'Afegeix un hotel', 'Afegeix un hotel', 'custom_manage_options', 'add-hotel', array($this->router, 'match_request'), 3);
+        // Hotels
+        add_submenu_page('travel-manager', 'Hotels', 'Hotels', 'administrator', 'hotels', array($this->router, 'match_request'), 3);
+        add_submenu_page('hotels', 'Add an hotel', 'Add an hotel', 'administrator', 'add-hotel', array($this->router, 'match_request'), -1);
 
-        /* Activities */
-        add_submenu_page('travel-manager', 'Activitats', 'Activitats', 'custom_manage_options', 'activities', array($this->router, 'match_request'), 3);
-        add_submenu_page('activities', 'Afegeix una activitat', 'Afegeix una activitat', 'custom_manage_options', 'add-activity', array($this->router, 'match_request'), 3);
+        // Activities
+        add_submenu_page('travel-manager', 'Activities', 'Activitites', 'administrator', 'activities', array($this->router, 'match_request'), 4);
+        add_submenu_page('activities', 'Add an activity', 'Add an activity', 'administrator', 'add-activity', array($this->router, 'match_request'), -1);
 
-        /* Flights */
-        add_submenu_page('travel-manager', 'Vols', 'Vols', 'custom_manage_options', 'flights', array($this->router, 'match_request'), 3);
-        add_submenu_page('flights', 'Afegeix un vol', 'Afegeix un vol', 'custom_manage_options', 'add-flight', array($this->router, 'match_request'), 3);
+        // Flights
+        add_submenu_page('travel-manager', 'Flights', 'Flights', 'administrator', 'flights', array($this->router, 'match_request'), 5);
+        add_submenu_page('flights', 'Add a flight', 'Add a flight', 'administrator', 'add-flight', array($this->router, 'match_request'), -1);
     }
 
     /**
@@ -164,7 +177,7 @@ class Entities_Admin {
 
         //Add our custom template to the admin's templates dropdown
         add_filter( 'theme_page_templates', 'entities_template_as_option', 10, 3 );
-        function entities_template_as_option( $page_templates, $theme, $post ){
+        function entities_template_as_option( $page_templates, $theme, $post ) {
 
             $page_templates['template-landing.php'] = 'Template landing';
 

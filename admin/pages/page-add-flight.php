@@ -220,7 +220,7 @@ else if(isset($_GET["copyid"]))
                         <?php } elseif ($type == 'update') { ?>
                         type: "updatePackage",
                         id: <?php echo $id; ?>,
-                         <?php } ?>
+                        <?php } ?>
                         status: $("[name='status']").val(),
                         name: $("[name='name'").val(),
                         short_description: $("[name='short_description']").val(),
@@ -228,65 +228,65 @@ else if(isset($_GET["copyid"]))
                         featured_image: $("[name='imagendestacada']").val(),
                         observations: $("[name='observations']").val(),
                         price: $("[name='price']").val(),
-                        custom_order: $("[name='order']").val()
+                        order: $("[name='order']").val()
                     }
                 };
 
                 $.ajax(ajaxRequest)
-                .done(function (response) {
-                    if(response.success) {
-                        swal.fire({
-                            icon: 'success',
-                            showConfirmButton: true,
-                            html: '<h4>Package <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
-                        }).then((result) => {
-                            if(result.isConfirmed && "<?php echo $type; ?>" === "create") {
-                                location.href = "admin.php?page=packages";
-                            }
-                        });
-                    }
-                })
-                .fail(function (response) {
-                })
-                .always(function (response) {
-                });
+                    .done(function (response) {
+                        if(response.success) {
+                            swal.fire({
+                                icon: 'success',
+                                showConfirmButton: true,
+                                html: '<h4>Package <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
+                            }).then((result) => {
+                                if(result.isConfirmed && "<?php echo $type; ?>" === "create") {
+                                    location.href = "admin.php?page=packages";
+                                }
+                            });
+                        }
+                    })
+                    .fail(function (response) {
+                    })
+                    .always(function (response) {
+                    });
             });
 
             <?php if($type == "update") { ?>
-                $("#delete-action").click(function () {
+            $("#delete-action").click(function () {
 
-                    swal.fire({
-                        icon: "warning",
-                        showConfirmButton: true,
-                        showCancelButton: true,
-                        html: '<h4>Are you sure?</h4>',
-                        confirmButtonText: 'Yes, I am sure',
-                        cancelButtonText: "No, cancel it!"
-                    }).then((result) => {
-                        if(result.isConfirmed) {
+                swal.fire({
+                    icon: "warning",
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    html: '<h4>Are you sure?</h4>',
+                    confirmButtonText: 'Yes, I am sure',
+                    cancelButtonText: "No, cancel it!"
+                }).then((result) => {
+                    if(result.isConfirmed) {
 
-                            //openLoading("<h4>Deleting...</h4>");
+                        //openLoading("<h4>Deleting...</h4>");
 
-                            $.post({
-                                url: my_vars.ajaxurl,
-                                type: "post",
-                                data: {
-                                    action: "entities_controller",
-                                    type: "deletePackage",
-                                    id: <?php echo $id; ?>
-                                }
-                            }).done(function (response) {
-                                console.log("ajax deletePackage done");
-                                location.href = "admin.php?page=packages";
-                            }).fail(function (response) {
-                                console.log("ajax deletePackage fail");
-                            }).always(function (response) {
-                                //closeLoading();
-                                console.log("ajax deletePackage always");
-                            });
-                        }
-                    });
+                        $.post({
+                            url: my_vars.ajaxurl,
+                            type: "post",
+                            data: {
+                                action: "entities_controller",
+                                type: "deletePackage",
+                                id: <?php echo $id; ?>
+                            }
+                        }).done(function (response) {
+                            console.log("ajax deletePackage done");
+                            location.href = "admin.php?page=packages";
+                        }).fail(function (response) {
+                            console.log("ajax deletePackage fail");
+                        }).always(function (response) {
+                            //closeLoading();
+                            console.log("ajax deletePackage always");
+                        });
+                    }
                 });
+            });
             <?php } ?>
 
         });
@@ -297,9 +297,6 @@ else if(isset($_GET["copyid"]))
 
 <style>
 
-    .block-field {
-        margin-bottom: 40px;
-    }
 
 </style>
 
@@ -316,14 +313,14 @@ else if(isset($_GET["copyid"]))
                 <div id="post-body-content" style="position: relative;">
 
                     <!-- Title -->
-                    <div id="titlediv" class="block-field">
+                    <div id="titlediv">
                         <label>
                             <input type="text" name="name" size="30" value="<?php echo $name; ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
                         </label>
                     </div>
 
                     <!-- Short description -->
-                    <div class="block-field">
+                    <div>
                         <h3>Descripción corta</h3>
                         <label>
                             <input type="text" name="short_description" id="short_description" value="<?php echo $short_description; ?>" autocomplete="off"/>
@@ -331,7 +328,7 @@ else if(isset($_GET["copyid"]))
                     </div>
 
                     <!-- Price -->
-                    <div class="block-field">
+                    <div>
                         <h3>Price (€)</h3>
                         <label>
                             <input type="number" name="price" id="price" value="<?php echo $price; ?>" autocomplete="off"/>
@@ -339,7 +336,7 @@ else if(isset($_GET["copyid"]))
                     </div>
 
                     <!-- Order -->
-                    <div class="block-field">
+                    <div>
                         <h3>Order</h3>
                         <label>
                             <input type="number" name="order" id="order" value="<?php echo $order; ?>" autocomplete="off"/>
@@ -347,7 +344,7 @@ else if(isset($_GET["copyid"]))
                     </div>
 
                     <!-- Description -->
-                    <div class="block-field">
+                    <div>
                         <h3>Descripción detallada</h3>
                         <label>
                             <?php echo wp_editor( stripslashes($description), 'description' ); ?>
@@ -355,7 +352,7 @@ else if(isset($_GET["copyid"]))
                     </div>
 
                     <!-- Featured image -->
-                    <div class="block-field">
+                    <div>
                         <h3>Imagen destacada</h3>
                         <div id="imagen-destacada">
                             <div id="uploaderImage">
@@ -371,7 +368,7 @@ else if(isset($_GET["copyid"]))
                     </div>
 
                     <!-- Considerations -->
-                    <div class="block-field">
+                    <div>
                         <h3>Observaciones</h3>
                         <label>
                             <?php echo wp_editor( $observations, 'observations' ); ?>

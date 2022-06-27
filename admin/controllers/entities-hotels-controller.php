@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class EntitiesController
+ * Class EntitiesHotelsController
  */
-class EntitiesController extends MasterController
+class EntitiesHotelsController extends MasterController
 {
     public function __construct()
     {
-        add_action('wp_ajax_entities_controller', array($this, 'ajax'));
-        add_action('wp_ajax_nopriv_entities_controller', array($this, 'ajax'));
+        add_action('wp_ajax_entities_hotels_controller', array($this, 'ajax'));
+        add_action('wp_ajax_nopriv_entities_hotels_controller', array($this, 'ajax'));
     }
 
     public function ajax()
@@ -17,20 +17,20 @@ class EntitiesController extends MasterController
 
         switch ($action)
         {
-            case "getPackages":
-                echo $this->getStaticPackages(true);
+            case "getHotels":
+                echo $this->getStaticHotels(true);
                 break;
-            case "deletePackage":
-                $this->deletePackage($_POST['id']);
+            case "deleteHotel":
+                $this->deleteHotel($_POST['id']);
                 break;
-            case "createPackage":
-                echo $this->createPackage();
+            case "createHotel":
+                echo $this->createHotel();
                 break;
-            case "updatePackage":
-                echo $this->updatePackage($_POST['id']);
+            case "updateHotel":
+                echo $this->updateHotel($_POST['id']);
                 break;
-            case "updateGridPackage":
-                echo $this->updateGridPackage();
+            case "updateGridHotel":
+                echo $this->updateGridHotel();
                 break;
             default:
                 parent::ajax();
@@ -40,9 +40,9 @@ class EntitiesController extends MasterController
         exit;
     }
 
-    public static function getPackageById($id, $json_encode=false) {
+    public static function getHotelById($id, $json_encode=false) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_packages';
+        $table_name = $wpdb->prefix . 'entities_hotels';
         $current_blog_id = get_current_blog_id();
         $members = array();
 
@@ -51,7 +51,7 @@ class EntitiesController extends MasterController
             $res = $wpdb->get_results($sSQL);
 
             foreach($res as $row) {
-                $members[] = Package::withRow($row);
+                $members[] = Hotel::withRow($row);
             }
         }
         catch (Exception $ex) {
@@ -66,10 +66,10 @@ class EntitiesController extends MasterController
         return $members[0];
     }
 
-    public static function getStaticPackages($json_encode=false) {
+    public static function getStaticHotels($json_encode=false) {
         global $wpdb;
         $members = array();
-        $table_name = $wpdb->prefix . 'entities_packages';
+        $table_name = $wpdb->prefix . 'entities_hotels';
         $current_blog_id = get_current_blog_id();
 
         try
@@ -78,7 +78,7 @@ class EntitiesController extends MasterController
             $res = $wpdb->get_results($sSQL);
 
             foreach($res as $row) {
-                $members[] = Package::withRow($row);
+                $members[] = Hotel::withRow($row);
             }
         }
         catch(Exception $ex) {
@@ -93,9 +93,9 @@ class EntitiesController extends MasterController
         return $members;
     }
 
-    public static function deletePackage($id) {
+    public static function deleteHotel($id) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_packages';
+        $table_name = $wpdb->prefix . 'entities_hotels';
         $current_blog_id = get_current_blog_id();
 
         try
@@ -111,9 +111,9 @@ class EntitiesController extends MasterController
         }
     }
 
-    public static function createPackage() {
+    public static function createHotel() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_packages';
+        $table_name = $wpdb->prefix . 'entities_hotels';
         $current_blog_id = get_current_blog_id();
         $result = array('success'=> false );
 
@@ -128,7 +128,9 @@ class EntitiesController extends MasterController
                 'featured_image' => $_POST['featured_image'],
                 'observations' => $_POST['observations'],
                 'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price']
+                'price' => $_POST['price'],
+                'date_entrance' => $_POST['date_entrance'],
+                'date_departure' => $_POST['date_departure']
             ));
 
             $result['success'] = true;
@@ -141,9 +143,9 @@ class EntitiesController extends MasterController
         return json_encode($result);
     }
 
-    public static function updatePackage($id) {
+    public static function updateHotel($id) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_packages';
+        $table_name = $wpdb->prefix . 'entities_hotels';
         $current_blog_id = get_current_blog_id();
         $result = array('success'=> false );
 
@@ -156,7 +158,9 @@ class EntitiesController extends MasterController
                 'featured_image' => $_POST['featured_image'],
                 'observations' => $_POST['observations'],
                 'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price']
+                'price' => $_POST['price'],
+                'date_entrance' => $_POST['date_entrance'],
+                'date_departure' => $_POST['date_departure']
             ), array(
                 'id' => $id,
                 'blog_id' => $current_blog_id
@@ -172,21 +176,21 @@ class EntitiesController extends MasterController
         return json_encode($result);
     }
 
-    public static function updateGridPackage() {
+    public static function updateGridHotel() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_packages';
+        $table_name = $wpdb->prefix . 'entities_hotels';
         $current_blog_id = get_current_blog_id();
-        $package = json_decode(stripslashes($_POST['package']));
+        $hotel = json_decode(stripslashes($_POST['hotel']));
 
         try {
             $wpdb->update($table_name, array(
-                'status' => $package->status,
-                'price' => $package->price,
-                'name' => $package->name,
-                'short_description' => $package->short_description,
-                'custom_order' => $package->custom_order
+                'status' => $hotel->status,
+                'price' => $hotel->price,
+                'name' => $hotel->name,
+                'short_description' => $hotel->short_description,
+                'custom_order' => $hotel->custom_order
             ), array(
-                'id' => $package->id,
+                'id' => $hotel->id,
                 'blog_id' => $current_blog_id
             ));
 
@@ -195,9 +199,9 @@ class EntitiesController extends MasterController
 
         }
 
-        return json_encode($package);
+        return json_encode($hotel);
     }
 
 }
 
-new EntitiesController;
+new EntitiesHotelsController;
