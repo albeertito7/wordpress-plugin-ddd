@@ -13,11 +13,7 @@
  */
 
 $packages = EntitiesController::getStaticPackages();
-global $wpdb;
 
-$table_name = $wpdb->prefix . 'entities_packages';
-
-print_r($table_name);
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
