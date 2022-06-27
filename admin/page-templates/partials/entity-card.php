@@ -58,6 +58,6 @@ if (!isset($package)) {
 
     <p><?php echo $package->getPrice(); ?>€</p>
 
-    <button><?php _e('BUY NOW') ?></button>
+    <button class="btn-buy-now"><?php _e('BUY NOW') ?></button>
 
 </div>
