@@ -17,20 +17,20 @@ class EntitiesController extends MasterController
 
         switch ($action)
         {
-            case "getPackages":
-                echo $this->getStaticPackages(true);
-                break;
-            case "deletePackage":
-                $this->deletePackage($_POST['id']);
-                break;
             case "createPackage":
                 echo $this->createPackage();
+                break;
+            case "getPackages":
+                echo $this->getStaticPackages(true);
                 break;
             case "updatePackage":
                 echo $this->updatePackage($_POST['id']);
                 break;
             case "updateGridPackage":
                 echo $this->updateGridPackage();
+                break;
+            case "deletePackage":
+                $this->deletePackage($_POST['id']);
                 break;
             default:
                 parent::ajax();
@@ -40,6 +40,11 @@ class EntitiesController extends MasterController
         exit;
     }
 
+    /**
+     * @param $id
+     * @param bool $json_encode
+     * @return false|mixed|string
+     */
     public static function getPackageById($id, $json_encode=false) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'entities_packages';
@@ -66,6 +71,10 @@ class EntitiesController extends MasterController
         return $members[0];
     }
 
+    /**
+     * @param bool $json_encode
+     * @return array|false|string
+     */
     public static function getStaticPackages($json_encode=false) {
         global $wpdb;
         $members = array();
@@ -74,7 +83,7 @@ class EntitiesController extends MasterController
 
         try
         {
-            $sSQL = "SELECT * FROM $table_name WHERE blog_id=$current_blog_id ORDER BY id ASC";
+            $sSQL = "SELECT * FROM $table_name WHERE blog_id=$current_blog_id ORDER BY custom_order ASC";
             $res = $wpdb->get_results($sSQL);
 
             foreach($res as $row) {
@@ -93,6 +102,9 @@ class EntitiesController extends MasterController
         return $members;
     }
 
+    /**
+     * @param $id
+     */
     public static function deletePackage($id) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'entities_packages';
@@ -111,6 +123,9 @@ class EntitiesController extends MasterController
         }
     }
 
+    /**
+     * @return false|string
+     */
     public static function createPackage() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'entities_packages';
@@ -141,6 +156,10 @@ class EntitiesController extends MasterController
         return json_encode($result);
     }
 
+    /**
+     * @param $id
+     * @return false|string
+     */
     public static function updatePackage($id) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'entities_packages';
@@ -172,6 +191,9 @@ class EntitiesController extends MasterController
         return json_encode($result);
     }
 
+    /**
+     * @return false|string
+     */
     public static function updateGridPackage() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'entities_packages';
