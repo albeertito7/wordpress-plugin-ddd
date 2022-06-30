@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class MasterController
+ */
 class MasterController {
 
     public function ajax()
