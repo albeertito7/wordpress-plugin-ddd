@@ -104,19 +104,21 @@ class Entities_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/entities-admin.js', array( 'jquery' ), $this->version, false );
         wp_localize_script( $this->plugin_name, 'my_vars', array(
-            'ajaxurl' => admin_url('admin-ajax.php')
+            'ajaxurl' => admin_url( 'admin-ajax.php' )
         ));
 
         wp_enqueue_script( 'script-entities-utils', plugin_dir_url( __FILE__ ) . 'js/utils.js', array( 'jquery' ), $this->version, false );
 
-        $page = $_GET['page'];
-        switch($page) {
-            case "packages":
-                wp_enqueue_script( "script-entities-packages", plugin_dir_url( __FILE__ ) . 'js/packages.js', array( 'jquery' ), $this->version, false );
-                break;
-            case "hotels":
-                 wp_enqueue_script( "script-entities-hotels", plugin_dir_url( __FILE__ ) . 'js/hotels.js', array( 'jquery' ), $this->version, false );
-                break;
+        if ( isset( $_GET['page'] ) ) {
+            switch( $_GET['page'] ) {
+                case "packages":
+                    wp_enqueue_script( "script-entities-packages", plugin_dir_url( __FILE__ ) . 'js/packages.js', array( 'jquery' ), $this->version, false );
+                    break;
+                case "hotels":
+                    wp_enqueue_script( "script-entities-hotels", plugin_dir_url( __FILE__ ) . 'js/hotels.js', array( 'jquery' ), $this->version, false );
+                    break;
+            }
+
         }
 	}
 
@@ -165,8 +167,8 @@ class Entities_Admin {
         add_submenu_page('activities', 'Add an activity', 'Add an activity', 'administrator', 'add-activity', array($this->router, 'match_request'), -1);
 
         // Flights
-        add_submenu_page('travel-manager', 'Flights', 'Flights', 'administrator', 'flights', array($this->router, 'match_request'), 5);
-        add_submenu_page('flights', 'Add a flight', 'Add a flight', 'administrator', 'add-flight', array($this->router, 'match_request'), -1);
+        //add_submenu_page('travel-manager', 'Flights', 'Flights', 'administrator', 'flights', array($this->router, 'match_request'), 5);
+        //add_submenu_page('flights', 'Add a flight', 'Add a flight', 'administrator', 'add-flight', array($this->router, 'match_request'), -1);
     }
 
     /**
