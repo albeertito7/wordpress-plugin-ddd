@@ -76,9 +76,13 @@ class Entities {
 
 		$this->load_dependencies();
 		$this->set_locale();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
 
+		if ( !is_admin() ) {
+            $this->define_public_domain();
+        }
+		else {
+            $this->define_admin_domain();
+        }
 	}
 
 	/**
@@ -111,22 +115,6 @@ class Entities {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-entities-i18n.php';
 
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-entities-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-entities-public.php';
-
-        /**
-         * Custom Router
-         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-entities-router.php';
-
         /**
          *
          */
@@ -146,12 +134,46 @@ class Entities {
     /**
      *
      */
+    private function define_public_domain() {
+
+        /**
+         * The class responsible for defining all actions that occur in the public-facing
+         * side of the site.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-entities-public.php';
+
+        $this->define_public_hooks();
+
+    }
+
+    /**
+     *
+     */
+    private function define_admin_domain() {
+
+        /**
+         * The class responsible for defining all actions that occur in the admin area.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-entities-admin.php';
+
+        /**
+         * Custom Router
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-entities-router.php';
+
+        $this->define_admin_hooks();
+    }
+
+    /**
+     *
+     */
     private function load_models() {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Utils.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Logger.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Product.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Package.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Hotel.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Activity.php';
     }
 
     /**
@@ -161,6 +183,7 @@ class Entities {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/master-controller.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-controller.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-hotels-controller.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-activities-controller.php';
     }
 
 	/**
