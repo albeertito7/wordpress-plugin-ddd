@@ -93,8 +93,7 @@ class Entities_Activator {
 
         dbDelta( $sql );
 
-        /*$table_name = $wpdb->prefix . 'entities_flights';
-
+        $table_name = $wpdb->prefix . 'entities_activities';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,
               blog_id int NOT NULL,
@@ -114,8 +113,7 @@ class Entities_Activator {
 
         dbDelta( $sql );
 
-        $table_name = $wpdb->prefix . 'entities_activities';
-
+        /*$table_name = $wpdb->prefix . 'entities_flights';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,
               blog_id int NOT NULL,

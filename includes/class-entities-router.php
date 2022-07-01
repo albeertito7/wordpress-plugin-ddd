@@ -10,12 +10,13 @@ class EntitiesRouter
      */
     public function match_request()
     {
-        $page = $_GET['page'];
-        //$type = $_GET['type'];
+        if( isset( $_GET['page'] ) ) {
 
-        $directory = plugin_dir_path( dirname(__FILE__ ) ) . '/admin/pages';
+            $page = $_GET['page'];
+            //$type = $_GET['type'];
 
-        if (isset($page)) {
+            $directory = plugin_dir_path( dirname(__FILE__ ) ) . '/admin/pages';
+
             switch ($page) {
                 case 'packages':
                     include $directory .'/page-packages.php';
@@ -30,17 +31,17 @@ class EntitiesRouter
                 case 'add-hotel':
                     include  $directory . '/page-add-hotel.php';
                     break;
-                case 'flights':
-                    include  $directory . '/page-flights.php';
-                    break;
-                case 'add-flight':
-                    include  $directory . '/page-add-flight.php';
-                    break;
                 case 'activities':
                     include  $directory . '/page-activities.php';
                     break;
                 case 'add-activity':
                     include  $directory . '/page-add-activity.php';
+                    break;
+                case 'flights':
+                    include  $directory . '/page-flights.php';
+                    break;
+                case 'add-flight':
+                    include  $directory . '/page-add-flight.php';
                     break;
                 default:
                     include  plugin_dir_path( dirname( __FILE__ ) ) . '/admin/partials/entities-admin-display.php';
