@@ -177,7 +177,6 @@ const statusEntityTypes = [
                     name: "edit",
                     click: function (e) {
                         // command button click handler
-                        console.log("edit");
                         let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid($(e.target).closest("tr").attr("data-uid"));
                         location.href = "admin.php?page=add-hotel&id=" + dataItem.id;
                     }
@@ -185,7 +184,6 @@ const statusEntityTypes = [
                     name: "copy",
                     iconClass: "k-icon k-i-copy",
                     click: function (e) {
-                        console.log("copy");
                         let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid($(e.target).closest("tr").attr("data-uid"));
                         location.href = "admin.php?page=add-hotel&copyid=" + dataItem.id;
                     }
@@ -218,13 +216,10 @@ const statusEntityTypes = [
                                         id: dataItem.id
                                     }
                                 }).done(function (response) {
-                                    console.log("ajax deleteHotel done");
                                     $("#grid").data("kendoGrid").dataSource.read();
                                 }).fail(function (response) {
-                                    console.log("ajax deleteHotel fail");
                                 }).always(function (response) {
                                     //closeLoading();
-                                    console.log("ajax deleteHotel always");
                                 });
                             }
                         });
@@ -291,13 +286,10 @@ const statusEntityTypes = [
                                 id: dataItem.id
                             }
                         }).done(function (response) {
-                                console.log("ajax deleteHotel done");
                             $("#grid").data("kendoGrid").dataSource.read();
                         }).fail(function (response) {
-                            console.log("ajax deleteHotel fail");
                         }).always(function (response) {
                             //closeLoading();
-                            console.log("ajax deleteHotel always");
                         });
                     }
                 });
