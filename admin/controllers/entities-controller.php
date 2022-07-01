@@ -21,7 +21,7 @@ class EntitiesController extends MasterController
                 echo $this->createPackage();
                 break;
             case "getPackages":
-                echo $this->getStaticPackages(true);
+                echo $this->getPackages(true);
                 break;
             case "updatePackage":
                 echo $this->updatePackage($_POST['id']);
@@ -75,7 +75,7 @@ class EntitiesController extends MasterController
      * @param bool $json_encode
      * @return array|false|string
      */
-    public static function getStaticPackages($json_encode=false) {
+    public static function getPackages($json_encode=false) {
         global $wpdb;
         $members = array();
         $table_name = $wpdb->prefix . 'entities_packages';

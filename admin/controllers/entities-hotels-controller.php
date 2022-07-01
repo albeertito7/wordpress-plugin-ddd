@@ -13,28 +13,29 @@ class EntitiesHotelsController extends MasterController
 
     public function ajax()
     {
-        $action = $_POST['type'];
+        if ( isset( $_POST['type'] ) ) {
 
-        switch ($action)
-        {
-            case "getHotels":
-                echo $this->getStaticHotels(true);
-                break;
-            case "deleteHotel":
-                $this->deleteHotel($_POST['id']);
-                break;
-            case "createHotel":
-                echo $this->createHotel();
-                break;
-            case "updateHotel":
-                echo $this->updateHotel($_POST['id']);
-                break;
-            case "updateGridHotel":
-                echo $this->updateGridHotel();
-                break;
-            default:
-                parent::ajax();
-                break;
+            $action = $_POST['type'];
+            switch ($action) {
+                case "createHotel":
+                    echo $this->createHotel();
+                    break;
+                case "getHotels":
+                    echo $this->getHotels(true);
+                    break;
+                case "updateHotel":
+                    echo $this->updateHotel($_POST['id']);
+                    break;
+                case "updateGridHotel":
+                    echo $this->updateGridHotel();
+                    break;
+                case "deleteHotel":
+                    $this->deleteHotel($_POST['id']);
+                    break;
+                default:
+                    parent::ajax();
+                    break;
+            }
         }
 
         exit;
@@ -66,7 +67,7 @@ class EntitiesHotelsController extends MasterController
         return $members[0];
     }
 
-    public static function getStaticHotels($json_encode=false) {
+    public static function getHotels($json_encode=false) {
         global $wpdb;
         $members = array();
         $table_name = $wpdb->prefix . 'entities_hotels';
