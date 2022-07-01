@@ -12,7 +12,7 @@
  * @subpackage Entities/admin/partials
  */
 
-$packages = EntitiesController::getStaticPackages();
+$packages = EntitiesController::getPackages();
 /*global $wpdb;
 
 $charset_collate = $wpdb->get_charset_collate();
@@ -22,10 +22,11 @@ print_r($charset_collate);*/
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <style>
+
     #plugin-img {
         width: 100%;
-
     }
+
 </style>
 
 <div class="wrap">

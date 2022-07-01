@@ -10,7 +10,7 @@ get_header();
 // meaning it will be displayed before any other programmatically adding
 //the_content();
 
-$packages = EntitiesController::getStaticPackages();
+$packages = EntitiesController::getPackages();
 
 ?>
 

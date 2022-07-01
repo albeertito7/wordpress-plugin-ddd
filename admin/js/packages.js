@@ -1,15 +1,15 @@
+const statusEntityTypes = [
+    { id: 'publish', text: 'publish' },
+    { id: 'draft', text: 'draft' },
+    { id: 'pending', text: 'pending' }
+];
+
 (function( $ ) {
 
     $(document).ready(function () {
         debugger;
 
-        var statusPackageTypes = [
-            { id: 'publish', text: 'publish' },
-            { id: 'draft', text: 'draft' },
-            { id: 'pending', text: 'pending' }
-        ];
-
-        function getPackages() {
+        function getAvailability() {
             return $.ajax({
                 url: my_vars.ajaxurl,
                 dataType: "json",
@@ -21,11 +21,10 @@
             });
         }
 
-        //var crudServiceBaseUrl = "https://demos.telerik.com/kendo-ui/service",
-        var dataSource = new kendo.data.DataSource({
+        let dataSource = new kendo.data.DataSource({
             transport: {
                 read: function (options) {
-                    $.when(getPackages())
+                    $.when(getAvailability())
                         .done(function (response) {
                             options.success(response);
                         })
@@ -95,7 +94,7 @@
             }
         });
 
-        var grid = $("#grid").kendoGrid({
+        let grid = $("#grid").kendoGrid({
             dataSource: dataSource,
             columnMenu: {
                 filterable: true
@@ -142,9 +141,9 @@
                 title: 'Status',
                 width: 100,
                 template: function(dataItem) {
-                    for (var i = 0; i < statusPackageTypes.length; i++) {
-                        if (statusPackageTypes[i].id === dataItem.status) {
-                            return statusPackageTypes[i].text;
+                    for (var i = 0; i < statusEntityTypes.length; i++) {
+                        if (statusEntityTypes[i].id === dataItem.status) {
+                            return statusEntityTypes[i].text;
                         }
                     }
                 },
@@ -152,7 +151,7 @@
                     var input = $('<input id="status" name="status">');
                     input.appendTo(container);
                     input.kendoDropDownList({
-                        dataSource: statusPackageTypes,
+                        dataSource: statusEntityTypes,
                         dataTextField: "text",
                         dataValueField: "id"
                     }).appendTo(container);
