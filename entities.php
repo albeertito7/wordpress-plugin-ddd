@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // tackling the naming collision problem
-if ( !class_exists( 'Entities' ) ) {
+if ( class_exists( 'Entities' ) ) {
     die;
 }
 
