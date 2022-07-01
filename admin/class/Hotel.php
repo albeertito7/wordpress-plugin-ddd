@@ -9,7 +9,7 @@ class Hotel extends Product
     var $date_leave;
 
     /**
-     * Product constructor.
+     * Hotel constructor.
      */
     private function __construct($object)
     {
@@ -22,7 +22,7 @@ class Hotel extends Product
 
     /**
      * @param $row
-     * @return Product
+     * @return Hotel
      */
     public static function withRow($row)
     {
