@@ -1,10 +1,15 @@
 <?php
 
 /**
- * Class EntitiesHotelsController
+ * Class EntitiesActivitiesController
  */
 class EntitiesActivitiesController extends MasterController
 {
+    /**
+     * @var
+     */
+    private $current_blog_id;
+
     /**
      * @var
      */
@@ -12,12 +17,15 @@ class EntitiesActivitiesController extends MasterController
 
     public function __construct()
     {
-        if( isset( $GLOBALS['wpdb'] ) ) {
-            add_action('wp_ajax_entities_hotels_controller', array($this, 'ajax'));
-            add_action('wp_ajax_nopriv_entities_hotels_controller', array($this, 'ajax'));
-
+        if( isset( $GLOBALS['wpdb'] ) )
+        {
             global $wpdb;
+
             $this->table_name = $wpdb->prefix . 'entities_activities';
+            $this->current_blog_id = get_current_blog_id();
+
+            add_action('wp_ajax_entities_activities_controller', array($this, 'ajax'));
+            add_action('wp_ajax_nopriv_entities_activities_controller', array($this, 'ajax'));
         }
     }
 
@@ -67,7 +75,7 @@ class EntitiesActivitiesController extends MasterController
             $res = $wpdb->get_results($sSQL);
 
             foreach($res as $row) {
-                $members[] = Hotel::withRow($row);
+                $members[] = Product::withRow($row);
             }
         }
         catch (Exception $ex) {
@@ -84,6 +92,7 @@ class EntitiesActivitiesController extends MasterController
 
     public static function getActivities($json_encode=false) {
         global $wpdb;
+
         $members = array();
         $table_name = $wpdb->prefix . 'entities_activities';
         $current_blog_id = get_current_blog_id();
@@ -111,7 +120,8 @@ class EntitiesActivitiesController extends MasterController
 
     public static function deleteActivity($id) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_activites';
+
+        $table_name = $wpdb->prefix . 'entities_activities';
         $current_blog_id = get_current_blog_id();
 
         try
@@ -145,9 +155,7 @@ class EntitiesActivitiesController extends MasterController
                 'featured_image' => $_POST['featured_image'],
                 'observations' => $_POST['observations'],
                 'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price'],
-                'date_entrance' => $_POST['date_entrance'],
-                'date_departure' => $_POST['date_departure']
+                'price' => $_POST['price']
             ));
 
             $result['success'] = true;
@@ -176,9 +184,7 @@ class EntitiesActivitiesController extends MasterController
                 'featured_image' => $_POST['featured_image'],
                 'observations' => $_POST['observations'],
                 'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price'],
-                'date_entrance' => $_POST['date_entrance'],
-                'date_departure' => $_POST['date_departure']
+                'price' => $_POST['price']
             ), array(
                 'id' => $id,
                 'blog_id' => $current_blog_id
@@ -197,7 +203,7 @@ class EntitiesActivitiesController extends MasterController
     public static function updateGridActivity() {
         global $wpdb;
 
-        $table_name = $wpdb->prefix . 'entities_activites';
+        $table_name = $wpdb->prefix . 'entities_activities';
         $current_blog_id = get_current_blog_id();
         $activity = json_decode(stripslashes($_POST['activity']));
 

@@ -4,6 +4,7 @@ $id = "";
 $copyid="";
 $url = "";
 $date_created = "";
+$date_modified = "";
 $status = "";
 $name = "";
 $short_description = "";
@@ -18,39 +19,39 @@ if(isset($_GET["id"]))
 {
     // Update/Edit package if 'id' exists
     $id = $_GET["id"];
-    $package = EntitiesController::getPackageById($id);
+    $activity = EntitiesActivitiesController::getActivityById($id);
 
     $type = "update";
 
-    $name = $package->getName();
-    $date_created = $package->getDateCreated();
-    $date_modified = $package->getDateModified();
-    $status = $package->getStatus();
-    $short_description = $package->getShortDescription();
-    $description = $package->getDescription();
-    $price = $package->getPrice();
-    $featured_image = $package->getFeaturedImage();
-    $order = $package->getOrder();
-    //$gallery_images = $package->getGalleryImages();
-    //$observations = $package->getObservations();
+    $name = $activity->getName();
+    $date_created = $activity->getDateCreated();
+    $date_modified = $activity->getDateModified();
+    $status = $activity->getStatus();
+    $short_description = $activity->getShortDescription();
+    $description = $activity->getDescription();
+    $price = $activity->getPrice();
+    $featured_image = $activity->getFeaturedImage();
+    $order = $activity->getOrder();
+    //$gallery_images = $activity->getGalleryImages();
+    //$observations = $activity->getObservations();
 }
 else if(isset($_GET["copyid"]))
 {
     // copiar paquete
     $id = $_GET["copyid"];
-    $package = EntitiesController::getPackageById($id);
+    $activity = EntitiesActivitiesController::getActivityById($id);
 
-    $name = $package->getName();
-    $date_created = $package->getDateCreated();
-    $date_modified = $package->getDateModified();
-    $status = $package->getStatus();
-    $short_description = $package->getShortDescription();
-    $description = $package->getDescription();
-    $price = $package->getPrice();
-    $featured_image = $package->getFeaturedImage();
-    $order = $package->getOrder();
-    //$gallery_images = $package->getGalleryImages();
-    //$observations = $package->getObservations();
+    $name = $activity->getName();
+    $date_created = $activity->getDateCreated();
+    $date_modified = $activity->getDateModified();
+    $status = $activity->getStatus();
+    $short_description = $activity->getShortDescription();
+    $description = $activity->getDescription();
+    $price = $activity->getPrice();
+    $featured_image = $activity->getFeaturedImage();
+    $order = $activity->getOrder();
+    //$gallery_images = $activity->getGalleryImages();
+    //$observations = $activity->getObservations();
 }
 
 ?>
@@ -209,16 +210,17 @@ else if(isset($_GET["copyid"]))
             $("form#create_package").submit(function (event) {
                 event.preventDefault();
                 debugger;
+
                 let ajaxRequest = {
                     url: my_vars.ajaxurl,
                     type: "post",
                     dataType: "json",
                     data: {
-                        action: "entities_controller",
+                        action: "entities_activities_controller",
                         <?php if ($type == "create") { ?>
-                        type: "createPackage",
+                        type: "createActivity",
                         <?php } elseif ($type == 'update') { ?>
-                        type: "updatePackage",
+                        type: "updateActivity",
                         id: <?php echo $id; ?>,
                         <?php } ?>
                         status: $("[name='status']").val(),
@@ -238,10 +240,10 @@ else if(isset($_GET["copyid"]))
                             swal.fire({
                                 icon: 'success',
                                 showConfirmButton: true,
-                                html: '<h4>Package <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
+                                html: '<h4>Activity <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
                             }).then((result) => {
                                 if(result.isConfirmed && "<?php echo $type; ?>" === "create") {
-                                    location.href = "admin.php?page=packages";
+                                    location.href = "admin.php?page=activities";
                                 }
                             });
                         }
@@ -271,18 +273,15 @@ else if(isset($_GET["copyid"]))
                             url: my_vars.ajaxurl,
                             type: "post",
                             data: {
-                                action: "entities_controller",
-                                type: "deletePackage",
+                                action: "entities_activities_controller",
+                                type: "deleteActivity",
                                 id: <?php echo $id; ?>
                             }
                         }).done(function (response) {
-                            console.log("ajax deletePackage done");
-                            location.href = "admin.php?page=packages";
+                            location.href = "admin.php?page=activities";
                         }).fail(function (response) {
-                            console.log("ajax deletePackage fail");
                         }).always(function (response) {
                             //closeLoading();
-                            console.log("ajax deletePackage always");
                         });
                     }
                 });
@@ -302,7 +301,7 @@ else if(isset($_GET["copyid"]))
 
 <div class="wrap travel-management">
 
-    <h1 class="wp-heading-inline">Añadir Paquete</h1>
+    <h1 class="wp-heading-inline">Añadir Actividad</h1>
 
     <form id="create_package" name="create_package" method="post" action="admin.php">
 

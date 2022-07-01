@@ -286,13 +286,10 @@ const statusEntityTypes = [
                                 id: dataItem.id
                             }
                         }).done(function (response) {
-                            console.log("ajax deleteHotel done");
                             $("#grid").data("kendoGrid").dataSource.read();
                         }).fail(function (response) {
-                            console.log("ajax deleteHotel fail");
                         }).always(function (response) {
                             //closeLoading();
-                            console.log("ajax deleteHotel always");
                         });
                     }
                 });

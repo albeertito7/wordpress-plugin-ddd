@@ -117,6 +117,9 @@ class Entities_Admin {
                 case "hotels":
                     wp_enqueue_script( "script-entities-hotels", plugin_dir_url( __FILE__ ) . 'js/hotels.js', array( 'jquery' ), $this->version, false );
                     break;
+                case "activities":
+                    wp_enqueue_script( "script-entities-activities", plugin_dir_url( __FILE__ ) . 'js/activities.js', array( 'jquery' ), $this->version, false );
+                    break;
             }
 
         }
