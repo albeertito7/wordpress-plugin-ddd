@@ -75,7 +75,7 @@ class EntitiesActivitiesController extends MasterController
             $res = $wpdb->get_results($sSQL);
 
             foreach($res as $row) {
-                $members[] = Product::withRow($row);
+                $members[] = Activity::withRow($row);
             }
         }
         catch (Exception $ex) {
@@ -103,7 +103,7 @@ class EntitiesActivitiesController extends MasterController
             $res = $wpdb->get_results($sSQL);
 
             foreach($res as $row) {
-                $members[] = Hotel::withRow($row);
+                $members[] = Activity::withRow($row);
             }
         }
         catch(Exception $ex) {

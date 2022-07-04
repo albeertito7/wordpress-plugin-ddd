@@ -10,7 +10,7 @@ class Activity extends Product
     /**
      * Activity constructor.
      */
-    private function __construct($object)
+    public function __construct()
     {
         // pass
     }
