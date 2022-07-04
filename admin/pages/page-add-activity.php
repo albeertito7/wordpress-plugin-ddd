@@ -1,8 +1,13 @@
 <?php
+
+// control vars
 $type = "create";
 $id = "";
-$copyid="";
-$url = "";
+$copyid = "";
+$activity = "";
+
+// class activity properties
+/*$url = "";
 $date_created = "";
 $date_modified = "";
 $status = "";
@@ -13,8 +18,24 @@ $featured_image = "";
 //$gallery_images = "";
 $observations="";
 $price = "";
-$order = "";
+$order = "";*/
 
+$activity = new Activity();
+
+if( isset( $_GET["id"] ) )
+{
+    $id = $_GET["id"];
+    $type = "update";
+    $activity = EntitiesActivitiesController::getActivityById($id);
+}
+elseif ( isset( $_GET['copyid'] ) )
+{
+    $id = $_GET["copyid"];
+    $type = "create";
+    $activity = EntitiesActivitiesController::getActivityById($id);
+}
+
+/*
 if(isset($_GET["id"]))
 {
     // Update/Edit package if 'id' exists
@@ -53,6 +74,7 @@ else if(isset($_GET["copyid"]))
     //$gallery_images = $activity->getGalleryImages();
     //$observations = $activity->getObservations();
 }
+*/
 
 ?>
 
@@ -60,152 +82,10 @@ else if(isset($_GET["copyid"]))
 
     (function ($) {
 
-        function inicializarCargadorImagenes() {
-            /*Imagen Destacada*/
-            $('.upload_image_button').click(function( event ){
-                event.preventDefault();
-                openFrameMedia(false, "linkImage");
-            });
-
-            /*Gallery Images*/
-            $('.upload_image_gallery').click(function( event ){
-                event.preventDefault();
-                openFrameMedia(true, "gallery");
-            });
-        }
-
-        function openFrameMedia(multiple, modeInsercio) {
-            //Uploading files
-            var file_frame;
-
-            // If the media frame already exists, reopen it.
-            if ( file_frame ) {
-                file_frame.open();
-                return;
-            }
-
-            // Create the media frame.
-            file_frame = wp.media.frames.file_frame = wp.media({
-                title: $( this ).data( 'uploader_title' ),
-                button: {
-                    text: $( this ).data( 'uploader_button_text' ),
-                },
-                multiple: (multiple) ? 'add' : false // Set to true to allow multiple files to be selected
-            });
-
-            // When an image is selected, run a callback.
-            file_frame.on( 'select', function() {
-                var attachments, attachment;
-                if(multiple) {
-                    attachments = file_frame.state().get('selection').map(
-                        function(attachment) {
-                            attachment.toJSON();
-                            return attachment;
-                        }
-                    );
-                } else {
-                    // We set multiple to false so only get one image from the uploader
-                    attachment = file_frame.state().get('selection').first().toJSON();
-                }
-
-                if(modeInsercio === "linkImage") {
-                    // Do something with attachment.id and/or attachment.url here
-                    $('#travelImage').val(attachment.url); //attach id to hidden input
-                    $('#travelImage').trigger("change");
-                    $('#uploaderImage .image-travel').remove(); //remove any previous preview images
-                    $('#uploaderImage').prepend('<img class="image-travel" src="' + attachment.url + '" style="max-width: 200px;">'); //show preview image
-                    $(".upload_image_button").hide();
-                    $(".remove_imagen_destacada").show();
-
-                }  else if(modeInsercio === "gallery") {
-                    var imagesId = [];
-                    for(var i=0; i<attachments.length; i++) {
-                        var image = {id: attachments[i].attributes.id, url: attachments[i].attributes.url};
-                        imagesId.push(image);
-                        var classImage = "image-travel-" + attachments[i].attributes.id;
-                        $('#' + classImage).remove();
-                        var divHtml = '<div id="' + classImage + '" style="float: left;padding: 10px;position:relative;">';
-                        divHtml += '<img class=' + classImage + ' src="' + attachments[i].attributes.url + '" style="max-width: 150px;"/>';
-                        divHtml += '<a href="#" data-idimage="' + attachments[i].attributes.id + '" id="remove_image_gallery" title="Borrar Imagen" class="remove_image_gallery">';
-                        divHtml += '<i class="fa fa-times-circle" aria-hidden="true" style="font-size: 20px;position: absolute;top: 0px;right: -3px;color: black;"></i></a>';
-                        divHtml += '</div>';
-                        $('#uploadImagesGallery').prepend(divHtml); //show preview image
-                    }
-                    $("#travelGalleryImages").val(JSON.stringify(imagesId));
-                    $('#travelGalleryImages').trigger("change");
-                }
-
-                initRemoveImages(modeInsercio);
-            });
-
-            // Finally, open the modal
-            file_frame.open();
-        }
-
-        function loadImages(imagen_destacada/*, imagenes*/) {
-            if(imagen_destacada !== "") {
-                $('#travelImage').val(imagen_destacada); //attach id to hidden input
-                $('#travelImage').trigger("change");
-                $('#uploaderImage .image-travel').remove(); //remove any previous preview images
-                $('#uploaderImage').prepend('<img class="image-travel" src="' + imagen_destacada + '" style="max-width: 200px;">'); //show preview image
-                $(".upload_image_button").hide();
-                $(".remove_imagen_destacada").show();
-                initRemoveImages("linkImage");
-            }
-
-            /*if(imagenes !== "") {
-                var imagesId = JSON.parse(imagenes)
-                for(var i=0; i<imagesId.length; i++) {
-                    var classImage = "image-travel-" + imagesId[i].id;
-                    $('#' + classImage).remove();
-                    var divHtml = '<div id="' + classImage + '" style="float: left;padding: 10px;position:relative;">';
-                    divHtml += '<img class=' + classImage + ' src="' + imagesId[i].url + '" style="max-width: 150px;"/>';
-                    divHtml += '<a href="#" data-idimage="' + imagesId[i].id + '" id="remove_image_gallery" title="Borrar Imagen" class="remove_image_gallery">';
-                    divHtml += '<i class="fa fa-times-circle" aria-hidden="true" style="font-size: 20px;position: absolute;top: 0px;right: -3px;color: black;"></i></a>';
-                    divHtml += '</div>';
-                    $('#uploadImagesGallery').prepend(divHtml); //show preview image
-                }
-                $("#travelGalleryImages").val(JSON.stringify(imagesId));
-                $('#travelGalleryImages').trigger("change");
-                initRemoveImages("gallery");
-            }*/
-        }
-
-        function initRemoveImages(modeInsercio) {
-            if(modeInsercio === "linkImage") {
-                $('.remove_imagen_destacada').click(function( event ){
-                    event.preventDefault();
-                    $('#travelImage').val(0);
-                    $('#travelImage').trigger("change");
-                    $('#uploaderImage .image-travel').remove();
-                    $(".upload_image_button").show();
-                    $(".remove_imagen_destacada").hide();
-                });
-
-            } else if(modeInsercio === "gallery") {
-                $('.remove_image_gallery').click(function (event) {
-                    event.preventDefault();
-                    var idImageInGallery = $(this).data('idimage');
-                    var classImage = "#image-travel-" + idImageInGallery;
-                    var jsonImages = JSON.parse($("#travelGalleryImages").val());
-
-                    for (var i = 0; i < jsonImages.length; i++) {
-                        if (jsonImages[i].id === idImageInGallery) {
-                            jsonImages.splice(i, 1);
-                        }
-                    }
-
-                    $('#travelGalleryImages').val(JSON.stringify(jsonImages));
-                    $('#travelGalleryImages').trigger("change");
-                    $('#uploadImagesGallery ' + classImage).remove();
-                });
-            }
-        }
-
         $(document).ready(function () {
 
-            inicializarCargadorImagenes();
-            loadImages("<?php echo $featured_image; ?>");
+            utils.inicializarCargadorImagenes();
+            utils.loadImages("<?php echo $activity->featured_image; ?>");
 
             $("form#create_package").submit(function (event) {
                 event.preventDefault();
@@ -230,7 +110,7 @@ else if(isset($_GET["copyid"]))
                         featured_image: $("[name='imagendestacada']").val(),
                         observations: $("[name='observations']").val(),
                         price: $("[name='price']").val(),
-                        order: $("[name='order']").val()
+                        custom_order: $("[name='custom_order']").val()
                     }
                 };
 
@@ -314,7 +194,7 @@ else if(isset($_GET["copyid"]))
                     <!-- Title -->
                     <div id="titlediv">
                         <label>
-                            <input type="text" name="name" size="30" value="<?php echo $name; ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
+                            <input type="text" name="name" size="30" value="<?php echo $activity->name; ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
                         </label>
                     </div>
 
@@ -322,7 +202,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Descripción corta</h3>
                         <label>
-                            <input type="text" name="short_description" id="short_description" value="<?php echo $short_description; ?>" autocomplete="off"/>
+                            <input type="text" name="short_description" id="short_description" value="<?php echo $activity->short_description; ?>" autocomplete="off"/>
                         </label>
                     </div>
 
@@ -330,7 +210,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Price (€)</h3>
                         <label>
-                            <input type="number" name="price" id="price" value="<?php echo $price; ?>" autocomplete="off"/>
+                            <input type="number" name="price" id="price" value="<?php echo $activity->price; ?>" autocomplete="off"/>
                         </label>
                     </div>
 
@@ -338,7 +218,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Order</h3>
                         <label>
-                            <input type="number" name="order" id="order" value="<?php echo $order; ?>" autocomplete="off"/>
+                            <input type="number" name="custom_order" id="custom_order" value="<?php echo $activity->custom_order; ?>" autocomplete="off"/>
                         </label>
                     </div>
 
@@ -346,7 +226,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Descripción detallada</h3>
                         <label>
-                            <?php echo wp_editor( stripslashes($description), 'description' ); ?>
+                            <?php echo wp_editor( stripslashes( $activity->description ), 'description' ); ?>
                         </label>
                     </div>
 
@@ -370,7 +250,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Observaciones</h3>
                         <label>
-                            <?php echo wp_editor( $observations, 'observations' ); ?>
+                            <?php echo wp_editor( $activity->observations, 'observations' ); ?>
                         </label>
                     </div>
 
@@ -391,13 +271,13 @@ else if(isset($_GET["copyid"]))
                                 <!-- Fecha de creación -->
                                 <div style="padding: 10px 10px 5px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Fecha creación:</span>
-                                    <span><?php echo $date_created; ?></span>
+                                    <span><?php echo $activity->date_created; ?></span>
                                 </div>
 
                                 <!-- Fecha de modificación -->
                                 <div style="padding: 5px 10px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Fecha modificación:</span>
-                                    <span><?php echo $date_modified; ?></span>
+                                    <span><?php echo $activity->date_modified; ?></span>
                                 </div>
 
                                 <!-- Status -->
@@ -405,9 +285,9 @@ else if(isset($_GET["copyid"]))
                                     <span>Estado: </span>
                                     <label>
                                         <select name="status">
-                                            <option value="draft" <?php echo ($status == "draft") ? "selected" : ""; ?>>Draft</option>
-                                            <option value="publish" <?php echo ($status == "publish") ? "selected" : ""; ?>>Publish</option>
-                                            <option value="pending" <?php echo ($status == "pending") ? "selected" : ""; ?>>Pending</option>
+                                            <option value="draft" <?php echo ($activity->status == "draft") ? "selected" : ""; ?>>Draft</option>
+                                            <option value="publish" <?php echo ($activity->status == "publish") ? "selected" : ""; ?>>Publish</option>
+                                            <option value="pending" <?php echo ($activity->status == "pending") ? "selected" : ""; ?>>Pending</option>
                                         </select>
                                     </label>
                                 </div>
