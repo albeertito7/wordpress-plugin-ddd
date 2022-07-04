@@ -18,6 +18,7 @@ class Product
     var $price;
     var $featured_image;
     var $custom_order;
+    var $observations;
 
     /**
      * Product constructor.
@@ -46,6 +47,7 @@ class Product
         $instance->price = $row->price;
         $instance->featured_image = $row->featured_image;
         $instance->custom_order = $row->custom_order;
+        $instance->observations = $row->observations;
         return $instance;
     }
 
