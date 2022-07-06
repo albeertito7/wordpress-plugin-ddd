@@ -18,8 +18,8 @@ if ( !isset( $package ) ) {
     }
 
     .card-1 {
-        width: 300px;
-        min-height: 300px;
+        width: 600px;
+        height: 200px;
         padding: 20px 15px;
         border: 1px solid black;
         border-radius: 10px;
@@ -58,31 +58,39 @@ if ( !isset( $package ) ) {
     <article class="" data-id-product="<?php echo $package->getId(); ?>" itemtype="http://schema.org/Product">
 
         <!-- Image -->
-        <div class="product-image">
+        <div class="product-image" style="display: inline-block">
+
             <!-- Featured Image -->
             <!-- An image of the item. This can be an URL or a fully described ImageObject -->
             <img src="<?php echo $package->getFeaturedImage(); ?>" alt="<?php echo $package->getName(); ?>" onerror="this.onerror=null;this.style.display='none';" />
+
         </div>
 
-        <!-- Meta data -->
-        <div class="product-meta">
-            <!-- Name -->
-            <!-- The name of the item (Text) -->
-            <h3><?php echo $package->getName(); ?></h3>
+        <div class="meta-wrapper" style="display: inline-block;">
 
-            <!-- Description -->
-            <!-- A description of the item (Text) -->
-            <p><?php echo $package->getShortDescription(); ?></p>
+            <!-- Meta data -->
+            <div class="product-meta">
+                <!-- Name -->
+                <!-- The name of the item (Text) -->
+                <h3><?php echo $package->getName(); ?></h3>
+
+                <!-- Description -->
+                <!-- A description of the item (Text) -->
+                <p><?php echo $package->getShortDescription(); ?></p>
+            </div>
+
+            <!-- Shipping -->
+            <div class="product-submit">
+
+                <!-- Price -->
+                <p><?php echo $package->getPrice(); ?>€</p>
+
+                <!-- Action Button -->
+                <button class="btn-buy-now"><?php _e('BUY NOW') ?></button>
+            </div>
+
         </div>
 
-        <!-- Shipping -->
-        <div class="product-submit">
-            <!-- Price -->
-            <p><?php echo $package->getPrice(); ?>€</p>
-
-            <!-- Action Button -->
-            <button class="btn-buy-now"><?php _e('BUY NOW') ?></button>
-        </div>
     </article>
 
 </div>
