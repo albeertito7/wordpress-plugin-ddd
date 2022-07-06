@@ -45,7 +45,7 @@ const statusEntityTypes = [
                         data: {
                             action: "entities_activities_controller",
                             type: "updateGridActivity",
-                            hotel: kendo.stringify(options.data)
+                            activity: kendo.stringify(options.data)
                         },
                         success: function(result) {
                             options.success(result);
