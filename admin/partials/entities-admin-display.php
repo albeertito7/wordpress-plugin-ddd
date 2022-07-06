@@ -96,7 +96,7 @@ print_r($charset_collate);*/
 
             <div style="">
                 <?php Utils::includeCustom(plugin_dir_path(dirname(__FILE__ ) ) . '/page-templates/partials/entity-card.php' , array(
-                    'p' => $paquets[0]
+                    'p' => "",//$paquets[0]
                 )) ?>
             </div>
         </div>
@@ -135,6 +135,5 @@ print_r($charset_collate);*/
         });
 
     }(jQuery.noConflict()));
-
 
 </script>
