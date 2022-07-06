@@ -184,10 +184,16 @@ class Entities_Admin {
         add_filter( 'theme_page_templates', 'entities_template_as_option', 10, 3 );
         function entities_template_as_option( $page_templates, $theme, $post ) {
 
-            $page_templates['template-landing.php'] = 'Template landing';
+            $custom_templates = array(
+                'template-landing' => 'Template landing',
+                'template-landing-row' => 'Template landing row'
+            );
+
+            foreach ($custom_templates as $key => $template) {
+                $page_templates[$key] = $template;
+            }
 
             return $page_templates;
-
         }
 
         //When our custom template has been chosen then display it for the page
@@ -195,11 +201,16 @@ class Entities_Admin {
         function entities_load_template( $template ) {
 
             global $post;
-            $custom_template_slug   = 'template-landing.php';
-            $page_template_slug     = get_page_template_slug( $post->ID );
+            $page_template_slug = get_page_template_slug( $post->ID );
+            $directory = plugin_dir_path( __FILE__ ) . 'page-templates/';
 
-            if( $page_template_slug == $custom_template_slug ){
-                return plugin_dir_path( __FILE__ ) . 'page-templates/' . $custom_template_slug;
+            switch ($page_template_slug) {
+                case 'template-landing':
+                    return $directory . 'template-landing.php';
+                    break;
+                case 'template-landing-row':
+                    return $directory . 'template-landing-row.php';
+                    break;
             }
 
             return $template;
