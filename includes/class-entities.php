@@ -77,12 +77,8 @@ class Entities {
 		$this->load_dependencies();
 		$this->set_locale();
 
-		if ( !is_admin() ) {
-            $this->define_public_domain();
-        }
-		else {
-            $this->define_admin_domain();
-        }
+		$this->define_public_domain();
+		$this->define_admin_domain();
 	}
 
 	/**
