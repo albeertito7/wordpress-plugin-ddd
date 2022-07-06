@@ -1,17 +1,24 @@
 <?php
 
+use http\Client\Request;
+
 /**
  * Class EntitiesController
  */
 class EntitiesController extends MasterController
 {
-    public function __construct()
+    //private $packageRepository;
+
+    public function __construct(/*PackageRepository $packageRepository*/)
     {
+        //$this->packageRepository = $packageRepository;
+
         add_action('wp_ajax_entities_controller', array($this, 'ajax'));
         add_action('wp_ajax_nopriv_entities_controller', array($this, 'ajax'));
     }
 
-    public function ajax()
+    /** @noinspection PhpSignatureMismatchDuringInheritanceInspection */
+    public function ajax(/*Request $request*/)
     {
         $action = $_POST['type'];
 
