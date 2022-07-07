@@ -119,6 +119,11 @@ class Entities {
         /**
          *
          */
+        $this->load_services();
+
+        /**
+         *
+         */
 		$this->load_controllers();
 
         /**
@@ -170,6 +175,14 @@ class Entities {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Package.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Hotel.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Activity.php';
+    }
+
+    /**
+     *
+     */
+    private function load_services() {
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/MasterRepository.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/PackageRepository.php';
     }
 
     /**

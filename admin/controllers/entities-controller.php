@@ -1,17 +1,15 @@
 <?php
 
-use http\Client\Request;
-
 /**
  * Class EntitiesController
  */
 class EntitiesController extends MasterController
 {
-    //private $packageRepository;
+    private $packageRepository;
 
-    public function __construct(/*PackageRepository $packageRepository*/)
+    public function __construct()
     {
-        //$this->packageRepository = $packageRepository;
+        $this->packageRepository = new PackageRepository();
 
         add_action('wp_ajax_entities_controller', array($this, 'ajax'));
         add_action('wp_ajax_nopriv_entities_controller', array($this, 'ajax'));
@@ -37,7 +35,7 @@ class EntitiesController extends MasterController
                 echo $this->updateGridPackage();
                 break;
             case "deletePackage":
-                $this->deletePackage($_POST['id']);
+                echo $this->deletePackage($_POST['id']);
                 break;
             default:
                 parent::ajax();
@@ -82,52 +80,35 @@ class EntitiesController extends MasterController
      * @param bool $json_encode
      * @return array|false|string
      */
-    public static function getPackages($json_encode=false) {
-        global $wpdb;
-        $members = array();
-        $table_name = $wpdb->prefix . 'entities_packages';
-        $current_blog_id = get_current_blog_id();
+    public function getPackages($json_encode=false) {
 
-        try
-        {
-            $sSQL = "SELECT * FROM $table_name WHERE blog_id=$current_blog_id ORDER BY custom_order ASC";
-            $res = $wpdb->get_results($sSQL);
-
-            foreach($res as $row) {
-                $members[] = Package::withRow($row);
-            }
-        }
-        catch(Exception $ex) {
-
-        }
+        $packages = $this->packageRepository->getPackages();
 
         if($json_encode) {
             header('Content-type: application/json');
-            return json_encode($members);
+            return json_encode($packages);
         }
 
-        return $members;
+        return $packages;
     }
 
     /**
      * @param $id
+     * @return bool
      */
-    public static function deletePackage($id) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_packages';
-        $current_blog_id = get_current_blog_id();
+    public function deletePackage($id) {
 
-        try
-        {
-            //$sSQL = "DELETE FROM $table_name WHERE blog_id=$current_blog_id AND id=$id";
-            $wpdb->delete($table_name, array(
-                'id' => $id,
-                'blog_id' => $current_blog_id
-            ));
-        }
-        catch(Exception $ex) {
+        $response = array(
+            'success' => false
+        );
 
+        $result = $this->packageRepository->deletePackage($id);
+        if ( $result ) {
+            $response['success'] = true;
         }
+
+        header('Content-type: application/json');
+        return json_encode($response);
     }
 
     /**
