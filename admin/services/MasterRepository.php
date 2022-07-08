@@ -8,14 +8,22 @@
  */
 class MasterRepository {
 
+    // config properties
     protected $db_user;
     protected $db_password;
     protected $db_name;
     protected $db_host;
 
+    // database instance connection
     protected $db;
+
+    // multisite management
     protected $current_blog_id;
 
+    /**
+     * MasterRepository constructor.
+     * @throws Exception
+     */
     public function __construct()
     {
         global $wpdb;
@@ -31,7 +39,7 @@ class MasterRepository {
 
         if ( !isset( $wpdb ) ) {
 
-            if ( defined( ABSPATH ) && define( WPINC ) && defined( WP_CONTENT_DIR )) {
+            if ( defined( ABSPATH ) && define( WPINC ) && defined( WP_CONTENT_DIR ) ) {
 
                 require_once ABSPATH . WPINC . '/wp-db.php';
                 if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {

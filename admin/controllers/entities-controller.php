@@ -114,8 +114,23 @@ class EntitiesController extends MasterController
     /**
      * @return false|string
      */
-    public static function createPackage() {
-        global $wpdb;
+    public function createPackage() {
+
+        // create Package or data array
+        $data = array(
+            'status' => $_POST['status'],
+            'name' => $_POST['name'],
+            'short_description' => $_POST['short_description'],
+            'description' => $_POST['description'],
+            'featured_image' => $_POST['featured_image'],
+            'observations' => $_POST['observations'],
+            'custom_order' => $_POST['custom_order'],
+            'price' => $_POST['price']
+        );
+
+        $result = $this->packageRepository->createPackage($data);
+
+        /*global $wpdb;
         $table_name = $wpdb->prefix . 'entities_packages';
         $current_blog_id = get_current_blog_id();
         $result = array('success'=> false );
@@ -138,7 +153,7 @@ class EntitiesController extends MasterController
         }
         catch (Exception $ex) {
 
-        }
+        }*/
 
         header('Content-type: application/json');
         return json_encode($result);
@@ -149,7 +164,9 @@ class EntitiesController extends MasterController
      * @return false|string
      */
     public static function updatePackage($id) {
+
         global $wpdb;
+
         $table_name = $wpdb->prefix . 'entities_packages';
         $current_blog_id = get_current_blog_id();
         $result = array('success'=> false );
@@ -183,7 +200,9 @@ class EntitiesController extends MasterController
      * @return false|string
      */
     public static function updateGridPackage() {
+
         global $wpdb;
+
         $table_name = $wpdb->prefix . 'entities_packages';
         $current_blog_id = get_current_blog_id();
         $package = json_decode(stripslashes($_POST['package']));

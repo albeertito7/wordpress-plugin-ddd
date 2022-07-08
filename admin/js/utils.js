@@ -125,7 +125,7 @@ const utils = (function (_deps) {
 
     function initRemoveImages(modeInsercio) {
         if(modeInsercio === "linkImage") {
-            $('.remove_imagen_destacada').click(function( event ){
+            $('.remove_imagen_destacada').click(function( event ) {
                 event.preventDefault();
                 $('#travelImage').val(0);
                 $('#travelImage').trigger("change");

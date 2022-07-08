@@ -3,7 +3,7 @@
 /**
  * Class Package
  */
-class Package extends Product
+class Package extends Product implements JsonSerializable
 {
     /**
      * Package constructor.
@@ -23,4 +23,11 @@ class Package extends Product
         return $instance;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return (object) get_object_vars($this);
+    }
 }

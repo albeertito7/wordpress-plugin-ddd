@@ -216,6 +216,7 @@ const statusEntityTypes = [
                                 $.post({
                                     url: my_vars.ajaxurl,
                                     type: "post",
+                                    dataType: "json",
                                     data: {
                                         action: "entities_controller",
                                         type: "deletePackage",
