@@ -2,6 +2,9 @@
 
 /**
  * Class Product
+ *
+ * Don't echo or die in classes, as it takes options away from the calling classes
+ * (they can't change the output, they can't recover from errors, etc).
  */
 class Product
 {
@@ -49,6 +52,22 @@ class Product
         $instance->custom_order = $row->custom_order;
         $instance->observations = $row->observations;
         return $instance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getObservations()
+    {
+        return $this->observations;
+    }
+
+    /**
+     * @param mixed $observations
+     */
+    public function setObservations($observations)
+    {
+        $this->observations = $observations;
     }
 
     /**

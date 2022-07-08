@@ -181,6 +181,7 @@ class Entities {
      *
      */
     private function load_services() {
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/ProductDaoInterface.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/MasterRepository.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/PackageRepository.php';
     }

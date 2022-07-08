@@ -1,7 +1,12 @@
 <?php
 
+//require_once plugin_dir_path( dirname( __FILE__ ) ) . '../admin/class/Package.php';
+
 /**
  * Class PackageRepository
+ *
+ * As much as is logical and efficient, a given DAO should limit its interaction
+ * to the table or tables with which it is primarily concerned.
  */
 class PackageRepository extends MasterRepository {
 
@@ -15,14 +20,12 @@ class PackageRepository extends MasterRepository {
     }
 
     /**
-     * @param $data
+     * @param $package
      * @return bool|false|string
+     *
+     * insert db
      */
-    public function createPackage($data) {
-
-        /**
-         * receive the data? or receive an object (Package)?
-         */
+    public function createPackage($package) {
 
         // data: status, name, short_description, description, featured_image, observations, custom_order, price
         $result = array('success' => false );
@@ -33,14 +36,14 @@ class PackageRepository extends MasterRepository {
 
             $result_db = $this->db->insert($this->table_name, array(
                 'blog_id' => $this->current_blog_id,
-                'status' => $_POST['status'],
-                'name' => $_POST['name'],
-                'short_description' => $_POST['short_description'],
-                'description' => $_POST['description'],
-                'featured_image' => $_POST['featured_image'],
-                'observations' => $_POST['observations'],
-                'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price']
+                'status' => $package->getStatus(),
+                'name' => $package->getName(),
+                'short_description' => $package->getShortDescription(),
+                'description' => $package->getDescription(),
+                'featured_image' => $package->getFeaturedImage(),
+                'observations' => $package->getObservations(),
+                'custom_order' => $package->getOrder(),
+                'price' => $package->getPrice()
             ));
 
             $result['success'] = true;
@@ -49,9 +52,7 @@ class PackageRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean
-
-        return json_encode($result);
+        return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean or object created
     }
 
     // read
@@ -69,7 +70,7 @@ class PackageRepository extends MasterRepository {
             }
         }
         catch(Exception $ex) {
-
+            throw new Exception( '' );
         }
 
         // return array of objects
@@ -91,10 +92,29 @@ class PackageRepository extends MasterRepository {
             ));
         }
         catch(Exception $ex) {
-
+            throw new Exception( '' );
         }
 
         return is_int($result) && $result > 0 ? true : false;
     }
 
+    public function create($package)
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function read($id)
+    {
+        // TODO: Implement read() method.
+    }
+
+    public function update($package)
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete($id)
+    {
+        // TODO: Implement delete() method.
+    }
 }

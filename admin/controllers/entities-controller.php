@@ -117,7 +117,7 @@ class EntitiesController extends MasterController
     public function createPackage() {
 
         // create Package or data array
-        $data = array(
+        /*$data = array(
             'status' => $_POST['status'],
             'name' => $_POST['name'],
             'short_description' => $_POST['short_description'],
@@ -126,9 +126,21 @@ class EntitiesController extends MasterController
             'observations' => $_POST['observations'],
             'custom_order' => $_POST['custom_order'],
             'price' => $_POST['price']
-        );
+        );*/
 
-        $result = $this->packageRepository->createPackage($data);
+        // creation package object
+        $package = new Package();
+        $package->setStatus($_POST['status']);
+        $package->setName($_POST['name']);
+        $package->setShortDescription($_POST['short_description']);
+        $package->setDescription($_POST['description']);
+        $package->setFeaturedImage($_POST['featured_image']);
+        $package->setObservations($_POST['observations']);
+        $package->setOrder($_POST['custom_order']);
+        $package->setPrice($_POST['price']);
+
+
+        $result = $this->packageRepository->createPackage($package);
 
         /*global $wpdb;
         $table_name = $wpdb->prefix . 'entities_packages';

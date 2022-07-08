@@ -6,7 +6,7 @@
  * Data access object mode
  * Separating the database access layer as a public access interface is a common design pattern
  */
-class MasterRepository {
+abstract class MasterRepository implements ProductDao {
 
     // config properties
     protected $db_user;
@@ -56,4 +56,23 @@ class MasterRepository {
         $this->db = $wpdb;
     }
 
+    /*public function create($product)
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function read($id)
+    {
+        // TODO: Implement read() method.
+    }
+
+    public function update($product)
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete($id)
+    {
+        // TODO: Implement delete() method.
+    }*/
 }

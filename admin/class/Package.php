@@ -8,7 +8,7 @@ class Package extends Product implements JsonSerializable
     /**
      * Package constructor.
      */
-    private function __construct($object)
+    public function __construct()
     {
         // pass
     }
@@ -31,5 +31,4 @@ class Package extends Product implements JsonSerializable
         return (object) get_object_vars($this);
     }
 
-    // pull request
 }
