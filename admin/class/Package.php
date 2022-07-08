@@ -30,4 +30,6 @@ class Package extends Product implements JsonSerializable
     {
         return (object) get_object_vars($this);
     }
+
+    // test pull request
 }
