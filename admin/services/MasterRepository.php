@@ -19,12 +19,13 @@ abstract class MasterRepository implements ProductRepository {
 
     // multisite management
     protected $current_blog_id;
+    protected $table_name;
 
     /**
      * MasterRepository constructor.
      * @throws Exception
      */
-    public function __construct()
+    protected function __construct()
     {
         global $wpdb;
 
@@ -54,5 +55,31 @@ abstract class MasterRepository implements ProductRepository {
         }
 
         $this->db = $wpdb;
+    }
+
+    /**
+     * @return int
+     */
+    public function size() {
+
+        $result_db = 0;
+
+        try {
+            $sSQL = "SELECT COUNT(*) FROM $this->table_name WHERE blog_id=$this->current_blog_id";
+            $result_db = $this->db->get_var($sSQL);
+        }
+        catch(Exception $ex) {
+
+        }
+
+        return is_int($result_db) && $result_db >= 0 ? $result_db : 0;
+
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty() {
+        return $this->size() == 0 ? true : false;
     }
 }

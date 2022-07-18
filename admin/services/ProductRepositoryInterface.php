@@ -12,7 +12,10 @@ interface ProductRepository {
     public function remove($product);
     public function update($product);
 
-    public function findById($id);
     public function findAll();
+    public function findById($id);
+
+    public function size();
+    public function isEmpty();
 
 }

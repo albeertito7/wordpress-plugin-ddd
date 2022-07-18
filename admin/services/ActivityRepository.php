@@ -10,11 +10,10 @@
  *
  * SQL backed repository, not in memory.
  */
-class PackageRepository extends MasterRepository {
+class ActivityRepository extends MasterRepository {
 
     // singleton
     private $instance;
-
 
     /**
      * PackageRepository constructor.
@@ -26,12 +25,12 @@ class PackageRepository extends MasterRepository {
         } catch (Exception $e) {
         }
 
-        $this->table_name= $this->db->prefix . 'entities_packages';
+        $this->table_name= $this->db->prefix . 'entities_activities';
     }
 
     /**
-     * @return PackageRepository
-     * Singleton pattern for the Package repository.
+     * @return ActivityRepository
+     * Singleton pattern for the Activity repository.
      */
     public static function getInstance() {
 
@@ -48,10 +47,10 @@ class PackageRepository extends MasterRepository {
     }*/
 
     /**
-     * @param $package
+     * @param $activity
      * @return bool
      */
-    public function add($package) {
+    public function add($activity) {
 
         $result_db = false;
 
@@ -59,14 +58,14 @@ class PackageRepository extends MasterRepository {
 
             $result_db = $this->db->insert($this->table_name, array(
                 'blog_id' => $this->current_blog_id,
-                'status' => $package->getStatus(),
-                'name' => $package->getName(),
-                'short_description' => $package->getShortDescription(),
-                'description' => $package->getDescription(),
-                'featured_image' => $package->getFeaturedImage(),
-                'observations' => $package->getObservations(),
-                'custom_order' => $package->getOrder(),
-                'price' => $package->getPrice()
+                'status' => $activity->getStatus(),
+                'name' => $activity->getName(),
+                'short_description' => $activity->getShortDescription(),
+                'description' => $activity->getDescription(),
+                'featured_image' => $activity->getFeaturedImage(),
+                'observations' => $activity->getObservations(),
+                'custom_order' => $activity->getOrder(),
+                'price' => $activity->getPrice()
             ));
         }
         catch (Exception $ex) {
@@ -77,16 +76,17 @@ class PackageRepository extends MasterRepository {
     }
 
     /**
-     * @param $package
+     * @param $activity
      * @return bool
      */
-    public function remove($package) {
+    public function remove($activity) {
+
         $result_db = false;
 
         try
         {
             $result_db = $this->db->delete($this->table_name, array(
-                'id' => $package->getId(),
+                'id' => $activity->getId(),
                 'blog_id' => $this->current_blog_id
             ));
         }
@@ -98,10 +98,10 @@ class PackageRepository extends MasterRepository {
     }
 
     /**
-     * @param $package
+     * @param $activity
      * @return bool
      */
-    public function update($package) {
+    public function update($activity) {
 
         // data: status, name, short_description, description, featured_image, observations, custom_order, price
         $result_db = false;
@@ -111,17 +111,17 @@ class PackageRepository extends MasterRepository {
             $result_db = $this->db->update($this->table_name,
                 array(
                     //'author_id' => $package->getAuthorId(),
-                    'status' => $package->getStatus(),
-                    'name' => $package->getName(),
-                    'short_description' => $package->getShortDescription(),
-                    'description' => $package->getDescription(),
-                    'price' => $package->getPrice(),
-                    'featured_image' => $package->getFeaturedImage(),
-                    'custom_order' => $package->getCustomOrder(),
-                    'observations' => $package->getObservations()
+                    'status' => $activity->getStatus(),
+                    'name' => $activity->getName(),
+                    'short_description' => $activity->getShortDescription(),
+                    'description' => $activity->getDescription(),
+                    'price' => $activity->getPrice(),
+                    'featured_image' => $activity->getFeaturedImage(),
+                    'custom_order' => $activity->getCustomOrder(),
+                    'observations' => $activity->getObservations()
                 ),
                 array(
-                    'id' => $package->getId(),
+                    'id' => $activity->getId(),
                     'blog_id' => $this->current_blog_id
                 ));
         }
@@ -135,11 +135,10 @@ class PackageRepository extends MasterRepository {
 
     /**
      * @return array
-     * @throws Exception
      */
     public function findAll() {
 
-        $packages = array();
+        $activities = array();
 
         try
         {
@@ -147,23 +146,23 @@ class PackageRepository extends MasterRepository {
             $result = $this->db->get_results($sSQL);
 
             foreach($result as $row) {
-                $packages[] = Package::withRow($row);
+                $activities[] = Activity::withRow($row);
             }
         }
         catch(Exception $ex) {
 
         }
 
-        return $packages;
+        return $activities;
     }
 
     /**
      * @param $id
-     * @return Package|null
+     * @return Activity|null
      */
     public function findById($id) {
 
-        $package = null;
+        $activity = null;
 
         try
         {
@@ -171,13 +170,13 @@ class PackageRepository extends MasterRepository {
             $result_db = $this->db->get_results($sSQL); // output: (array|object|null)
 
             if ($result_db && is_array($result_db) && count($result_db) == 1) {
-                $package = Package::withRow($result_db[0]);
+                $activity = Activity::withRow($result_db[0]);
             }
         }
         catch(Exception $ex) {
             //throw new OutOfBoundsException(sprintf('Package with id: %d, does not exist', $id->toInt()), 0, $ex);
         }
 
-        return $package;
+        return $activity;
     }
 }
