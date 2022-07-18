@@ -7,11 +7,17 @@
  *
  * As much as is logical and efficient, a given DAO should limit its interaction
  * to the table or tables with which it is primarily concerned.
+ *
+ * SQL backed repository, not in memory.
  */
 class PackageRepository extends MasterRepository {
 
+    /** @var string */
     private $table_name;
 
+    /**
+     * PackageRepository constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -19,16 +25,16 @@ class PackageRepository extends MasterRepository {
         $this->table_name= $this->db->prefix . 'entities_packages';
     }
 
+    /*
+    public function generateId(): ProductId {
+
+    }*/
+
     /**
      * @param $package
-     * @return bool|false|string
-     *
-     * insert db
+     * @return bool
      */
-    public function createPackage($package) {
-
-        // data: status, name, short_description, description, featured_image, observations, custom_order, price
-        $result = array('success' => false );
+    public function add($package) {
 
         $result_db = false;
 
@@ -45,8 +51,6 @@ class PackageRepository extends MasterRepository {
                 'custom_order' => $package->getOrder(),
                 'price' => $package->getPrice()
             ));
-
-            $result['success'] = true;
         }
         catch (Exception $ex) {
 
@@ -55,9 +59,93 @@ class PackageRepository extends MasterRepository {
         return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean or object created
     }
 
-    // read
-    //public function readPackages() {}
-    public function getPackages() {
+    /**
+     * @param $package
+     * @return bool
+     */
+    public function remove($package) {
+        $result_db = false;
+
+        try
+        {
+            $result_db = $this->db->delete($this->table_name, array(
+                'id' => $package->getId(),
+                'blog_id' => $this->current_blog_id
+            ));
+        }
+        catch(Exception $ex) {
+
+        }
+
+        return is_int($result_db) && $result_db > 0 ? true : false;
+    }
+
+    /**
+     * @param $package
+     * @return bool
+     */
+    public function update($package) {
+
+        // data: status, name, short_description, description, featured_image, observations, custom_order, price
+        $result_db = false;
+
+        try {
+
+            $result_db = $this->db->update($this->table_name,
+                array(
+                    //'author_id' => $package->getAuthorId(),
+                    'status' => $package->getStatus(),
+                    'name' => $package->getName(),
+                    'short_description' => $package->getShortDescription(),
+                    'description' => $package->getDescription(),
+                    'price' => $package->getPrice(),
+                    'featured_image' => $package->getFeaturedImage(),
+                    'custom_order' => $package->getCustomOrder(),
+                    'observations' => $package->getObservations()
+                ),
+                array(
+                    'id' => $package->getId(),
+                    'blog_id' => $this->current_blog_id
+                ));
+        }
+        catch (Exception $ex) {
+
+        }
+
+        return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean or object created
+
+    }
+
+    /**
+     * @param $id
+     * @return Package|null
+     */
+    public function findById($id) {
+
+        $package = null;
+
+        try
+        {
+            $sSQL = "SELECT * FROM $this->table_name WHERE blog_id=$this->current_blog_id AND id=$id";
+            $result = $this->db->get_results($sSQL);
+
+            if ($result instanceof Object && $result != null) {
+                $package = Package::withRow($result);
+            }
+        }
+        catch(Exception $ex) {
+            //throw new OutOfBoundsException(sprintf('Package with id: %d, does not exist', $id->toInt()), 0, $ex);
+        }
+
+        return $package;
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function findAll() {
+
         $packages = array();
 
         try
@@ -70,51 +158,36 @@ class PackageRepository extends MasterRepository {
             }
         }
         catch(Exception $ex) {
-            throw new Exception( '' );
+
         }
 
-        // return array of objects
         return $packages;
     }
 
-    // update
+    /**
+     * @return int
+     */
+    public function size() {
 
-    public function deletePackage($id) {
+        $result_db = 0;
 
-        $result = false;
-
-        try
-        {
-            //$sSQL = "DELETE FROM $table_name WHERE blog_id=$current_blog_id AND id=$id";
-            $result = $this->db->delete($this->table_name, array(
-                'id' => $id,
-                'blog_id' => $this->current_blog_id
-            ));
+        try {
+            $sSQL = "SELECT COUNT(*) FROM $this->table_name WHERE blog_id=$this->current_blog_id";
+            $result_db = $this->db->get_var($sSQL);
         }
         catch(Exception $ex) {
-            throw new Exception( '' );
+
         }
 
-        return is_int($result) && $result > 0 ? true : false;
+        return is_int($result_db) && $result_db >= 0 ? $result_db : 0;
+
     }
 
-    public function create($package)
-    {
-        // TODO: Implement create() method.
+    /**
+     * @return bool
+     */
+    public function isEmpty() {
+        return $this->size() == 0 ? true : false;
     }
 
-    public function read($id)
-    {
-        // TODO: Implement read() method.
-    }
-
-    public function update($package)
-    {
-        // TODO: Implement update() method.
-    }
-
-    public function delete($id)
-    {
-        // TODO: Implement delete() method.
-    }
 }

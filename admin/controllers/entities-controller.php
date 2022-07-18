@@ -48,41 +48,35 @@ class EntitiesController extends MasterController
     /**
      * @param $id
      * @param bool $json_encode
-     * @return false|mixed|string
+     * @return false|Package|string|null
      */
-    public static function getPackageById($id, $json_encode=false) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_packages';
-        $current_blog_id = get_current_blog_id();
-        $members = array();
+    public function getPackageById($id, $json_encode=false) {
 
-        try {
-            $sSQL = "SELECT * FROM $table_name WHERE blog_id=$current_blog_id AND id=$id";
-            $res = $wpdb->get_results($sSQL);
-
-            foreach($res as $row) {
-                $members[] = Package::withRow($row);
-            }
-        }
-        catch (Exception $ex) {
-
-        }
+        $package = $this->packageRepository->findById($id);
 
         if($json_encode) {
             header('Content-type: application/json');
-            return json_encode($members[0]);
+            return json_encode($package);
         }
 
-        return $members[0];
+        return $package;
     }
 
     /**
      * @param bool $json_encode
      * @return array|false|string
+     * @throws Exception
      */
     public function getPackages($json_encode=false) {
 
-        $packages = $this->packageRepository->getPackages();
+        $packages = array();
+
+        try {
+            $packages = $this->packageRepository->findAll();
+        }
+        catch (Exception $e) {
+
+        }
 
         if($json_encode) {
             header('Content-type: application/json');
@@ -102,7 +96,10 @@ class EntitiesController extends MasterController
             'success' => false
         );
 
-        $result = $this->packageRepository->deletePackage($id);
+        $package = new Package();
+        $package->setId($id);
+
+        $result = $this->packageRepository->remove($package);
         if ( $result ) {
             $response['success'] = true;
         }
@@ -116,17 +113,7 @@ class EntitiesController extends MasterController
      */
     public function createPackage() {
 
-        // create Package or data array
-        /*$data = array(
-            'status' => $_POST['status'],
-            'name' => $_POST['name'],
-            'short_description' => $_POST['short_description'],
-            'description' => $_POST['description'],
-            'featured_image' => $_POST['featured_image'],
-            'observations' => $_POST['observations'],
-            'custom_order' => $_POST['custom_order'],
-            'price' => $_POST['price']
-        );*/
+        $result = array('success'=> false );
 
         // creation package object
         $package = new Package();
@@ -139,33 +126,7 @@ class EntitiesController extends MasterController
         $package->setOrder($_POST['custom_order']);
         $package->setPrice($_POST['price']);
 
-
-        $result = $this->packageRepository->createPackage($package);
-
-        /*global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_packages';
-        $current_blog_id = get_current_blog_id();
-        $result = array('success'=> false );
-
-        try {
-
-            $wpdb->insert($table_name, array(
-                'blog_id' => $current_blog_id,
-                'status' => $_POST['status'],
-                'name' => $_POST['name'],
-                'short_description' => $_POST['short_description'],
-                'description' => $_POST['description'],
-                'featured_image' => $_POST['featured_image'],
-                'observations' => $_POST['observations'],
-                'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price']
-            ));
-
-            $result['success'] = true;
-        }
-        catch (Exception $ex) {
-
-        }*/
+        $result = $this->packageRepository->add($package);
 
         header('Content-type: application/json');
         return json_encode($result);
@@ -175,34 +136,22 @@ class EntitiesController extends MasterController
      * @param $id
      * @return false|string
      */
-    public static function updatePackage($id) {
+    public function updatePackage($id) {
 
-        global $wpdb;
-
-        $table_name = $wpdb->prefix . 'entities_packages';
-        $current_blog_id = get_current_blog_id();
         $result = array('success'=> false );
 
-        try {
-            $wpdb->update($table_name, array(
-                'status' => $_POST['status'],
-                'name' => $_POST['name'],
-                'short_description' => $_POST['short_description'],
-                'description' => $_POST['description'],
-                'featured_image' => $_POST['featured_image'],
-                'observations' => $_POST['observations'],
-                'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price']
-            ), array(
-                'id' => $id,
-                'blog_id' => $current_blog_id
-            ));
+        // creation package object
+        $package = new Package();
+        $package->setStatus($_POST['status']);
+        $package->setName($_POST['name']);
+        $package->setShortDescription($_POST['short_description']);
+        $package->setDescription($_POST['description']);
+        $package->setFeaturedImage($_POST['featured_image']);
+        $package->setObservations($_POST['observations']);
+        $package->setOrder($_POST['custom_order']);
+        $package->setPrice($_POST['price']);
 
-            $result['success'] = true;
-        }
-        catch (Exception $ex) {
-
-        }
+        $result = $this->packageRepository->update($package);
 
         header('Content-type: application/json');
         return json_encode($result);
