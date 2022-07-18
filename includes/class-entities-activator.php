@@ -37,6 +37,7 @@ class Entities_Activator {
 
         $charset_collate = $wpdb->get_charset_collate();
 
+        // upgrade contains the dbDelta function which review if a table name already exists
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
         /*$table_name = $wpdb->prefix . 'entities_config';
