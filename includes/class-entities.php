@@ -112,28 +112,28 @@ class Entities {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-entities-i18n.php';
 
         /**
-         *
+         * Domain models
          */
         $this->load_models();
 
         /**
-         *
+         * Access model objects and business logic services
          */
         $this->load_services();
 
         /**
-         *
+         * Request handlers
          */
 		$this->load_controllers();
 
         /**
-         *
+         * Hook custom loader
          */
 		$this->loader = new Entities_Loader();
 	}
 
     /**
-     *
+     * Public domain
      */
     private function define_public_domain() {
 
@@ -148,7 +148,7 @@ class Entities {
     }
 
     /**
-     *
+     * Admin domain
      */
     private function define_admin_domain() {
 
@@ -175,13 +175,22 @@ class Entities {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Package.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Hotel.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Activity.php';
+
+        // Value Objects
+        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/ProductId.php';
+        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/ProductStatus.php';
     }
 
     /**
-     *
+     * Based on the Repository pattern, and
+     * the DAO (Data Access Object) pattern
      */
     private function load_services() {
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/ProductDaoInterface.php';
+
+        // load typos interface Repositories and DAOs
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/ProductRepositoryInterface.php';
+
+        // load Repositories and DAOs
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/MasterRepository.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/PackageRepository.php';
     }
