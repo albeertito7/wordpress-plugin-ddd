@@ -15,7 +15,8 @@
  */
 class MasterController {
 
-    public function ajax()
+    /** @noinspection PhpSignatureMismatchDuringInheritanceInspection */
+    public function ajax(/*Request request*/)
     {
         echo "Silence is golden";
         exit;

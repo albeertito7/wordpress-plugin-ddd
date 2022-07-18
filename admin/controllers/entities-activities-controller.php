@@ -5,28 +5,14 @@
  */
 class EntitiesActivitiesController extends MasterController
 {
-    /**
-     * @var
-     */
-    private $current_blog_id;
-
-    /**
-     * @var
-     */
-    private $table_name;
+    private $activityRepository;
 
     public function __construct()
     {
-        if( isset( $GLOBALS['wpdb'] ) )
-        {
-            global $wpdb;
+        $this->activityRepository = ActivityRepository::getInstance();
 
-            $this->table_name = $wpdb->prefix . 'entities_activities';
-            $this->current_blog_id = get_current_blog_id();
-
-            add_action('wp_ajax_entities_activities_controller', array($this, 'ajax'));
-            add_action('wp_ajax_nopriv_entities_activities_controller', array($this, 'ajax'));
-        }
+        add_action('wp_ajax_entities_activities_controller', array($this, 'ajax'));
+        add_action('wp_ajax_nopriv_entities_activities_controller', array($this, 'ajax'));
     }
 
     public function ajax()
@@ -34,6 +20,7 @@ class EntitiesActivitiesController extends MasterController
         if ( isset( $_POST['type'] ) ) {
 
             $action = $_POST['type'];
+
             switch ($action) {
                 case "createActivity":
                     echo $this->createActivity();
@@ -63,143 +50,111 @@ class EntitiesActivitiesController extends MasterController
         exit;
     }
 
-    public static function getActivityById($id, $json_encode=false) {
-        global $wpdb;
+    /**
+     * @param $id
+     * @param bool $json_encode
+     * @return Activity|false|string|null
+     */
+    public function getActivityById($id, $json_encode=false) {
 
-        $table_name = $wpdb->prefix . 'entities_activities';
-        $current_blog_id = get_current_blog_id();
-        $members = array();
-
-        try {
-            $sSQL = "SELECT * FROM $table_name WHERE blog_id=$current_blog_id AND id=$id";
-            $res = $wpdb->get_results($sSQL);
-
-            foreach($res as $row) {
-                $members[] = Activity::withRow($row);
-            }
-        }
-        catch (Exception $ex) {
-
-        }
+        $activity = $this->activityRepository->findById($id);
 
         if($json_encode) {
             header('Content-type: application/json');
-            return json_encode($members[0]);
+            return json_encode($activity);
         }
 
-        return $members[0];
+        return $activity;
     }
 
-    public static function getActivities($json_encode=false) {
-        global $wpdb;
+    /**
+     * @param bool $json_encode
+     * @return array|false|string
+     */
+    public function getActivities($json_encode=false) {
 
-        $members = array();
-        $table_name = $wpdb->prefix . 'entities_activities';
-        $current_blog_id = get_current_blog_id();
+        $activities = array();
+        $activities = $this->activityRepository->findAll();
 
-        try
-        {
-            $sSQL = "SELECT * FROM $table_name WHERE blog_id=$current_blog_id ORDER BY id ASC";
-            $res = $wpdb->get_results($sSQL);
-
-            foreach($res as $row) {
-                $members[] = Activity::withRow($row);
-            }
-        }
-        catch(Exception $ex) {
-
-        }
-
-        if($json_encode) {
+        if ( $json_encode ) {
             header('Content-type: application/json');
-            return json_encode($members);
+            return json_encode($activities);
         }
 
-        return $members;
+        return $activities;
+
     }
 
-    public static function deleteActivity($id) {
-        global $wpdb;
+    public function deleteActivity($id) {
 
-        $table_name = $wpdb->prefix . 'entities_activities';
-        $current_blog_id = get_current_blog_id();
+        $response = array(
+            'success' => false
+        );
 
-        try
-        {
-            //$sSQL = "DELETE FROM $table_name WHERE blog_id=$current_blog_id AND id=$id";
-            $wpdb->delete($table_name, array(
-                'id' => $id,
-                'blog_id' => $current_blog_id
-            ));
+        $activity = new Activity();
+        $activity->setId($id);
+
+        $result = $this->activityRepository->remove($activity);
+        if ( $result ) {
+            $response['success'] = true;
         }
-        catch(Exception $ex) {
 
-        }
+        header('Content-type: application/json');
+        return json_encode($response);
     }
 
-    public static function createActivity() {
-        global $wpdb;
+    /**
+     * @return false|string
+     */
+    public function createActivity() {
 
-        $table_name = $wpdb->prefix . 'entities_activities';
-        $current_blog_id = get_current_blog_id();
-        $result = array('success'=> false );
+        $activity = new Activity();
+        $activity->setStatus($_POST['status']);
+        $activity->setName($_POST['name']);
+        $activity->setShortDescription($_POST['short_description']);
+        $activity->setDescription($_POST['description']);
+        $activity->setFeaturedImage($_POST['featured_image']);
+        $activity->setObservations($_POST['observations']);
+        $activity->setOrder($_POST['custom_order']);
+        $activity->setPrice($_POST['price']);
 
-        try {
-
-            $wpdb->insert($table_name, array(
-                'blog_id' => $current_blog_id,
-                'status' => $_POST['status'],
-                'name' => $_POST['name'],
-                'short_description' => $_POST['short_description'],
-                'description' => $_POST['description'],
-                'featured_image' => $_POST['featured_image'],
-                'observations' => $_POST['observations'],
-                'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price']
-            ));
-
-            $result['success'] = true;
-        }
-        catch (Exception $ex) {
-
-        }
+        $result = $this->activityRepository->add($activity);
 
         header('Content-type: application/json');
         return json_encode($result);
     }
 
-    public static function updateActivity($id) {
-        global $wpdb;
+    /**
+     * @param $id
+     * @return false|string
+     */
+    public function updateActivity($id) {
 
-        $table_name = $wpdb->prefix . 'entities_activities';
-        $current_blog_id = get_current_blog_id();
-        $result = array('success'=> false );
+        $activity = new Activity();
+        $activity->setId($id);
+        $activity->setStatus($_POST['status']);
+        $activity->setName($_POST['name']);
+        $activity->setShortDescription($_POST['short_description']);
+        $activity->setDescription($_POST['description']);
+        $activity->setFeaturedImage($_POST['featured_image']);
+        $activity->setObservations($_POST['observations']);
+        $activity->setOrder($_POST['custom_order']);
+        $activity->setPrice($_POST['price']);
 
-        try {
-            $wpdb->update($table_name, array(
-                'status' => $_POST['status'],
-                'name' => $_POST['name'],
-                'short_description' => $_POST['short_description'],
-                'description' => $_POST['description'],
-                'featured_image' => $_POST['featured_image'],
-                'observations' => $_POST['observations'],
-                'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price']
-            ), array(
-                'id' => $id,
-                'blog_id' => $current_blog_id
-            ));
-
-            $result['success'] = true;
-        }
-        catch (Exception $ex) {
-
-        }
+        $result = $this->activityRepository->update($activity);
 
         header('Content-type: application/json');
         return json_encode($result);
     }
 
+
+    /*public function updateGridActivity() {
+
+    }*/
+
+    /**
+     * @return false|string
+     */
     public static function updateGridActivity() {
         global $wpdb;
 

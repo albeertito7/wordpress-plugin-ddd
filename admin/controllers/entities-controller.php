@@ -9,37 +9,38 @@ class EntitiesController extends MasterController
 
     public function __construct()
     {
-        $this->packageRepository = new PackageRepository();
+        $this->packageRepository = PackageRepository::getInstance();
 
         add_action('wp_ajax_entities_controller', array($this, 'ajax'));
         add_action('wp_ajax_nopriv_entities_controller', array($this, 'ajax'));
     }
 
-    /** @noinspection PhpSignatureMismatchDuringInheritanceInspection */
-    public function ajax(/*Request $request*/)
+    public function ajax()
     {
-        $action = $_POST['type'];
+        if ( isset( $_POST['type'] ) ) {
 
-        switch ($action)
-        {
-            case "createPackage":
-                echo $this->createPackage();
-                break;
-            case "getPackages":
-                echo $this->getPackages(true);
-                break;
-            case "updatePackage":
-                echo $this->updatePackage($_POST['id']);
-                break;
-            case "updateGridPackage":
-                echo $this->updateGridPackage();
-                break;
-            case "deletePackage":
-                echo $this->deletePackage($_POST['id']);
-                break;
-            default:
-                parent::ajax();
-                break;
+            $action = $_POST['type'];
+
+            switch ($action) {
+                case "createPackage":
+                    echo $this->createPackage();
+                    break;
+                case "getPackages":
+                    echo $this->getPackages(true);
+                    break;
+                case "updatePackage":
+                    echo $this->updatePackage($_POST['id']);
+                    break;
+                case "updateGridPackage":
+                    echo $this->updateGridPackage();
+                    break;
+                case "deletePackage":
+                    echo $this->deletePackage($_POST['id']);
+                    break;
+                default:
+                    parent::ajax();
+                    break;
+            }
         }
 
         exit;
