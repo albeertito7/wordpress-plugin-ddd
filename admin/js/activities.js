@@ -28,7 +28,7 @@ const statusEntityTypes = [
                         .done(function (response) {
                             options.success(response);
                         })
-                        .fail(function (jqXHR, textStatus, errorThrown) {
+                        .error(function (jqXHR, textStatus, errorThrown) {
                             options.error(jqXHR);
                         })
                         .always(function () {

@@ -1,56 +1,23 @@
 <?php
+// control vars
 $type = "create";
 $id = "";
-$copyid="";
-$url = "";
-$date_created = "";
-$status = "";
-$name = "";
-$short_description = "";
-$description = "";
-$featured_image = "";
-//$gallery_images = "";
-$observations="";
-$price = "";
-$order = "";
+$copyid = "";
 
-if(isset($_GET["id"]))
+$hotel = new Hotel();
+$hotelRepository = HotelRepository::getInstance();
+
+if( isset( $_GET["id"] ) )
 {
-    // Update/Edit package if 'id' exists
     $id = $_GET["id"];
-    $hotel = EntitiesHotelsController::getHotelById($id);
-
     $type = "update";
-
-    $name = $hotel->getName();
-    $date_created = $hotel->getDateCreated();
-    $date_modified = $hotel->getDateModified();
-    $status = $hotel->getStatus();
-    $short_description = $hotel->getShortDescription();
-    $description = $hotel->getDescription();
-    $price = $hotel->getPrice();
-    $featured_image = $hotel->getFeaturedImage();
-    $order = $hotel->getOrder();
-    //$gallery_images = $hotel->getGalleryImages();
-    //$observations = $hotel->getObservations();
+    $hotel = $hotelRepository->findById($id);
 }
-else if(isset($_GET["copyid"]))
+elseif ( isset( $_GET['copyid'] ) )
 {
-    // copiar paquete
     $id = $_GET["copyid"];
-    $hotel = EntitiesHotelsController::getHotelById($id);
-
-    $name = $hotel->getName();
-    $date_created = $hotel->getDateCreated();
-    $date_modified = $hotel->getDateModified();
-    $status = $hotel->getStatus();
-    $short_description = $hotel->getShortDescription();
-    $description = $hotel->getDescription();
-    $price = $hotel->getPrice();
-    $featured_image = $hotel->getFeaturedImage();
-    $order = $hotel->getOrder();
-    //$gallery_images = $hotel->getGalleryImages();
-    //$observations = $hotel->getObservations();
+    $type = "create";
+    $hotel = $hotelRepository->findById($id);
 }
 
 ?>
@@ -62,11 +29,12 @@ else if(isset($_GET["copyid"]))
         $(document).ready(function () {
 
             utils.inicializarCargadorImagenes();
-            utils.loadImages("<?php echo $featured_image; ?>");
+            utils.loadImages("<?php echo $hotel->getFeaturedImage(); ?>");
 
             $("form#create_package").submit(function (event) {
                 event.preventDefault();
                 debugger;
+
                 let ajaxRequest = {
                     url: my_vars.ajaxurl,
                     type: "post",
@@ -77,7 +45,7 @@ else if(isset($_GET["copyid"]))
                         type: "createHotel",
                         <?php } elseif ($type == 'update') { ?>
                         type: "updateHotel",
-                        id: <?php echo $id; ?>,
+                        id: <?php echo $hotel->getId(); ?>,
                         <?php } ?>
                         status: $("[name='status']").val(),
                         name: $("[name='name'").val(),
@@ -104,7 +72,7 @@ else if(isset($_GET["copyid"]))
                             });
                         }
                     })
-                    .fail(function (response) {
+                    .error(function (response) {
                     })
                     .always(function (response) {
                     });
@@ -131,13 +99,11 @@ else if(isset($_GET["copyid"]))
                             data: {
                                 action: "entities_hotels_controller",
                                 type: "deleteHotel",
-                                id: <?php echo $id; ?>
+                                id: <?php echo $hotel->getId(); ?>
                             }
                         }).done(function (response) {
-                            console.log("ajax deleteHotel done");
                             location.href = "admin.php?page=hotels";
-                        }).fail(function (response) {
-                            console.log("ajax deleteHotel fail");
+                        }).error(function (response) {
                         }).always(function (response) {
                             //closeLoading();
                             console.log("ajax deleteHotel always");
@@ -176,7 +142,7 @@ else if(isset($_GET["copyid"]))
                     <!-- Title -->
                     <div id="titlediv" class="block-field">
                         <label>
-                            <input type="text" name="name" size="30" value="<?php echo $name; ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Add a name">
+                            <input type="text" name="name" size="30" value="<?php echo $hotel->getName(); ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Add a name">
                         </label>
                     </div>
 
@@ -184,7 +150,7 @@ else if(isset($_GET["copyid"]))
                     <div class="block-field">
                         <h3>Short Description</h3>
                         <label>
-                            <input type="text" name="short_description" id="short_description" value="<?php echo $short_description; ?>" autocomplete="off" placeholder="Add a short description"/>
+                            <input type="text" name="short_description" id="short_description" value="<?php echo $hotel->getShortDescription(); ?>" autocomplete="off" placeholder="Add a short description"/>
                         </label>
                     </div>
 
@@ -192,7 +158,7 @@ else if(isset($_GET["copyid"]))
                     <div class="block-field">
                         <h3>Price (€)</h3>
                         <label>
-                            <input type="number" name="price" id="price" value="<?php echo $price; ?>" autocomplete="off" placeholder=""/>
+                            <input type="number" name="price" id="price" value="<?php echo $hotel->getPrice(); ?>" autocomplete="off" placeholder=""/>
                         </label>
                     </div>
 
@@ -201,7 +167,7 @@ else if(isset($_GET["copyid"]))
                         <h3>Order</h3>
                         <p>Custom order to visualize the hotels at the front-end.</p>
                         <label>
-                            <input type="number" name="order" id="order" value="<?php echo $order; ?>" autocomplete="off" placeholder=""/>
+                            <input type="number" name="order" id="order" value="<?php echo $hotel->getCustomOrder(); ?>" autocomplete="off" placeholder=""/>
                         </label>
                     </div>
 
@@ -209,7 +175,7 @@ else if(isset($_GET["copyid"]))
                     <div class="block-field">
                         <h3>Detailed Description</h3>
                         <label>
-                            <?php echo wp_editor( stripslashes($description), 'description' ); ?>
+                            <?php echo wp_editor( stripslashes( $hotel->getDescription() ), 'description' ); ?>
                         </label>
                     </div>
 
@@ -234,7 +200,7 @@ else if(isset($_GET["copyid"]))
                         <h3>Considerations</h3>
                         <p>Insights to be taken into account by the customer.</p>
                         <label>
-                            <?php echo wp_editor( $observations, 'observations' ); ?>
+                            <?php echo wp_editor(  $hotel->getObservations(), 'observations' ); ?>
                         </label>
                     </div>
 
@@ -255,13 +221,13 @@ else if(isset($_GET["copyid"]))
                                 <!-- Fecha de creación -->
                                 <div style="padding: 10px 10px 5px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Fecha creación:</span>
-                                    <span><?php echo $date_created; ?></span>
+                                    <span><?php echo $hotel->getDateCreated(); ?></span>
                                 </div>
 
                                 <!-- Fecha de modificación -->
                                 <div style="padding: 5px 10px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Fecha modificación:</span>
-                                    <span><?php echo $date_modified; ?></span>
+                                    <span><?php echo $hotel->getDateModified(); ?></span>
                                 </div>
 
                                 <!-- Status -->
@@ -269,9 +235,9 @@ else if(isset($_GET["copyid"]))
                                     <span>Estado: </span>
                                     <label>
                                         <select name="status">
-                                            <option value="draft" <?php echo ($status == "draft") ? "selected" : ""; ?>>Draft</option>
-                                            <option value="publish" <?php echo ($status == "publish") ? "selected" : ""; ?>>Publish</option>
-                                            <option value="pending" <?php echo ($status == "pending") ? "selected" : ""; ?>>Pending</option>
+                                            <option value="draft" <?php echo ($hotel->getStatus() == "draft") ? "selected" : ""; ?>>Draft</option>
+                                            <option value="publish" <?php echo ($hotel->getStatus() == "publish") ? "selected" : ""; ?>>Publish</option>
+                                            <option value="pending" <?php echo ($hotel->getStatus() == "pending") ? "selected" : ""; ?>>Pending</option>
                                         </select>
                                     </label>
                                 </div>

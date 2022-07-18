@@ -11,7 +11,7 @@ class Hotel extends Product
     /**
      * Hotel constructor.
      */
-    private function __construct($object)
+    public function __construct()
     {
         // pass
         /* Initializing class properties

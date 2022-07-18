@@ -1,57 +1,24 @@
 <?php
+
+// control vars
 $type = "create";
 $id = "";
-$copyid="";
-$url = "";
-$date_created = "";
-$date_modified = "";
-$status = "";
-$name = "";
-$short_description = "";
-$description = "";
-$featured_image = "";
-//$gallery_images = "";
-$observations="";
-$price = "";
-$order = "";
+$copyid = "";
 
-if(isset($_GET["id"]))
-{
-    // Update/Edit package if 'id' exists
+$package = new Package();
+$packageRepository = PackageRepository::getInstance();
+
+if ( isset( $_GET['id'] ) ) {
+
     $id = $_GET["id"];
-    $package = EntitiesController::getPackageById($id);
-
     $type = "update";
-
-    $name = $package->getName();
-    $date_created = $package->getDateCreated();
-    $date_modified = $package->getDateModified();
-    $status = $package->getStatus();
-    $short_description = $package->getShortDescription();
-    $description = $package->getDescription();
-    $price = $package->getPrice();
-    $featured_image = $package->getFeaturedImage();
-    $order = $package->getOrder();
-    //$gallery_images = $package->getGalleryImages();
-    //$observations = $package->getObservations();
+    $package = $packageRepository->findById($id);
 }
-else if(isset($_GET["copyid"]))
-{
-    // copiar paquete
-    $id = $_GET["copyid"];
-    $package = EntitiesController::getPackageById($id);
+else if ( isset( $_GET['copyid'] ) ) {
 
-    $name = $package->getName();
-    $date_created = $package->getDateCreated();
-    $date_modified = $package->getDateModified();
-    $status = $package->getStatus();
-    $short_description = $package->getShortDescription();
-    $description = $package->getDescription();
-    $price = $package->getPrice();
-    $featured_image = $package->getFeaturedImage();
-    $order = $package->getOrder();
-    //$gallery_images = $package->getGalleryImages();
-    //$observations = $package->getObservations();
+    $id = $_GET["copyid"];
+    $type = "create";
+    $package = $package = $packageRepository->findById($id);
 }
 
 ?>
@@ -63,7 +30,7 @@ else if(isset($_GET["copyid"]))
         $(document).ready(function () {
 
             utils.inicializarCargadorImagenes();
-            utils.loadImages("<?php echo $featured_image; ?>");
+            utils.loadImages("<?php echo $package->getFeaturedImage(); ?>");
 
             $("form#create_package").submit(function (event) {
                 event.preventDefault();
@@ -78,8 +45,8 @@ else if(isset($_GET["copyid"]))
                         type: "createPackage",
                         <?php } elseif ($type == 'update') { ?>
                         type: "updatePackage",
-                        id: <?php echo $id; ?>,
-                         <?php } ?>
+                        id: <?php echo $package->getId(); ?>,
+                        <?php } ?>
                         status: $("[name='status']").val(),
                         name: $("[name='name'").val(),
                         short_description: $("[name='short_description']").val(),
@@ -92,60 +59,58 @@ else if(isset($_GET["copyid"]))
                 };
 
                 $.ajax(ajaxRequest)
-                .done(function (response) {
-                    if(response.success) {
-                        swal.fire({
-                            icon: 'success',
-                            showConfirmButton: true,
-                            html: '<h4>Package <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
-                        }).then((result) => {
-                            if(result.isConfirmed && "<?php echo $type; ?>" === "create") {
-                                location.href = "admin.php?page=packages";
-                            }
-                        });
-                    }
-                })
-                .fail(function (response) {
-                })
-                .always(function (response) {
-                });
+                    .done(function (response) {
+                        if(response.success) {
+                            swal.fire({
+                                icon: 'success',
+                                showConfirmButton: true,
+                                html: '<h4>Package <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
+                            }).then((result) => {
+                                if(result.isConfirmed && "<?php echo $type; ?>" === "create") {
+                                    location.href = "admin.php?page=packages";
+                                }
+                            });
+                        }
+                    })
+                    .error(function (response) {
+                    })
+                    .always(function (response) {
+                    });
             });
 
             <?php if($type == "update") { ?>
-                $("#delete-action").click(function () {
+            $("#delete-action").click(function () {
 
-                    swal.fire({
-                        icon: "warning",
-                        showConfirmButton: true,
-                        showCancelButton: true,
-                        html: '<h4>Are you sure?</h4>',
-                        confirmButtonText: 'Yes, I am sure',
-                        cancelButtonText: "No, cancel it!"
-                    }).then((result) => {
-                        if(result.isConfirmed) {
+                swal.fire({
+                    icon: "warning",
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    html: '<h4>Are you sure?</h4>',
+                    confirmButtonText: 'Yes, I am sure',
+                    cancelButtonText: "No, cancel it!"
+                }).then((result) => {
+                    if(result.isConfirmed) {
 
-                            //openLoading("<h4>Deleting...</h4>");
+                        //openLoading("<h4>Deleting...</h4>");
 
-                            $.post({
-                                url: my_vars.ajaxurl,
-                                type: "post",
-                                data: {
-                                    action: "entities_controller",
-                                    type: "deletePackage",
-                                    id: <?php echo $id; ?>
-                                }
-                            }).done(function (response) {
-                                console.log("ajax deletePackage done");
-                                location.href = "admin.php?page=packages";
-                            }).fail(function (response) {
-                                console.log("ajax deletePackage fail");
-                            }).always(function (response) {
-                                //closeLoading();
-                                console.log("ajax deletePackage always");
-                            });
-                        }
-                    });
+                        $.post({
+                            url: my_vars.ajaxurl,
+                            type: "post",
+                            data: {
+                                action: "entities_controller",
+                                type: "deletePackage",
+                                id: <?php echo $id; ?>
+                            }
+                        }).done(function (response) {
+                            location.href = "admin.php?page=packages";
+                        }).error(function (response) {
+                        }).always(function (response) {
+                            //closeLoading();
+                            console.log("ajax deletePackage always");
+                        });
+                    }
                 });
+            });
             <?php } ?>
 
         });
@@ -177,7 +142,7 @@ else if(isset($_GET["copyid"]))
                     <!-- Title -->
                     <div id="titlediv" class="block-field">
                         <label>
-                            <input type="text" name="name" size="30" value="<?php echo $name; ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
+                            <input type="text" name="name" size="30" value="<?php echo $package->getName(); ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
                         </label>
                     </div>
 
@@ -185,7 +150,7 @@ else if(isset($_GET["copyid"]))
                     <div class="block-field">
                         <h3>Descripción corta</h3>
                         <label>
-                            <input type="text" name="short_description" id="short_description" value="<?php echo $short_description; ?>" autocomplete="off"/>
+                            <input type="text" name="short_description" id="short_description" value="<?php echo $package->getShortDescription(); ?>" autocomplete="off"/>
                         </label>
                     </div>
 
@@ -193,7 +158,7 @@ else if(isset($_GET["copyid"]))
                     <div class="block-field">
                         <h3>Price (€)</h3>
                         <label>
-                            <input type="number" name="price" id="price" value="<?php echo $price; ?>" autocomplete="off"/>
+                            <input type="number" name="price" id="price" value="<?php echo $package->getPrice(); ?>" autocomplete="off"/>
                         </label>
                     </div>
 
@@ -201,7 +166,7 @@ else if(isset($_GET["copyid"]))
                     <div class="block-field">
                         <h3>Order</h3>
                         <label>
-                            <input type="number" name="order" id="order" value="<?php echo $order; ?>" autocomplete="off"/>
+                            <input type="number" name="order" id="order" value="<?php echo $package->getCustomOrder(); ?>" autocomplete="off"/>
                         </label>
                     </div>
 
@@ -209,7 +174,7 @@ else if(isset($_GET["copyid"]))
                     <div class="block-field">
                         <h3>Descripción detallada</h3>
                         <label>
-                            <?php echo wp_editor( stripslashes($description), 'description' ); ?>
+                            <?php echo wp_editor( stripslashes( $package->getDescription() ), 'description' ); ?>
                         </label>
                     </div>
 
@@ -233,7 +198,7 @@ else if(isset($_GET["copyid"]))
                     <div class="block-field">
                         <h3>Observaciones</h3>
                         <label>
-                            <?php echo wp_editor( $observations, 'observations' ); ?>
+                            <?php echo wp_editor( $package->getObservations(), 'observations' ); ?>
                         </label>
                     </div>
 
@@ -254,13 +219,13 @@ else if(isset($_GET["copyid"]))
                                 <!-- Fecha de creación -->
                                 <div style="padding: 10px 10px 5px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Fecha creación:</span>
-                                    <span><?php echo $date_created; ?></span>
+                                    <span><?php echo $package->getDateCreated(); ?></span>
                                 </div>
 
                                 <!-- Fecha de modificación -->
                                 <div style="padding: 5px 10px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Fecha modificación:</span>
-                                    <span><?php echo $date_modified; ?></span>
+                                    <span><?php echo $package->getDateModified(); ?></span>
                                 </div>
 
                                 <!-- Status -->
@@ -268,9 +233,9 @@ else if(isset($_GET["copyid"]))
                                     <span>Estado: </span>
                                     <label>
                                         <select name="status">
-                                            <option value="draft" <?php echo ($status == "draft") ? "selected" : ""; ?>>Draft</option>
-                                            <option value="publish" <?php echo ($status == "publish") ? "selected" : ""; ?>>Publish</option>
-                                            <option value="pending" <?php echo ($status == "pending") ? "selected" : ""; ?>>Pending</option>
+                                            <option value="draft" <?php echo ($package->getStatus() == "draft") ? "selected" : ""; ?>>Draft</option>
+                                            <option value="publish" <?php echo ($package-> getStatus() == "publish") ? "selected" : ""; ?>>Publish</option>
+                                            <option value="pending" <?php echo ($package->getStatus() == "pending") ? "selected" : ""; ?>>Pending</option>
                                         </select>
                                     </label>
                                 </div>

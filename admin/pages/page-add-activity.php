@@ -4,77 +4,22 @@
 $type = "create";
 $id = "";
 $copyid = "";
-$activity = "";
-
-// class activity properties
-/*$url = "";
-$date_created = "";
-$date_modified = "";
-$status = "";
-$name = "";
-$short_description = "";
-$description = "";
-$featured_image = "";
-//$gallery_images = "";
-$observations="";
-$price = "";
-$order = "";*/
 
 $activity = new Activity();
+$activityRepository = ActivityRepository::getInstance();
 
 if( isset( $_GET["id"] ) )
 {
     $id = $_GET["id"];
     $type = "update";
-    $activity = EntitiesActivitiesController::getActivityById($id);
+    $activity = $activityRepository->findById($id);
 }
 elseif ( isset( $_GET['copyid'] ) )
 {
     $id = $_GET["copyid"];
     $type = "create";
-    $activity = EntitiesActivitiesController::getActivityById($id);
+    $activity = $activityRepository->findById($id);
 }
-
-/*
-if(isset($_GET["id"]))
-{
-    // Update/Edit package if 'id' exists
-    $id = $_GET["id"];
-    $activity = EntitiesActivitiesController::getActivityById($id);
-
-    $type = "update";
-
-    $name = $activity->getName();
-    $date_created = $activity->getDateCreated();
-    $date_modified = $activity->getDateModified();
-    $status = $activity->getStatus();
-    $short_description = $activity->getShortDescription();
-    $description = $activity->getDescription();
-    $price = $activity->getPrice();
-    $featured_image = $activity->getFeaturedImage();
-    $order = $activity->getOrder();
-    //$gallery_images = $activity->getGalleryImages();
-    //$observations = $activity->getObservations();
-}
-else if(isset($_GET["copyid"]))
-{
-    // copiar paquete
-    $id = $_GET["copyid"];
-    $activity = EntitiesActivitiesController::getActivityById($id);
-
-    $name = $activity->getName();
-    $date_created = $activity->getDateCreated();
-    $date_modified = $activity->getDateModified();
-    $status = $activity->getStatus();
-    $short_description = $activity->getShortDescription();
-    $description = $activity->getDescription();
-    $price = $activity->getPrice();
-    $featured_image = $activity->getFeaturedImage();
-    $order = $activity->getOrder();
-    //$gallery_images = $activity->getGalleryImages();
-    //$observations = $activity->getObservations();
-}
-*/
 
 ?>
 
@@ -85,7 +30,7 @@ else if(isset($_GET["copyid"]))
         $(document).ready(function () {
 
             utils.inicializarCargadorImagenes();
-            utils.loadImages("<?php echo $activity->featured_image; ?>");
+            utils.loadImages("<?php echo $activity->getFeaturedImage(); ?>");
 
             $("form#create_package").submit(function (event) {
                 event.preventDefault();
@@ -101,7 +46,7 @@ else if(isset($_GET["copyid"]))
                         type: "createActivity",
                         <?php } elseif ($type == 'update') { ?>
                         type: "updateActivity",
-                        id: <?php echo $id; ?>,
+                        id: <?php echo $activity->getId(); ?>,
                         <?php } ?>
                         status: $("[name='status']").val(),
                         name: $("[name='name'").val(),
@@ -128,7 +73,7 @@ else if(isset($_GET["copyid"]))
                             });
                         }
                     })
-                    .fail(function (response) {
+                    .error(function (response) {
                     })
                     .always(function (response) {
                     });
@@ -155,11 +100,11 @@ else if(isset($_GET["copyid"]))
                             data: {
                                 action: "entities_activities_controller",
                                 type: "deleteActivity",
-                                id: <?php echo $id; ?>
+                                id: <?php echo $activity->getId(); ?>
                             }
                         }).done(function (response) {
                             location.href = "admin.php?page=activities";
-                        }).fail(function (response) {
+                        }).error(function (response) {
                         }).always(function (response) {
                             //closeLoading();
                         });
@@ -194,7 +139,7 @@ else if(isset($_GET["copyid"]))
                     <!-- Title -->
                     <div id="titlediv">
                         <label>
-                            <input type="text" name="name" size="30" value="<?php echo $activity->name; ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
+                            <input type="text" name="name" size="30" value="<?php echo $activity->getName(); ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
                         </label>
                     </div>
 
@@ -202,7 +147,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Descripción corta</h3>
                         <label>
-                            <input type="text" name="short_description" id="short_description" value="<?php echo $activity->short_description; ?>" autocomplete="off"/>
+                            <input type="text" name="short_description" id="short_description" value="<?php echo $activity->getShortDescription(); ?>" autocomplete="off"/>
                         </label>
                     </div>
 
@@ -210,7 +155,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Price (€)</h3>
                         <label>
-                            <input type="number" name="price" id="price" value="<?php echo $activity->price; ?>" autocomplete="off"/>
+                            <input type="number" name="price" id="price" value="<?php echo $activity->getPrice(); ?>" autocomplete="off"/>
                         </label>
                     </div>
 
@@ -218,7 +163,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Order</h3>
                         <label>
-                            <input type="number" name="custom_order" id="custom_order" value="<?php echo $activity->custom_order; ?>" autocomplete="off"/>
+                            <input type="number" name="custom_order" id="custom_order" value="<?php echo $activity->getCustomOrder(); ?>" autocomplete="off"/>
                         </label>
                     </div>
 
@@ -226,7 +171,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Descripción detallada</h3>
                         <label>
-                            <?php echo wp_editor( stripslashes( $activity->description ), 'description' ); ?>
+                            <?php echo wp_editor( stripslashes( $activity->getDescription() ), 'description' ); ?>
                         </label>
                     </div>
 
@@ -250,7 +195,7 @@ else if(isset($_GET["copyid"]))
                     <div>
                         <h3>Observaciones</h3>
                         <label>
-                            <?php echo wp_editor( $activity->observations, 'observations' ); ?>
+                            <?php echo wp_editor( $activity->getObservations(), 'observations' ); ?>
                         </label>
                     </div>
 
@@ -271,13 +216,13 @@ else if(isset($_GET["copyid"]))
                                 <!-- Fecha de creación -->
                                 <div style="padding: 10px 10px 5px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Fecha creación:</span>
-                                    <span><?php echo $activity->date_created; ?></span>
+                                    <span><?php echo $activity->getDateCreated(); ?></span>
                                 </div>
 
                                 <!-- Fecha de modificación -->
                                 <div style="padding: 5px 10px; display: flex; align-items: center; justify-content: space-between;">
                                     <span>Fecha modificación:</span>
-                                    <span><?php echo $activity->date_modified; ?></span>
+                                    <span><?php echo $activity->getDateModified(); ?></span>
                                 </div>
 
                                 <!-- Status -->
@@ -285,9 +230,9 @@ else if(isset($_GET["copyid"]))
                                     <span>Estado: </span>
                                     <label>
                                         <select name="status">
-                                            <option value="draft" <?php echo ($activity->status == "draft") ? "selected" : ""; ?>>Draft</option>
-                                            <option value="publish" <?php echo ($activity->status == "publish") ? "selected" : ""; ?>>Publish</option>
-                                            <option value="pending" <?php echo ($activity->status == "pending") ? "selected" : ""; ?>>Pending</option>
+                                            <option value="draft" <?php echo ($activity->getStatus() == "draft") ? "selected" : ""; ?>>Draft</option>
+                                            <option value="publish" <?php echo ($activity->getStatus() == "publish") ? "selected" : ""; ?>>Publish</option>
+                                            <option value="pending" <?php echo ($activity->getStatus() == "pending") ? "selected" : ""; ?>>Pending</option>
                                         </select>
                                     </label>
                                 </div>

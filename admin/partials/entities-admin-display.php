@@ -12,12 +12,12 @@
  * @subpackage Entities/admin/partials
  */
 
-$packages = EntitiesController::getPackages();
-
 /*global $wpdb;
 
 $charset_collate = $wpdb->get_charset_collate();
-print_r($charset_collate);*/
+print_r($charset_collate);
+*/
+
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -108,6 +108,7 @@ print_r($charset_collate);*/
 
 <script type="application/javascript">
 
+    /*
     (function ($) {
 
         $(document).ready(function () {
@@ -135,5 +136,6 @@ print_r($charset_collate);*/
         });
 
     }(jQuery.noConflict()));
+     */
 
 </script>
