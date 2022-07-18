@@ -47,6 +47,33 @@ class EntitiesController extends MasterController
     }
 
     /**
+     * @return false|string
+     */
+    public function createPackage() {
+
+        $response = array('success'=> false );
+
+        // creation package object
+        $package = new Package();
+        $package->setStatus($_POST['status']);
+        $package->setName($_POST['name']);
+        $package->setShortDescription($_POST['short_description']);
+        $package->setDescription($_POST['description']);
+        $package->setFeaturedImage($_POST['featured_image']);
+        $package->setObservations($_POST['observations']);
+        $package->setCustomOrder($_POST['custom_order']);
+        $package->setPrice($_POST['price']);
+
+        $result = $this->packageRepository->add($package);
+        if ( $result ) {
+            $response['success'] = true;
+        }
+
+        header('Content-type: application/json');
+        return json_encode($response);
+    }
+
+    /**
      * @param $id
      * @param bool $json_encode
      * @return false|Package|string|null
@@ -55,7 +82,7 @@ class EntitiesController extends MasterController
 
         $package = $this->packageRepository->findById($id);
 
-        if($json_encode) {
+        if ( $json_encode ) {
             header('Content-type: application/json');
             return json_encode($package);
         }
@@ -89,73 +116,31 @@ class EntitiesController extends MasterController
 
     /**
      * @param $id
-     * @return bool
+     * @return false|string
      */
-    public function deletePackage($id) {
+    public function updatePackage($id) {
 
-        $response = array(
-            'success' => false
-        );
+        $response = array('success'=> false );
 
+        // creation package object
         $package = new Package();
         $package->setId($id);
+        $package->setStatus($_POST['status']);
+        $package->setName($_POST['name']);
+        $package->setShortDescription($_POST['short_description']);
+        $package->setDescription($_POST['description']);
+        $package->setFeaturedImage($_POST['featured_image']);
+        $package->setObservations($_POST['observations']);
+        $package->setCustomOrder($_POST['custom_order']);
+        $package->setPrice($_POST['price']);
 
-        $result = $this->packageRepository->remove($package);
+        $result = $this->packageRepository->update($package);
         if ( $result ) {
             $response['success'] = true;
         }
 
         header('Content-type: application/json');
         return json_encode($response);
-    }
-
-    /**
-     * @return false|string
-     */
-    public function createPackage() {
-
-        $result = array('success'=> false );
-
-        // creation package object
-        $package = new Package();
-        $package->setStatus($_POST['status']);
-        $package->setName($_POST['name']);
-        $package->setShortDescription($_POST['short_description']);
-        $package->setDescription($_POST['description']);
-        $package->setFeaturedImage($_POST['featured_image']);
-        $package->setObservations($_POST['observations']);
-        $package->setOrder($_POST['custom_order']);
-        $package->setPrice($_POST['price']);
-
-        $result = $this->packageRepository->add($package);
-
-        header('Content-type: application/json');
-        return json_encode($result);
-    }
-
-    /**
-     * @param $id
-     * @return false|string
-     */
-    public function updatePackage($id) {
-
-        $result = array('success'=> false );
-
-        // creation package object
-        $package = new Package();
-        $package->setStatus($_POST['status']);
-        $package->setName($_POST['name']);
-        $package->setShortDescription($_POST['short_description']);
-        $package->setDescription($_POST['description']);
-        $package->setFeaturedImage($_POST['featured_image']);
-        $package->setObservations($_POST['observations']);
-        $package->setOrder($_POST['custom_order']);
-        $package->setPrice($_POST['price']);
-
-        $result = $this->packageRepository->update($package);
-
-        header('Content-type: application/json');
-        return json_encode($result);
     }
 
     /**
@@ -187,6 +172,28 @@ class EntitiesController extends MasterController
         }
 
         return json_encode($package);
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function deletePackage($id) {
+
+        $response = array(
+            'success' => false
+        );
+
+        $package = new Package();
+        $package->setId($id);
+
+        $result = $this->packageRepository->remove($package);
+        if ( $result ) {
+            $response['success'] = true;
+        }
+
+        header('Content-type: application/json');
+        return json_encode($response);
     }
 
 }

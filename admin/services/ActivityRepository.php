@@ -64,7 +64,7 @@ class ActivityRepository extends MasterRepository {
                 'description' => $activity->getDescription(),
                 'featured_image' => $activity->getFeaturedImage(),
                 'observations' => $activity->getObservations(),
-                'custom_order' => $activity->getOrder(),
+                'custom_order' => $activity->getCustomOrder(),
                 'price' => $activity->getPrice()
             ));
         }

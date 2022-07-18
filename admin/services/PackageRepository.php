@@ -15,7 +15,6 @@ class PackageRepository extends MasterRepository {
     // singleton
     private $instance;
 
-
     /**
      * PackageRepository constructor.
      */
@@ -65,7 +64,7 @@ class PackageRepository extends MasterRepository {
                 'description' => $package->getDescription(),
                 'featured_image' => $package->getFeaturedImage(),
                 'observations' => $package->getObservations(),
-                'custom_order' => $package->getOrder(),
+                'custom_order' => $package->getCustomOrder(),
                 'price' => $package->getPrice()
             ));
         }

@@ -35,6 +35,7 @@ else if ( isset( $_GET['copyid'] ) ) {
             $("form#create_package").submit(function (event) {
                 event.preventDefault();
                 debugger;
+
                 let ajaxRequest = {
                     url: my_vars.ajaxurl,
                     type: "post",
@@ -73,8 +74,11 @@ else if ( isset( $_GET['copyid'] ) ) {
                         }
                     })
                     .error(function (response) {
+                        console.log("fail");
                     })
                     .always(function (response) {
+                        console.log("always");
+                        console.log(response);
                     });
             });
 

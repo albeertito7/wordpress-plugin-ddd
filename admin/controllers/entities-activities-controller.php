@@ -51,6 +51,32 @@ class EntitiesActivitiesController extends MasterController
     }
 
     /**
+     * @return false|string
+     */
+    public function createActivity() {
+
+        $response = array('success' => false);
+
+        $activity = new Activity();
+        $activity->setStatus($_POST['status']);
+        $activity->setName($_POST['name']);
+        $activity->setShortDescription($_POST['short_description']);
+        $activity->setDescription($_POST['description']);
+        $activity->setFeaturedImage($_POST['featured_image']);
+        $activity->setObservations($_POST['observations']);
+        $activity->setCustomOrder($_POST['custom_order']);
+        $activity->setPrice($_POST['price']);
+
+        $result = $this->activityRepository->add($activity);
+        if ( $result ) {
+            $response['success'] = true;
+        }
+
+        header('Content-type: application/json');
+        return json_encode($result);
+    }
+
+    /**
      * @param $id
      * @param bool $json_encode
      * @return Activity|false|string|null
@@ -73,7 +99,6 @@ class EntitiesActivitiesController extends MasterController
      */
     public function getActivities($json_encode=false) {
 
-        $activities = array();
         $activities = $this->activityRepository->findAll();
 
         if ( $json_encode ) {
@@ -85,50 +110,13 @@ class EntitiesActivitiesController extends MasterController
 
     }
 
-    public function deleteActivity($id) {
-
-        $response = array(
-            'success' => false
-        );
-
-        $activity = new Activity();
-        $activity->setId($id);
-
-        $result = $this->activityRepository->remove($activity);
-        if ( $result ) {
-            $response['success'] = true;
-        }
-
-        header('Content-type: application/json');
-        return json_encode($response);
-    }
-
-    /**
-     * @return false|string
-     */
-    public function createActivity() {
-
-        $activity = new Activity();
-        $activity->setStatus($_POST['status']);
-        $activity->setName($_POST['name']);
-        $activity->setShortDescription($_POST['short_description']);
-        $activity->setDescription($_POST['description']);
-        $activity->setFeaturedImage($_POST['featured_image']);
-        $activity->setObservations($_POST['observations']);
-        $activity->setOrder($_POST['custom_order']);
-        $activity->setPrice($_POST['price']);
-
-        $result = $this->activityRepository->add($activity);
-
-        header('Content-type: application/json');
-        return json_encode($result);
-    }
-
     /**
      * @param $id
      * @return false|string
      */
     public function updateActivity($id) {
+
+        $response = array('success' => false);
 
         $activity = new Activity();
         $activity->setId($id);
@@ -142,11 +130,13 @@ class EntitiesActivitiesController extends MasterController
         $activity->setPrice($_POST['price']);
 
         $result = $this->activityRepository->update($activity);
+        if ( $result ) {
+            $response['success'] = true;
+        }
 
         header('Content-type: application/json');
-        return json_encode($result);
+        return json_encode($response);
     }
-
 
     /*public function updateGridActivity() {
 
@@ -180,6 +170,28 @@ class EntitiesActivitiesController extends MasterController
         }
 
         return json_encode($activity);
+    }
+
+    /**
+     * @param $id
+     * @return false|string
+     */
+    public function deleteActivity($id) {
+
+        $response = array(
+            'success' => false
+        );
+
+        $activity = new Activity();
+        $activity->setId($id);
+
+        $result = $this->activityRepository->remove($activity);
+        if ( $result ) {
+            $response['success'] = true;
+        }
+
+        header('Content-type: application/json');
+        return json_encode($response);
     }
 
 }

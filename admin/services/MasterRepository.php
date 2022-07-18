@@ -19,6 +19,8 @@ abstract class MasterRepository implements ProductRepository {
 
     // multisite management
     protected $current_blog_id;
+
+    // datatable backed
     protected $table_name;
 
     /**

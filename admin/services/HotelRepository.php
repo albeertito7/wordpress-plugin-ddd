@@ -64,7 +64,7 @@ class HotelRepository extends MasterRepository {
                 'description' => $hotel->getDescription(),
                 'featured_image' => $hotel->getFeaturedImage(),
                 'observations' => $hotel->getObservations(),
-                'custom_order' => $hotel->getOrder(),
+                'custom_order' => $hotel->getCustomOrder(),
                 'price' => $hotel->getPrice()
             ));
         }
