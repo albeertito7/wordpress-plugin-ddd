@@ -73,7 +73,7 @@ class Product
     /**
      * @return mixed
      */
-    public function getOrder()
+    public function getCustomOrder()
     {
         return $this->custom_order;
     }
@@ -81,7 +81,7 @@ class Product
     /**
      * @param mixed $order
      */
-    public function setOrder($custom_order)
+    public function setCustomOrder($custom_order)
     {
         $this->custom_order = $custom_order;
     }
