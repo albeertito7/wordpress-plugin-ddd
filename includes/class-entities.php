@@ -166,19 +166,22 @@ class Entities {
     }
 
     /**
-     *
+     * Domain models
      */
     private function load_models() {
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Utils.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Logger.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Product.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Package.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Hotel.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/Activity.php';
 
-        // Value Objects
-        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/ProductId.php';
-        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/ProductStatus.php';
+        $directory = plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/';
+
+        require_once $directory . 'Utils.php';
+        require_once $directory . 'Logger.php';
+        require_once $directory . 'Product.php';
+        require_once $directory . 'Package.php';
+        require_once $directory . 'Hotel.php';
+        require_once $directory . 'Activity.php';
+
+        // Product Value Objects
+        //require_once $directory . 'product/ProductId.php';
+        //require_once $directory . 'product/ProductStatus.php';
     }
 
     /**
@@ -187,22 +190,29 @@ class Entities {
      */
     private function load_services() {
 
+        $directory = plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/';
+
         // load typos interface Repositories and DAOs
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/ProductRepositoryInterface.php';
+        require_once $directory .'ProductRepositoryInterface.php';
 
         // load Repositories and DAOs
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/MasterRepository.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/services/PackageRepository.php';
+        require_once $directory . 'MasterRepository.php';
+        require_once $directory . 'PackageRepository.php';
+        require_once $directory . 'ActivityRepository.php';
+        require_once $directory . 'HotelRepository.php';
     }
 
     /**
-     *
+     * Request handlers
      */
 	private function load_controllers() {
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/master-controller.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-controller.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-hotels-controller.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/entities-activities-controller.php';
+
+	    $directory = plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/';
+
+        require_once $directory . 'master-controller.php';
+        require_once $directory . 'entities-controller.php';
+        require_once $directory . 'entities-hotels-controller.php';
+        require_once $directory . 'entities-activities-controller.php';
     }
 
 	/**
