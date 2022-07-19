@@ -1,10 +1,10 @@
-const statusEntityTypes = [
-    { id: 'publish', text: 'publish' },
-    { id: 'draft', text: 'draft' },
-    { id: 'pending', text: 'pending' }
-];
-
 (function( $ ) {
+
+    const statusEntityTypes = [
+        { id: 'publish', text: 'publish' },
+        { id: 'draft', text: 'draft' },
+        { id: 'pending', text: 'pending' }
+    ];
 
     $(document).ready(function () {
         debugger;
@@ -217,7 +217,7 @@ const statusEntityTypes = [
                                     }
                                 }).done(function (response) {
                                     $("#grid").data("kendoGrid").dataSource.read();
-                                }).fail(function (response) {
+                                }).error(function (response) {
                                 }).always(function (response) {
                                     //closeLoading();
                                 });
@@ -287,7 +287,7 @@ const statusEntityTypes = [
                             }
                         }).done(function (response) {
                             $("#grid").data("kendoGrid").dataSource.read();
-                        }).fail(function (response) {
+                        }).error(function (response) {
                         }).always(function (response) {
                             //closeLoading();
                         });

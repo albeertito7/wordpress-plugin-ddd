@@ -73,7 +73,7 @@ class EntitiesActivitiesController extends MasterController
         }
 
         header('Content-type: application/json');
-        return json_encode($result);
+        return json_encode($response);
     }
 
     /**
@@ -126,7 +126,7 @@ class EntitiesActivitiesController extends MasterController
         $activity->setDescription($_POST['description']);
         $activity->setFeaturedImage($_POST['featured_image']);
         $activity->setObservations($_POST['observations']);
-        $activity->setOrder($_POST['custom_order']);
+        $activity->setCustomOrder($_POST['custom_order']);
         $activity->setPrice($_POST['price']);
 
         $result = $this->activityRepository->update($activity);
@@ -145,31 +145,21 @@ class EntitiesActivitiesController extends MasterController
     /**
      * @return false|string
      */
-    public static function updateGridActivity() {
-        global $wpdb;
+    public function updateGridActivity() {
 
-        $table_name = $wpdb->prefix . 'entities_activities';
-        $current_blog_id = get_current_blog_id();
-        $activity = json_decode(stripslashes($_POST['activity']));
+        if ( isset( $_POST['activity'] ) ) {
+            $activity_data = json_decode(stripslashes($_POST['activity']));
+            $activity = Activity::withRow($activity_data);
 
-        try {
-            $wpdb->update($table_name, array(
-                'status' => $activity->status,
-                'price' => $activity->price,
-                'name' => $activity->name,
-                'short_description' => $activity->short_description,
-                'custom_order' => $activity->custom_order
-            ), array(
-                'id' => $activity->id,
-                'blog_id' => $current_blog_id
-            ));
+            $result = $this->activityRepository->update($activity);
+            if ( $result ) {
+                $response['success'] = true;
+            }
 
-        }
-        catch (Exception $ex) {
-
+            return json_encode($activity);
         }
 
-        return json_encode($activity);
+        exit;
     }
 
     /**

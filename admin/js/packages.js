@@ -1,10 +1,10 @@
-const statusEntityTypes = [
-    { id: 'publish', text: 'publish' },
-    { id: 'draft', text: 'draft' },
-    { id: 'pending', text: 'pending' }
-];
-
 (function( $ ) {
+
+    const statusEntityTypes = [
+        { id: 'publish', text: 'publish' },
+        { id: 'draft', text: 'draft' },
+        { id: 'pending', text: 'pending' }
+    ];
 
     $(document).ready(function () {
         debugger;
@@ -28,7 +28,7 @@ const statusEntityTypes = [
                         .done(function (response) {
                             options.success(response);
                         })
-                        .fail(function (jqXHR, textStatus, errorThrown) {
+                        .error(function (jqXHR, textStatus, errorThrown) {
                             options.error(jqXHR);
                         })
                         .always(function () {

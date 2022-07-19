@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class EntitiesController
+ * Class EntitiesController (Packages)
  */
 class EntitiesController extends MasterController
 {
@@ -51,7 +51,7 @@ class EntitiesController extends MasterController
      */
     public function createPackage() {
 
-        $response = array('success'=> false );
+        $response = array('success'=> false);
 
         // creation package object
         $package = new Package();
@@ -146,32 +146,21 @@ class EntitiesController extends MasterController
     /**
      * @return false|string
      */
-    public static function updateGridPackage() {
+    public function updateGridPackage() {
 
-        global $wpdb;
+        if ( isset( $_POST['package'] ) ) {
+            $package_data = json_decode(stripslashes($_POST['package']));
+            $package = Package::withRow($package_data);
 
-        $table_name = $wpdb->prefix . 'entities_packages';
-        $current_blog_id = get_current_blog_id();
-        $package = json_decode(stripslashes($_POST['package']));
+            $result = $this->packageRepository->update($package);
+            if ( $result ) {
+                $response['success'] = true;
+            }
 
-        try {
-            $wpdb->update($table_name, array(
-                'status' => $package->status,
-                'price' => $package->price,
-                'name' => $package->name,
-                'short_description' => $package->short_description,
-                'custom_order' => $package->custom_order
-            ), array(
-                'id' => $package->id,
-                'blog_id' => $current_blog_id
-            ));
-
-        }
-        catch (Exception $ex) {
-
+            return json_encode($package);
         }
 
-        return json_encode($package);
+        exit;
     }
 
     /**

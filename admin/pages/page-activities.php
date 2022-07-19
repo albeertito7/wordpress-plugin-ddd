@@ -4,14 +4,6 @@ $blog_id = get_current_blog_id();
 
 ?>
 
-<div class="wrap">
-
-    <h1 style="margin-bottom: 20px;">Page Activities</h1>
-
-    <div id="grid"></div>
-
-</div>
-
 <style type="text/css">
 
     .customer-photo {
@@ -117,3 +109,11 @@ $blog_id = get_current_blog_id();
     }
 
 </style>
+
+<div class="wrap">
+
+    <h1 style="margin-bottom: 20px;">Page Activities</h1>
+
+    <div id="grid"></div>
+
+</div>

@@ -5,8 +5,12 @@
  */
 class EntitiesHotelsController extends MasterController
 {
+    private $hotelRepository;
+
     public function __construct()
     {
+        $this->hotelRepository = HotelRepository::getInstance();
+
         add_action('wp_ajax_entities_hotels_controller', array($this, 'ajax'));
         add_action('wp_ajax_nopriv_entities_hotels_controller', array($this, 'ajax'));
     }
@@ -16,6 +20,7 @@ class EntitiesHotelsController extends MasterController
         if ( isset( $_POST['type'] ) ) {
 
             $action = $_POST['type'];
+
             switch ($action) {
                 case "createHotel":
                     echo $this->createHotel();
@@ -24,13 +29,17 @@ class EntitiesHotelsController extends MasterController
                     echo $this->getHotels(true);
                     break;
                 case "updateHotel":
-                    echo $this->updateHotel($_POST['id']);
+                    if ( isset( $_POST['id'] ) ) {
+                        echo $this->updateHotel($_POST['id']);
+                    }
                     break;
                 case "updateGridHotel":
                     echo $this->updateGridHotel();
                     break;
                 case "deleteHotel":
-                    $this->deleteHotel($_POST['id']);
+                    if ( isset( $_POST['id'] ) ) {
+                        $this->deleteHotel($_POST['id']);
+                    }
                     break;
                 default:
                     parent::ajax();
@@ -41,168 +50,135 @@ class EntitiesHotelsController extends MasterController
         exit;
     }
 
-    public static function getHotelById($id, $json_encode=false) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_hotels';
-        $current_blog_id = get_current_blog_id();
-        $members = array();
+    /**
+     * @return false|string
+     */
+    public function createHotel() {
 
-        try {
-            $sSQL = "SELECT * FROM $table_name WHERE blog_id=$current_blog_id AND id=$id";
-            $res = $wpdb->get_results($sSQL);
+        $response = array('success' => false);
 
-            foreach($res as $row) {
-                $members[] = Hotel::withRow($row);
-            }
-        }
-        catch (Exception $ex) {
+        $hotel = new Hotel();
+        $hotel->setStatus( $_POST['status'] );
+        $hotel->setName( $_POST['name'] );
+        $hotel->setShortDescription( $_POST['short_description'] );
+        $hotel->setDescription( $_POST['description'] );
+        $hotel->setFeaturedImage( $_POST['featured_image'] );
+        $hotel->setObservations( $_POST['observations'] );
+        $hotel->setCustomOrder( $_POST['custom_order'] );
+        $hotel->setPrice( $_POST['price'] );
 
-        }
-
-        if($json_encode) {
-            header('Content-type: application/json');
-            return json_encode($members[0]);
-        }
-
-        return $members[0];
-    }
-
-    public static function getHotels($json_encode=false) {
-        global $wpdb;
-        $members = array();
-        $table_name = $wpdb->prefix . 'entities_hotels';
-        $current_blog_id = get_current_blog_id();
-
-        try
-        {
-            $sSQL = "SELECT * FROM $table_name WHERE blog_id=$current_blog_id ORDER BY id ASC";
-            $res = $wpdb->get_results($sSQL);
-
-            foreach($res as $row) {
-                $members[] = Hotel::withRow($row);
-            }
-        }
-        catch(Exception $ex) {
-
-        }
-
-        if($json_encode) {
-            header('Content-type: application/json');
-            return json_encode($members);
-        }
-
-        return $members;
-    }
-
-    public static function deleteHotel($id) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_hotels';
-        $current_blog_id = get_current_blog_id();
-
-        try
-        {
-            //$sSQL = "DELETE FROM $table_name WHERE blog_id=$current_blog_id AND id=$id";
-            $wpdb->delete($table_name, array(
-                'id' => $id,
-                'blog_id' => $current_blog_id
-            ));
-        }
-        catch(Exception $ex) {
-
-        }
-    }
-
-    public static function createHotel() {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_hotels';
-        $current_blog_id = get_current_blog_id();
-        $result = array('success'=> false );
-
-        try {
-
-            $wpdb->insert($table_name, array(
-                'blog_id' => $current_blog_id,
-                'status' => $_POST['status'],
-                'name' => $_POST['name'],
-                'short_description' => $_POST['short_description'],
-                'description' => $_POST['description'],
-                'featured_image' => $_POST['featured_image'],
-                'observations' => $_POST['observations'],
-                'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price'],
-                'date_entrance' => $_POST['date_entrance'],
-                'date_departure' => $_POST['date_departure']
-            ));
-
-            $result['success'] = true;
-        }
-        catch (Exception $ex) {
-
+        $result = $this->hotelRepository->add($hotel);
+        if ( $result ) {
+            $response['success'] = true;
         }
 
         header('Content-type: application/json');
-        return json_encode($result);
+        return json_encode($response);
     }
 
-    public static function updateHotel($id) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_hotels';
-        $current_blog_id = get_current_blog_id();
-        $result = array('success'=> false );
+    /**
+     * @param $id
+     * @param bool $json_encode
+     * @return Activity|false|string|null
+     */
+    public function getHotelById($id, $json_encode=false) {
 
-        try {
-            $wpdb->update($table_name, array(
-                'status' => $_POST['status'],
-                'name' => $_POST['name'],
-                'short_description' => $_POST['short_description'],
-                'description' => $_POST['description'],
-                'featured_image' => $_POST['featured_image'],
-                'observations' => $_POST['observations'],
-                'custom_order' => $_POST['custom_order'],
-                'price' => $_POST['price'],
-                'date_entrance' => $_POST['date_entrance'],
-                'date_departure' => $_POST['date_departure']
-            ), array(
-                'id' => $id,
-                'blog_id' => $current_blog_id
-            ));
+        $hotel = $this->hotelRepository->findById($id);
 
-            $result['success'] = true;
+        if ( $json_encode ) {
+            header('Content-type: application/json');
+            return json_encode($hotel);
         }
-        catch (Exception $ex) {
 
+        return $hotel;
+    }
+
+    /**
+     * @param bool $json_encode
+     * @return array|false|string
+     */
+    public function getHotels($json_encode=false) {
+
+        $hotels = $this->hotelRepository->findAll();
+
+        if ( $json_encode ) {
+            header('Content-type: application/json');
+            return json_encode($hotels);
+        }
+
+        return $hotels;
+    }
+
+    /**
+     * @param $id
+     * @return false|string
+     */
+    public function updateHotel($id) {
+
+        $response = array('success' => false);
+
+        $hotel = new Hotel();
+        $hotel->setId( $id );
+        $hotel->setStatus( $_POST['status'] );
+        $hotel->setName( $_POST['name'] );
+        $hotel->setShortDescription( $_POST['short_description'] );
+        $hotel->setDescription( $_POST['description'] );
+        $hotel->setFeaturedImage( $_POST['featured_image'] );
+        $hotel->setObservations( $_POST['observations'] );
+        $hotel->setCustomOrder( $_POST['custom_order'] );
+        $hotel->setPrice( $_POST['price'] );
+
+        $result = $this->hotelRepository->update($hotel);
+        if ( $result ) {
+            $response['success'] = true;
         }
 
         header('Content-type: application/json');
-        return json_encode($result);
+        return json_encode($response);
+
     }
 
-    public static function updateGridHotel() {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'entities_hotels';
-        $current_blog_id = get_current_blog_id();
-        $hotel = json_decode(stripslashes($_POST['hotel']));
+    /**
+     * @return false|string
+     */
+    public function updateGridHotel() {
 
-        try {
-            $wpdb->update($table_name, array(
-                'status' => $hotel->status,
-                'price' => $hotel->price,
-                'name' => $hotel->name,
-                'short_description' => $hotel->short_description,
-                'custom_order' => $hotel->custom_order
-            ), array(
-                'id' => $hotel->id,
-                'blog_id' => $current_blog_id
-            ));
+        if ( isset( $_POST['hotel'] ) ) {
+            $hotel_data = json_decode(stripslashes($_POST['hotel']));
+            $hotel = Activity::withRow($hotel_data);
 
-        }
-        catch (Exception $ex) {
+            $result = $this->hotelRepository->update($hotel);
+            if ( $result ) {
+                $response['success'] = true;
+            }
 
+            return json_encode($hotel);
         }
 
-        return json_encode($hotel);
+        exit;
+
     }
 
+    /**
+     * @param $id
+     * @return false|string
+     */
+    public function deleteHotel($id) {
+
+        $response = array('success' => false);
+
+        $hotel = new Hotel();
+        $hotel->setId($id);
+
+        $result = $this->hotelRepository->remove($hotel);
+        if ( $result ) {
+            $response['success'] = true;
+        }
+
+        header('Content-type: application/json');
+        return json_encode($response);
+
+    }
 }
 
 new EntitiesHotelsController;
