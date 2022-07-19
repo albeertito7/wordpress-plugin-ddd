@@ -117,6 +117,11 @@ class Entities {
         $this->load_models();
 
         /**
+         * Cart
+         */
+        $this->load_cart();
+
+        /**
          * Access model objects and business logic services
          */
         $this->load_services();
@@ -185,6 +190,20 @@ class Entities {
     }
 
     /**
+     * Product Cart
+     */
+    public function load_cart() {
+        $directory = plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/cart/';
+
+        require_once $directory . 'CustomCookie.php';
+        require_once $directory . 'ProductCart.php';
+
+        // initializing
+        CustomCookie::init();
+        ProductCart::init();
+    }
+
+    /**
      * Based on the Repository pattern, and
      * the DAO (Data Access Object) pattern
      */
@@ -213,6 +232,8 @@ class Entities {
         require_once $directory . 'entities-controller.php';
         require_once $directory . 'entities-hotels-controller.php';
         require_once $directory . 'entities-activities-controller.php';
+
+        require_once $directory . 'entities-cart-controller.php';
     }
 
 	/**

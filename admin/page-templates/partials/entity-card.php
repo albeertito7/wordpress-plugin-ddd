@@ -14,7 +14,7 @@ if ( !isset( $package ) ) {
     }
 
     .entity-card > *:last-child {
-        margin-bottom: 0px;
+        margin-bottom: 0;
     }
 
     .card-1 {
@@ -55,7 +55,7 @@ if ( !isset( $package ) ) {
 <div class="entity-card card-1">
 
     <!-- Article -->
-    <article class="" data-id-product="<?php echo $package->getId(); ?>" itemtype="http://schema.org/Product">
+    <article class="" data-id-product="<?php echo $package->getId(); ?>" data-class-product="<?php echo get_class($package); ?>" itemtype="http://schema.org/Product">
 
         <!-- Image -->
         <div class="product-image">

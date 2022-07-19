@@ -8,6 +8,14 @@ if ( !defined('COOKIE_DOMAIN') ) {
     define('COOKIE_DOMAIN', false);
 }
 
+/**
+ * Class CustomCookie
+ *
+ * setCookie: defines a cookie to be sent along with the rest of the HTTP headers.
+ *
+ * Once the cookies have been set, they can be accessed on the next page load with the $_COOKIE array,
+ * moreover cookie values may also exist in $_REQUEST.
+ */
 class CustomCookie {
 
     const EXPIRY_TIME = 21600;
