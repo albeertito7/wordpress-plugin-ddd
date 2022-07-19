@@ -23,6 +23,8 @@ class Product
     var $custom_order;
     var $observations;
 
+    //var $stock;
+
     /**
      * Product constructor.
      */
