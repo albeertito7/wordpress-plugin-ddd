@@ -59,19 +59,16 @@ if ( !isset( $package ) ) {
 
         <!-- Image -->
         <div class="product-image">
-            <!-- Featured Image -->
-            <!-- An image of the item. This can be an URL or a fully described ImageObject -->
+            <!-- Featured Image: An image of the item. This can be an URL or a fully described ImageObject -->
             <img src="<?php echo $package->getFeaturedImage(); ?>" alt="<?php echo $package->getName(); ?>" onerror="this.onerror=null;this.style.display='none';" />
         </div>
 
         <!-- Meta data -->
         <div class="product-meta">
-            <!-- Name -->
-            <!-- The name of the item (Text) -->
+            <!-- Name: The name of the item (Text) -->
             <h3><?php echo $package->getName(); ?></h3>
 
-            <!-- Description -->
-            <!-- A description of the item (Text) -->
+            <!-- Description: A description of the item (Text) -->
             <p><?php echo $package->getShortDescription(); ?></p>
         </div>
 
@@ -81,7 +78,7 @@ if ( !isset( $package ) ) {
             <p><?php echo $package->getPrice(); ?>€</p>
 
             <!-- Action Button -->
-            <button class="btn-buy-now"><?php _e('BUY NOW') ?></button>
+            <button class="btn-buy-now"><?php _e('Add to cart') ?></button>
         </div>
     </article>
 

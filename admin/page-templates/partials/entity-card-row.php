@@ -14,13 +14,15 @@ if ( !isset( $package ) ) {
     }
 
     .entity-card > *:last-child {
-        margin-bottom: 0px;
+        margin-bottom: 0;
     }
 
     .card-1 {
-        width: 600px;
+        display: flex;
+        align-items: center;
+        max-width: 600px;
         height: 200px;
-        padding: 20px 15px;
+        padding: 15px 15px;
         border: 1px solid black;
         border-radius: 10px;
         margin: 40px 20px;
@@ -55,38 +57,35 @@ if ( !isset( $package ) ) {
 <div class="entity-card card-1">
 
     <!-- Article -->
-    <article class="" data-id-product="<?php echo $package->getId(); ?>" itemtype="http://schema.org/Product">
+    <article class="" data-id-product="<?php echo $package->getId(); ?>" itemtype="http://schema.org/Product" style="display: flex; align-items: center;">
 
         <!-- Image -->
-        <div class="product-image" style="display: inline-block">
+        <div class="product-image">
 
-            <!-- Featured Image -->
-            <!-- An image of the item. This can be an URL or a fully described ImageObject -->
-            <img src="<?php echo $package->getFeaturedImage(); ?>" alt="<?php echo $package->getName(); ?>" onerror="this.onerror=null;this.style.display='none';" />
+            <!-- Featured Image: An image of the item. This can be an URL or a fully described ImageObject -->
+            <img src="<?php echo $package->getFeaturedImage(); ?>" alt="<?php echo $package->getName(); ?>" onerror="this.onerror=null;this.style.display='none';" style="padding-right: 20px;"/>
 
         </div>
 
-        <div class="meta-wrapper" style="display: inline-block;">
+        <div class="meta-wrapper" style="min-width: 50%; display: flex; flex-direction: column; justify-content: space-between;">
 
             <!-- Meta data -->
             <div class="product-meta">
-                <!-- Name -->
-                <!-- The name of the item (Text) -->
-                <h3><?php echo $package->getName(); ?></h3>
+                <!-- Name: The name of the item (Text) -->
+                <h3 style="margin-bottom: 5px;"><?php echo $package->getName(); ?></h3>
 
-                <!-- Description -->
-                <!-- A description of the item (Text) -->
+                <!-- Description: A description of the item (Text) -->
                 <p><?php echo $package->getShortDescription(); ?></p>
             </div>
 
             <!-- Shipping -->
-            <div class="product-submit">
+            <div class="product-submit" style="align-self: flex-end;">
 
                 <!-- Price -->
-                <p><?php echo $package->getPrice(); ?>€</p>
+                <p style="margin-bottom: 5px; text-align: right;"><?php echo $package->getPrice(); ?>€</p>
 
                 <!-- Action Button -->
-                <button class="btn-buy-now"><?php _e('BUY NOW') ?></button>
+                <button class="btn-buy-now"><?php _e('Add to cart') ?></button>
             </div>
 
         </div>

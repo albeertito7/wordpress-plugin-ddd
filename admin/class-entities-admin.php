@@ -186,7 +186,13 @@ class Entities_Admin {
 
             $custom_templates = array(
                 'template-landing' => 'Template landing',
-                'template-landing-row' => 'Template landing row'
+                'template-landing-row' => 'Template landing row',
+                'template-packages-landing' => 'Template Packages landing',
+                'template-packages-landing-row' => 'Template Packages landing row',
+                'template-activities-landing' => 'Template Activities landing',
+                'template-activities-landing-row' => 'Template Activities landing row',
+                'template-hotels-landing' => 'Template Hotels landing',
+                'template-hotels-landing-row' => 'Template Hotels landing row',
             );
 
             foreach ($custom_templates as $key => $template) {
@@ -210,6 +216,24 @@ class Entities_Admin {
                     break;
                 case 'template-landing-row':
                     return $directory . 'template-landing-row.php';
+                    break;
+                case 'template-packages-landing':
+                    return $directory . 'template-packages-landing.php';
+                    break;
+                case 'template-packages-landing-row':
+                    return $directory . 'template-packages-landing-row.php';
+                    break;
+                case 'template-activities-landing':
+                    return $directory . 'template-activities-landing.php';
+                    break;
+                case 'template-activities-landing-row':
+                    return $directory . 'template-activities-landing-row.php';
+                    break;
+                case 'template-hotels-landing':
+                    return $directory . 'template-hotels-landing.php';
+                    break;
+                case 'template-hotels-landing-row':
+                    return $directory . 'template-hotels-landing-row.php';
                     break;
             }
 
