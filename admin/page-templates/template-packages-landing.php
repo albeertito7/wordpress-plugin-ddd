@@ -6,6 +6,10 @@
 $packageRepository = PackageRepository::getInstance();
 $packages = $packageRepository->findAll();
 
+/*ProductCart::clear();
+$cart = ProductCart::get();
+print_r($cart);*/
+
 // adds the header built upon the theme builder to the page
 get_header();
 

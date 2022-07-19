@@ -78,7 +78,7 @@ if ( !isset( $package ) ) {
             <p><?php echo $package->getPrice(); ?>€</p>
 
             <!-- Action Button -->
-            <button class="btn-buy-now"><?php _e('Add to cart') ?></button>
+            <button class="btn-add-to-cart"><?php _e('Add to cart') ?></button>
         </div>
     </article>
 

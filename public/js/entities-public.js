@@ -29,4 +29,23 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$(document).ready(function () {
+
+		$(".btn-add-to-cart").click(function () {
+
+			$.ajax({
+				url: 'http://localhost/multisite/wp-admin/admin-ajax.php',
+				dataType: "json",
+				type: "post",
+				data: {
+					action: "entities_cart_controller",
+					type: "addProduct",
+					id: '8',
+					class: 'Package'
+				}
+			});
+		});
+
+	});
+
 })( jQuery );
