@@ -1,7 +1,7 @@
 const utils_deps = {
     _document: document,
     _jQuery: jQuery.noConflict() || $
-}
+};
 
 const utils = (function (_deps) {
 
