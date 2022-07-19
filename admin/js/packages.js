@@ -28,7 +28,7 @@
                         .done(function (response) {
                             options.success(response);
                         })
-                        .error(function (jqXHR, textStatus, errorThrown) {
+                        .fail(function (jqXHR, textStatus, errorThrown) {
                             options.error(jqXHR);
                         })
                         .always(function () {
@@ -225,7 +225,7 @@
                                 }).done(function (response) {
                                     console.log("ajax deletePackage done");
                                     $("#grid").data("kendoGrid").dataSource.read();
-                                }).fail(function (response) {
+                                }).error(function (response) {
                                     console.log("ajax deletePackage fail");
                                 }).always(function (response) {
                                     //closeLoading();
