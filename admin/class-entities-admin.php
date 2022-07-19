@@ -193,6 +193,7 @@ class Entities_Admin {
                 'template-activities-landing-row' => 'Template Activities landing row',
                 'template-hotels-landing' => 'Template Hotels landing',
                 'template-hotels-landing-row' => 'Template Hotels landing row',
+                'template-cart' => 'Template Cart'
             );
 
             foreach ($custom_templates as $key => $template) {
@@ -234,6 +235,9 @@ class Entities_Admin {
                     break;
                 case 'template-hotels-landing-row':
                     return $directory . 'template-hotels-landing-row.php';
+                    break;
+                case 'template-cart':
+                    return $directory . 'template-cart.php';
                     break;
             }
 
