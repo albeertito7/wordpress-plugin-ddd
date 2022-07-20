@@ -10,9 +10,8 @@ class ProductCart
     const KEY_NAME = "entities_cart";
 
     // static in memory
-    private static $wp_session;
+    //private static $wp_session;
     private static $cart = [];
-    private static $it;
 
     /**
      * Sets a new cart to the cookies session
@@ -67,7 +66,7 @@ class ProductCart
         self::$cart[$class][$id] = [
             //'serializedProduct' => $serializedProduct,
             'qty' => $qty,
-            'max' => $max
+            //'max' => $max
         ];
 
         self::storeCart();
@@ -91,7 +90,7 @@ class ProductCart
 
         if ( isset( self::$cart[$class][$id] ) ) {
 
-            if ( qty == 0 ) {
+            if ( $qty == 0 ) {
                 self::removeProduct($id, $class);
             }
             else {
@@ -120,12 +119,18 @@ class ProductCart
 
     /**
      * @return int
+     *
+     * Return the number of products.
      */
     public static function size() {
 
         $countProducts = 0;
 
-        return count(self::$cart);
+        foreach(self::$cart as $key => $array) {
+            $countProducts += count($array);
+        }
+
+        return $countProducts;
     }
 
     /**
