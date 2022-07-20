@@ -33,6 +33,10 @@
 
 		$(".btn-add-to-cart").click(function () {
 
+			let article = $(this).closest("article"),
+				article_id = article.attr("data-id-product"),
+				article_class = article.attr("data-class-product");
+
 			$.ajax({
 				url: 'http://localhost/multisite/wp-admin/admin-ajax.php',
 				dataType: "json",
@@ -40,8 +44,8 @@
 				data: {
 					action: "entities_cart_controller",
 					type: "addProduct",
-					id: '8',
-					class: 'Package'
+					id: article_id,
+					class: article_class
 				}
 			});
 		});
