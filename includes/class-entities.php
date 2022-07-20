@@ -198,8 +198,18 @@ class Entities {
         require_once $directory . 'CustomCookie.php';
         require_once $directory . 'ProductCart.php';
 
+        // checking defined constants
+        // WordPress constants at wp-includes/ms-default-constants.php
+        if ( !defined('COOKIEPATH') ) {
+            define('COOKIEPATH', preg_replace('|https?://[^/]+|i', '', get_option('home') . '/' ) );
+        }
+
+        if ( !defined('COOKIE_DOMAIN') ) {
+            define('COOKIE_DOMAIN', false);
+        }
+
         // initializing
-        CustomCookie::init();
+        CustomCookie::init(COOKIEPATH, COOKIE_DOMAIN);
         ProductCart::init();
     }
 
