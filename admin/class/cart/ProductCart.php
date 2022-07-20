@@ -21,7 +21,8 @@ class ProductCart
         //self::$wp_session[self::KEY_NAME] = base64_encode(json_encode(self::$cart));
         //CustomCookie::set(self::KEY_NAME, self::size());
 
-        CustomCookie::set(self::KEY_NAME, json_encode(self::$cart));
+        CustomCookie::set(self::KEY_NAME, base64_encode(json_encode(self::$cart)));
+        //CustomCookie::set(self::KEY_NAME, json_encode(self::$cart));
     }
 
     /**
@@ -33,7 +34,8 @@ class ProductCart
         //CustomCookie::set(self::KEY_NAME, self::size());
 
         self::$cart = json_decode($_COOKIE[self::KEY_NAME], true);
-        CustomCookie::set(self::KEY_NAME, json_encode(self::$cart));
+        CustomCookie::set(self::KEY_NAME, base64_decode(json_encode(self::$cart)));
+        //CustomCookie::set(self::KEY_NAME, json_encode(self::$cart));
     }
 
     public static function init() {
@@ -101,7 +103,10 @@ class ProductCart
 
     }
 
-    public static function get() {
+    /**
+     * @return array
+     */
+    public static function collect() {
         return self::$cart;
     }
 
