@@ -28,7 +28,7 @@ get_header();
         <?php foreach($packages as $package) {
 
             if ( $package->getStatus() == "publish" ) {
-                Utils::includeCustom(plugin_dir_path(__FILE__) . 'partials/entity-card-row.php', array(
+                Utils::includeCustom(plugin_dir_path(__FILE__) . 'partials/entity-card.php', array(
                     'package' => $package // cast to product for the entity-card
                 ));
             }
