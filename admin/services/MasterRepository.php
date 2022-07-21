@@ -60,6 +60,13 @@ abstract class MasterRepository implements ProductRepository {
     }
 
     /**
+     * @return ProductId
+     */
+    protected function generateId() {
+        return ProductId::generate();
+    }
+
+    /**r
      * @return int
      */
     public function size() {
