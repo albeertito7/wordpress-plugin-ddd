@@ -35,6 +35,14 @@ if ( class_exists( 'Entities' ) ) {
     die;
 }
 
+// checking Composer autoloader
+if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+else {
+    die;
+}
+
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
