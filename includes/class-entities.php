@@ -129,12 +129,12 @@ class Entities {
         /**
          * Request handlers
          */
-		$this->load_controllers();
+        $this->load_controllers();
 
         /**
          * Hook custom loader
          */
-		$this->loader = new Entities_Loader();
+        $this->loader = new Entities_Loader();
 	}
 
     /**
