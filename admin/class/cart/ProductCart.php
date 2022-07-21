@@ -74,7 +74,7 @@ class ProductCart
 
     /**
      * @param $id
-     * @param $type
+     * @param $class
      */
     public static function removeProduct($id, $class) {
         unset(self::$cart[$class][$id]);
@@ -83,7 +83,7 @@ class ProductCart
 
     /**
      * @param $id
-     * @param $type
+     * @param $class
      * @param $qty
      */
     public static function updateProduct($id, $class, $qty) {
@@ -110,7 +110,8 @@ class ProductCart
     }
 
     /**
-     *
+     * Clears up the cart in memory, and
+     * resets the cookie management
      */
     public static function clear() {
         self::$cart = [];
@@ -141,7 +142,7 @@ class ProductCart
     }
 
     /**
-     * For debugging purposes.
+     * For debugging/testing purposes.
      */
     public static function debug() {
         var_dump(self::$cart);
