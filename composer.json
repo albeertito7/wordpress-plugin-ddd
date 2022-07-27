@@ -11,7 +11,8 @@
     "authors": [
         {
             "name": "albert",
-            "email": "albertperez@compsaonline.com"
+            "email": "albertperez@compsaonline.com",
+            "homepage": "https://albeertito7.github.io"
         }
     ],
     "require": {
