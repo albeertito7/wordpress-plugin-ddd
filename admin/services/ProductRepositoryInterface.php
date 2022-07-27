@@ -18,4 +18,6 @@ interface ProductRepository {
     public function size();
     public function isEmpty();
 
+    public function generateId();
+
 }
