@@ -55,6 +55,7 @@ class EntitiesController extends MasterController
 
         // creation package object
         $package = new Package();
+        //$package->setId($this->packageRepository->generateId()); // generating id as uuid at the application logic
         $package->setStatus($_POST['status']);
         $package->setName($_POST['name']);
         $package->setShortDescription($_POST['short_description']);
@@ -93,7 +94,6 @@ class EntitiesController extends MasterController
     /**
      * @param bool $json_encode
      * @return array|false|string
-     * @throws Exception
      */
     public function getPackages($json_encode=false) {
 
