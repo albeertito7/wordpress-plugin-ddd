@@ -4,6 +4,7 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * Class ProductId
+ * Base idea: it's possible to fill an entity with all data including the id without the help of the database.
  *
  * PHP final class: prevents overriding a method of the child classes just by the final prefix with the definition.
  */
@@ -13,10 +14,10 @@ final class ProductId implements JsonSerializable
     private $id;
 
     /**
-     * @param $str
-     * @constructor
+     * ProductId constructor.
+     * @param $id
      */
-    private function __contruct($id) {
+    private function __construct($id) {
 
         if ( strlen( $id ) === 0 ) {
             throw new InvalidArgumentException('The given id should not be empty');
@@ -25,11 +26,14 @@ final class ProductId implements JsonSerializable
         $this->id = $id;
     }
 
-    private static function isValid($guid) {
+    /**
+     * @param $uuid
+     */
+    private static function isValid($uuid) {
         //$guid = 'A98C5A1E-A742-4808-96FA-6F409E799937';
 
         // preg_match => performs a regular expression match
-        if (preg_match('/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $guid)) {
+        if (preg_match('/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $uuid)) {
             var_dump('ok');
         } else {
             var_dump('not ok');
