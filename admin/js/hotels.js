@@ -1,3 +1,10 @@
+/**
+ * Dependencies:
+ *  - jQuery
+ *  - my_vars
+ *  - kendo
+ */
+
 (function( $ ) {
 
     const statusEntityTypes = [
@@ -6,7 +13,8 @@
         { id: 'pending', text: 'pending' }
     ];
 
-    $(document).ready(function () {
+    // document.ready
+    $(function () {
         debugger;
 
         function getAvailability() {
@@ -21,54 +29,68 @@
             });
         }
 
+        function updateAvailability(data_json) {
+            return $.ajax({
+                url: my_vars.ajaxurl,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    action: "entities_hotels_controller",
+                    type: "updateGridHotel",
+                    hotel: JSON.stringify(data_json)
+                }
+            });
+        }
+
         let dataSource = new kendo.data.DataSource({
             transport: {
-                read: function (options) {
-                    $.when(getAvailability())
-                        .done(function (response) {
-                            options.success(response);
-                        })
-                        .error(function (jqXHR, textStatus, errorThrown) {
-                            options.error(jqXHR);
-                        })
-                        .always(function () {
-                        });
-                },
-                create: function (options) {
+                create: () => {
                     location.href = "admin.php?page=add-hotel";
                 },
-                update: function (options) {
-                    $.ajax({
-                        url: my_vars.ajaxurl,
-                        type: "POST",
-                        dataType: "json",
-                        data: {
-                            action: "entities_hotels_controller",
-                            type: "updateGridHotel",
-                            hotel: kendo.stringify(options.data)
-                        },
-                        success: function(result) {
-                            options.success(result);
-                        },
-                        error: function(result) {
-                            options.error(result);
-                        }
-                    });
+                read: options => {
+                    $.when(getAvailability())
+                        .done((response) => {
+                            options.success(response);
+                        })
+                        .fail((error) => {
+                            options.error(error.jqXHR);
+                        })
+                        .always(() => {
+                        });
                 },
-                destroy: function (options) {
+                update: options => {
+                    $.when(updateAvailability(options.data))
+                        .done((response) => {
+                            options.success(response);
+                        }).fail((jqXHR) => {
+                            options.error(jqXHR);
+                        }).always(() => {
+                        });
+                },
+                destroy: () => {
+                    // pass
                 }
             },
-            //batch: true,
-            pageSize: 20,
             autoSync: true,
+            pageSize: 20,
             schema: {
                 model: {
                     id: 'id',
                     fields: {
-                        id: { editable: false },
-                        status: { editable: true },
-                        date_created: { editable: false },
-                        date_modified: { editable: false },
+                        id: {
+                            type: "number",
+                            editable: false
+                        },
+                        status: {
+                            type: "string",
+                            editable: true
+                        },
+                        date_created: {
+                            editable: false
+                        },
+                        date_modified: {
+                            editable: false
+                        },
                         price: {
                             type: 'number',
                             editable: true
@@ -92,10 +114,18 @@
 
         let grid = $("#grid").kendoGrid({
             dataSource: dataSource,
-            columnMenu: {
-                filterable: true
+            toolbar: ["create", "excel"/*, "pdf"*/],
+            pdf: {
+                fileName: "PDF_export.pdf",
+                allPages: true,
+                avoidLinks: true,
+                paperSize: "A4",
+                margin: { right: "0.4cm", top: "1cm", bottom: "1cm", left: "0.4cm" },
+                landscape: true,
+                repeatHeaders: true,
+                //template: $("#page-template").html(),
+                scale: 0.4
             },
-            //height: 680,
             pageable: {
                 refresh: true,
                 info: true,
@@ -109,26 +139,14 @@
                     last: "Last"
                 }
             },
-            sortable: true,
             resizable: true,
-            /*reorderable: {
-                columns: true
-            },*/
+            columnMenu: true,
+            sortable: true,
+            filterable: true,
+            reorderable: true,
             editable: "incell",
-            //filterable: true,
             dataBound: onDataBound,
-            toolbar: ["create", "excel"/*, "pdf"*/],
-            pdf: {
-                fileName: "PDF_export.pdf",
-                allPages: true,
-                avoidLinks: true,
-                paperSize: "A4",
-                margin: { right: "0.4cm", top: "1cm", bottom: "1cm", left: "0.4cm" },
-                landscape: true,
-                repeatHeaders: true,
-                //template: $("#page-template").html(),
-                scale: 0.4
-            },
+            //height: 680,
             columns: [{
                 field: 'id',
                 title: 'ID'
@@ -137,20 +155,21 @@
                 title: 'Status',
                 width: 100,
                 template: function(dataItem) {
-                    for (var i = 0; i < statusEntityTypes.length; i++) {
+                    return dataItem.status; // as the ID corresponds to the text itself
+                    /*for (let i = 0; i < statusEntityTypes.length; i++) {
                         if (statusEntityTypes[i].id === dataItem.status) {
                             return statusEntityTypes[i].text;
                         }
-                    }
+                    }*/
                 },
                 editor: function (container) {
-                    var input = $('<input id="status" name="status">');
+                    let input = $('<input id="status" name="status">');
                     input.appendTo(container);
                     input.kendoDropDownList({
                         dataSource: statusEntityTypes,
-                        dataTextField: "text",
-                        dataValueField: "id"
-                    }).appendTo(container);
+                        dataValueField: "id",
+                        dataTextField: "text"
+                    });
                 }
             }, {
                 field: 'date_created',
@@ -205,7 +224,7 @@
                                 //openLoading("<h4>Deleting...</h4>");
 
                                 let uid = $(e.target).closest("tr").attr('data-uid');
-                                let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid(uid);
+                                let dataItem = dataSource.getByUid(uid);
 
                                 $.post({
                                     url: my_vars.ajaxurl,
@@ -215,10 +234,14 @@
                                         type: "deleteHotel",
                                         id: dataItem.id
                                     }
-                                }).done(function (response) {
-                                    $("#grid").data("kendoGrid").dataSource.read();
-                                }).error(function (response) {
-                                }).always(function (response) {
+                                }).done((response) => {
+                                    console.log("done delete");
+                                    grid.dataSource.read();
+                                }).fail((error) => {
+                                    console.log(error);
+                                    console.log("fail delete");
+                                }).always(() => {
+                                    console.log("always delete");
                                     //closeLoading();
                                 });
                             }
@@ -230,7 +253,6 @@
 
         function onDataBound(e) {
             // fit columns
-            //let grid = $("#grid").data("kendoGrid");
             grid.autoFitColumn(0);
             //grid.autoFitColumn(1);
             grid.autoFitColumn(2);
@@ -239,68 +261,15 @@
             grid.autoFitColumn(7);
             grid.autoFitColumn(8);
 
-            // listeners
-            //addEventListeners();
-
             // scrollbar
             toggleScrollbar(e);
-
-        };
-
-        function addEventListeners() {
-
-            /*$(".edit-package").click(function () {
-
-                let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid($(this).closest("tr").attr("data-uid"));
-                location.href = "admin.php?page=add-package&id=" + dataItem.id;
-            });*/
-
-            $(".copy-package").click(function () {
-                let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid($(this).closest("tr").attr("data-uid"));
-                location.href = "admin.php?page=add-hotel&copyid=" + dataItem.id;
-            });
-
-            $(".delete-package").click(function () {
-
-                swal.fire({
-                    icon: "warning",
-                    showConfirmButton: true,
-                    showCancelButton: true,
-                    html: '<h4>Are you sure?</h4>',
-                    confirmButtonText: 'Yes, I am sure',
-                    cancelButtonText: "No, cancel it!"
-                }).then((result) => {
-                    if(result.isConfirmed) {
-
-                        //openLoading("<h4>Deleting...</h4>");
-
-                        let uid = $(this).closest("tr").attr('data-uid');
-                        let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid(uid);
-
-                        $.post({
-                            url: my_vars.ajaxurl,
-                            type: "post",
-                            data: {
-                                action: "entities_hotels_controller",
-                                type: "deleteHotel",
-                                id: dataItem.id
-                            }
-                        }).done(function (response) {
-                            $("#grid").data("kendoGrid").dataSource.read();
-                        }).error(function (response) {
-                        }).always(function (response) {
-                            //closeLoading();
-                        });
-                    }
-                });
-            });
 
         }
 
         function toggleScrollbar(e) {
             let gridWrapper = e.sender.wrapper, gridTable = e.sender.table, gridArea = gridTable.closest(".k-grid-content");
             gridWrapper.toggleClass("no-scrollbar", gridTable[0].offsetHeight < gridArea[0].offsetHeight)
-        };
+        }
 
         function openLoading(html) {
 
@@ -320,4 +289,4 @@
         }
     });
 
-})( jQuery );
+})( jQuery, kendo, my_vars );
