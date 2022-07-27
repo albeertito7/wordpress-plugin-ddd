@@ -6,7 +6,8 @@
         { id: 'pending', text: 'pending' }
     ];
 
-    $(document).ready(function () {
+    // document ready
+    $(function () {
         debugger;
 
         function getAvailability() {
@@ -28,7 +29,7 @@
                         .done(function (response) {
                             options.success(response);
                         })
-                        .error(function (jqXHR, textStatus, errorThrown) {
+                        .fail(function (jqXHR, textStatus, errorThrown) {
                             options.error(jqXHR);
                         })
                         .always(function () {
