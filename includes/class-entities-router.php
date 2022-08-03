@@ -43,6 +43,9 @@ class EntitiesRouter
                 case 'add-flight':
                     include  $directory . '/page-add-flight.php';
                     break;
+                case 'comments':
+                    include  $directory . '/page-comments.php';
+                    break;
                 default:
                     include  plugin_dir_path( dirname( __FILE__ ) ) . '/admin/partials/entities-admin-display.php';
                     break;

@@ -13,7 +13,10 @@ get_header();
 
     <div id="main-content" style="padding:100px;">
 
+        <?php Utils::includeCustom( plugin_dir_path(__FILE__) . 'partials/cart-icon.php'); ?>
+
         <h2><?php _e('My Hotels'); ?></h2>
+        <span><?php  ?></span>
         <hr />
 
         <div class="package-grid" style="margin-top: 30px; display: flex; justify-content: space-evenly; align-self: center; flex-wrap: wrap;">

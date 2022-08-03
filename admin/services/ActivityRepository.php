@@ -72,7 +72,7 @@ class ActivityRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean or object created
+        return is_int($result_db) && $result_db > 0; // returning boolean or object created
     }
 
     /**
@@ -94,7 +94,7 @@ class ActivityRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false;
+        return is_int($result_db) && $result_db > 0;
     }
 
     /**
@@ -129,7 +129,7 @@ class ActivityRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean or object created
+        return is_int($result_db) && $result_db > 0; // returning boolean or object created
 
     }
 

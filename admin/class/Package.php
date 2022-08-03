@@ -3,7 +3,7 @@
 /**
  * Class Package
  */
-class Package extends Product implements JsonSerializable
+class Package extends Product
 {
     /**
      * Package constructor.
@@ -17,18 +17,9 @@ class Package extends Product implements JsonSerializable
      * @param $row
      * @return Package
      */
-    public static function withRow($row)
+    public static function withRow($row): Package
     {
         $instance = Utils::objectToObject(parent::withRow($row), get_class());
         return $instance;
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize()
-    {
-        return (object) get_object_vars($this);
-    }
-
 }

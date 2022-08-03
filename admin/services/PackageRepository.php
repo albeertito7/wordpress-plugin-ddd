@@ -72,7 +72,7 @@ class PackageRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean or object created
+        return is_int($result_db) && $result_db > 0; // returning boolean or object created
     }
 
     /**
@@ -93,7 +93,7 @@ class PackageRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false;
+        return is_int($result_db) && $result_db > 0;
     }
 
     /**
@@ -128,7 +128,7 @@ class PackageRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean or object created
+        return is_int($result_db) && $result_db > 0; // returning boolean or object created
 
     }
 
@@ -136,7 +136,8 @@ class PackageRepository extends MasterRepository {
      * @return array
      * @throws Exception
      */
-    public function findAll() {
+    public function findAll(): array
+    {
 
         $packages = array();
 

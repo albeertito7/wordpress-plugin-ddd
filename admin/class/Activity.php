@@ -19,7 +19,7 @@ class Activity extends Product
      * @param $row
      * @return Activity
      */
-    public static function withRow($row)
+    public static function withRow($row): Activity
     {
         $instance = Utils::objectToObject(parent::withRow($row), get_class());
         return $instance;

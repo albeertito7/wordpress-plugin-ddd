@@ -5,8 +5,8 @@
  */
 class Hotel extends Product
 {
-    var $date_entrance;
-    var $date_leave;
+    private $date_entrance;
+    private $date_leave;
 
     /**
      * Hotel constructor.
@@ -24,7 +24,7 @@ class Hotel extends Product
      * @param $row
      * @return Hotel
      */
-    public static function withRow($row)
+    public static function withRow($row): Hotel
     {
         /*$instance = new self(parent::withRow($row));
         $instance->date_entrance = $row->date_entrance;

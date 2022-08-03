@@ -19,7 +19,7 @@ class EntitiesCartController extends MasterController
 
             switch ($action) {
                 case "addProduct":
-                    $this->addProduct();
+                    echo $this->addProduct();
                     break;
                 case "deleteProduct":
                     $this->deleteProduct();
@@ -44,7 +44,9 @@ class EntitiesCartController extends MasterController
             $max = 1;
 
             // adding the id
-            ProductCart::addProduct($id, $class, $qty, $max);
+            $size = ProductCart::addProduct($id, $class, $qty, $max);
+
+            return $size;
 
         }
     }

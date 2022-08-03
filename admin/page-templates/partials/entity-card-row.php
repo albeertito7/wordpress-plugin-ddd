@@ -57,7 +57,7 @@ if ( !isset( $package ) ) {
 <div class="entity-card card-1">
 
     <!-- Article -->
-    <article class="" data-id-product="<?php echo $package->getId(); ?>" itemtype="http://schema.org/Product" style="display: flex; align-items: center;">
+    <article class="" data-id-product="<?php echo $package->getId(); ?>" data-class-product="<?php echo get_class($package); ?>" itemtype="http://schema.org/Product" style="display: flex; align-items: center;">
 
         <!-- Image -->
         <div class="product-image">

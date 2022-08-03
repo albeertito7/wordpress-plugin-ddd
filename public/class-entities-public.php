@@ -52,7 +52,15 @@ class Entities_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+        //add_action( 'widgets_init' , array($this, 'remove_search_widget') );
+
+        //add_filter('wp_nav_menu_items', array($this, 'menuProgrammatically') );
+
 	}
+
+    /*public function remove_search_widget() {
+        unregister_widget('WP_Widget_Search');
+    }*/
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
@@ -96,7 +104,16 @@ class Entities_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/entities-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name . '_public', plugin_dir_url( __FILE__ ) . 'js/entities-public.js', array( 'jquery' ), $this->version, false );
+        wp_localize_script( $this->plugin_name . '_public', 'my_vars', array(
+            'ajaxurl' => admin_url( 'admin-ajax.php' )
+        ));
 	}
+
+    public function menuProgrammatically($items): string
+    {
+        $num = ProductCart::size();
+        return "<li><a href='/multisite/cart/'>Cart: <span class='entities_cart_num'>$num</span></a></li>";
+    }
 
 }

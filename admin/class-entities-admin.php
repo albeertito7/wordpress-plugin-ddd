@@ -102,8 +102,8 @@ class Entities_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/entities-admin.js', array( 'jquery' ), $this->version, false );
-        wp_localize_script( $this->plugin_name, 'my_vars', array(
+		wp_enqueue_script( $this->plugin_name . '_admin', plugin_dir_url( __FILE__ ) . 'js/entities-admin.js', array( 'jquery' ), $this->version, false );
+        wp_localize_script( $this->plugin_name . '_admin', 'my_vars', array(
             'ajaxurl' => admin_url( 'admin-ajax.php' )
         ));
 
@@ -119,6 +119,9 @@ class Entities_Admin {
                     break;
                 case "activities":
                     wp_enqueue_script( "script-entities-activities", plugin_dir_url( __FILE__ ) . 'js/activities.js', array( 'jquery' ), $this->version, false );
+                    break;
+                case "comments":
+                    wp_enqueue_script( "script-entities-comments", plugin_dir_url( __FILE__ ) . 'js/comments.js', array( 'jquery' ), $this->version, false );
                     break;
             }
 
@@ -168,6 +171,9 @@ class Entities_Admin {
         // Activities
         add_submenu_page('travel-manager', 'Activities', 'Activitites', 'administrator', 'activities', array($this->router, 'match_request'), 4);
         add_submenu_page('activities', 'Add an activity', 'Add an activity', 'administrator', 'add-activity', array($this->router, 'match_request'), -1);
+
+        // Comments
+        add_submenu_page('travel-manager', 'Comments', 'Comments', 'administrator', 'comments', array($this->router, 'match_request'), 5);
 
         // Flights
         //add_submenu_page('travel-manager', 'Flights', 'Flights', 'administrator', 'flights', array($this->router, 'match_request'), 5);

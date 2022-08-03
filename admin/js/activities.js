@@ -138,7 +138,7 @@
                 title: 'Status',
                 width: 100,
                 template: function(dataItem) {
-                    for (var i = 0; i < statusEntityTypes.length; i++) {
+                    for (let i = 0; i < statusEntityTypes.length; i++) {
                         if (statusEntityTypes[i].id === dataItem.status) {
                             return statusEntityTypes[i].text;
                         }

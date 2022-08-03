@@ -7,12 +7,6 @@
 
 (function( $ ) {
 
-    const statusEntityTypes = [
-        { id: 'publish', text: 'publish' },
-        { id: 'draft', text: 'draft' },
-        { id: 'pending', text: 'pending' }
-    ];
-
     // document.ready
     $(function () {
         debugger;
@@ -20,11 +14,11 @@
         function getAvailability() {
             return $.ajax({
                 url: my_vars.ajaxurl,
-                type: "post",
                 dataType: "json",
+                type: "post",
                 data: {
-                    action: "entities_hotels_controller",
-                    type: "getHotels"
+                    action: "entities_comments_controller",
+                    type: "getComments"
                 }
             });
         }
@@ -32,11 +26,11 @@
         function updateAvailability(data_json) {
             return $.ajax({
                 url: my_vars.ajaxurl,
-                type: "post",
+                type: "POST",
                 dataType: "json",
                 data: {
-                    action: "entities_hotels_controller",
-                    type: "updateGridHotel",
+                    action: "entities_comments_controller",
+                    type: "updateGridComment",
                     hotel: JSON.stringify(data_json)
                 }
             });
@@ -45,7 +39,7 @@
         let dataSource = new kendo.data.DataSource({
             transport: {
                 create: () => {
-                    location.href = "admin.php?page=add-hotel";
+                    // pass
                 },
                 read: options => {
                     $.when(getAvailability())
@@ -63,9 +57,9 @@
                         .done((response) => {
                             options.success(response);
                         }).fail((jqXHR) => {
-                            options.error(jqXHR);
-                        }).always(() => {
-                        });
+                        options.error(jqXHR);
+                    }).always(() => {
+                    });
                 },
                 destroy: () => {
                     // pass
@@ -81,32 +75,25 @@
                             type: "number",
                             editable: false
                         },
-                        status: {
-                            type: "string",
-                            editable: true
-                        },
                         date_created: {
                             editable: false
                         },
-                        date_modified: {
+                        author: {
+                            type: "string",
                             editable: false
                         },
-                        price: {
-                            type: 'number',
-                            editable: true
-                        },
-                        name: {
+                        email: {
                             type: "string",
-                            editable: true
+                            editable: false
                         },
-                        short_description: {
+                        phone: {
                             type: "string",
-                            editable: true
+                            editable: false
                         },
-                        custom_order: {
-                            type: "number",
-                            editable: true
-                        },
+                        message: {
+                            type: "string",
+                            editable: false
+                        }
                     }
                 }
             }
@@ -131,8 +118,8 @@
                 info: true,
                 pageSizes: [5, 10, 15, 20, "all"],
                 messages: {
-                    empty: "No hotels",
-                    itemsPerPage: "Hotels per page",
+                    empty: "No comments",
+                    itemsPerPage: "Comments per page",
                     previous: "Previous",
                     next: "Next",
                     first: "First",
@@ -151,62 +138,23 @@
                 field: 'id',
                 title: 'ID'
             }, {
-                field: 'status',
-                title: 'Status',
-                width: 100,
-                template: function(dataItem) {
-                    return dataItem.status; // as the ID corresponds to the text itself
-                    /*for (let i = 0; i < statusEntityTypes.length; i++) {
-                        if (statusEntityTypes[i].id === dataItem.status) {
-                            return statusEntityTypes[i].text;
-                        }
-                    }*/
-                },
-                editor: function (container) {
-                    let input = $('<input id="status" name="status">');
-                    input.appendTo(container);
-                    input.kendoDropDownList({
-                        dataSource: statusEntityTypes,
-                        dataValueField: "id",
-                        dataTextField: "text"
-                    });
-                }
-            }, {
                 field: 'date_created',
                 title: 'Date created',
                 type: 'date'
             }, {
-                field: 'date_modified',
-                title: 'Date modified',
-                type: 'date'
-            }, {
-                field: 'price',
-                title: 'Price (€)'
+                field: 'author',
+                title: 'Author'
             },{
-                field: 'name',
-                title: 'Name'
-            },{
-                field: 'short_description',
-                title: 'Short Description',
+                field: 'email',
+                title: 'Email',
             }, {
-                field: 'custom_order',
-                title: 'Order'
+                field: 'phone',
+                title: 'Phone'
+            }, {
+                field: 'message',
+                title: 'Message'
             }, {
                 command: [{
-                    name: "edit",
-                    click: function (e) {
-                        // command button click handler
-                        let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid($(e.target).closest("tr").attr("data-uid"));
-                        location.href = "admin.php?page=add-hotel&id=" + dataItem.id;
-                    }
-                }, {
-                    name: "copy",
-                    iconClass: "k-icon k-i-copy",
-                    click: function (e) {
-                        let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid($(e.target).closest("tr").attr("data-uid"));
-                        location.href = "admin.php?page=add-hotel&copyid=" + dataItem.id;
-                    }
-                }, {
                     name: "remove",
                     text: "Delete",
                     iconClass: "k-icon k-i-close",
@@ -230,8 +178,8 @@
                                     url: my_vars.ajaxurl,
                                     type: "post",
                                     data: {
-                                        action: "entities_hotels_controller",
-                                        type: "deleteHotel",
+                                        action: "entities_comments_controller",
+                                        type: "deleteComment",
                                         id: dataItem.id
                                     }
                                 }).done((response) => {
@@ -254,12 +202,12 @@
         function onDataBound(e) {
             // fit columns
             grid.autoFitColumn(0);
-            //grid.autoFitColumn(1);
+            grid.autoFitColumn(1);
             grid.autoFitColumn(2);
             grid.autoFitColumn(3);
             grid.autoFitColumn(4);
-            grid.autoFitColumn(7);
-            grid.autoFitColumn(8);
+            //grid.autoFitColumn(5);
+            grid.autoFitColumn(6);
 
             // scrollbar
             toggleScrollbar(e);

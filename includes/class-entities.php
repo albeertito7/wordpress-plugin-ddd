@@ -138,7 +138,7 @@ class Entities {
 	}
 
     /**
-     * Public domain
+     * Public domain.
      */
     private function define_public_domain() {
 
@@ -153,7 +153,7 @@ class Entities {
     }
 
     /**
-     * Admin domain
+     * Admin domain.
      */
     private function define_admin_domain() {
 
@@ -163,7 +163,7 @@ class Entities {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-entities-admin.php';
 
         /**
-         * Custom Router
+         * Custom Router.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-entities-router.php';
 
@@ -183,6 +183,7 @@ class Entities {
         require_once $directory . 'Package.php';
         require_once $directory . 'Hotel.php';
         require_once $directory . 'Activity.php';
+        require_once $directory . 'Comment.php';
 
         // Product Value Objects
         //require_once $directory . 'product/ProductId.php';
@@ -190,7 +191,7 @@ class Entities {
     }
 
     /**
-     * Product Cart
+     * Product Cart.
      */
     public function load_cart() {
         $directory = plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/cart/';
@@ -229,6 +230,8 @@ class Entities {
         require_once $directory . 'PackageRepository.php';
         require_once $directory . 'ActivityRepository.php';
         require_once $directory . 'HotelRepository.php';
+
+        require_once $directory . 'CommentRepository.php';
     }
 
     /**
@@ -244,6 +247,7 @@ class Entities {
         require_once $directory . 'entities-activities-controller.php';
 
         require_once $directory . 'entities-cart-controller.php';
+        require_once $directory . 'entities-comments-controller.php';
     }
 
 	/**

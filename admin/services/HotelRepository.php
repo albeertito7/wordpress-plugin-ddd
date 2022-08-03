@@ -72,7 +72,7 @@ class HotelRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean or object created
+        return is_int($result_db) && $result_db > 0; // returning boolean or object created
     }
 
     /**
@@ -94,14 +94,15 @@ class HotelRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false;
+        return is_int($result_db) && $result_db > 0;
     }
 
     /**
-     * @param $activity
+     * @param $hotel
      * @return bool
      */
-    public function update($hotel) {
+    public function update($hotel): bool
+    {
 
         // data: status, name, short_description, description, featured_image, observations, custom_order, price
         $result_db = false;
@@ -129,14 +130,15 @@ class HotelRepository extends MasterRepository {
 
         }
 
-        return is_int($result_db) && $result_db > 0 ? true : false; // returning boolean or object created
+        return is_int($result_db) && $result_db > 0; // returning boolean or object created
 
     }
 
     /**
      * @return array
      */
-    public function findAll() {
+    public function findAll(): array
+    {
 
         $hotels = array();
 
@@ -158,9 +160,10 @@ class HotelRepository extends MasterRepository {
 
     /**
      * @param $id
-     * @return Activity|null
+     * @return Hotel|null
      */
-    public function findById($id) {
+    public function findById($id): ?Hotel
+    {
 
         $hotel = null;
 

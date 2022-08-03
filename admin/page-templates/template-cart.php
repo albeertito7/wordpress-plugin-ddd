@@ -6,18 +6,34 @@ $cart = ProductCart::collect();
 $activity = $cart['Activity'];
 $hotels = $cart['Hotel'];*/
 
-$repo = PackageRepository::getInstance();
+$repo_package = PackageRepository::getInstance();
+$repo_hotel = HotelRepository::getInstance();
+$repo_activity = ActivityRepository::getInstance();
 
 // adds the header built upon the theme builder to the page
 get_header();
 
 ?>
 
+<style>
+
+    .contact_feedback {
+        outline: none;
+        padding: 8px 40px;
+        color: white;
+        float: right;
+        font-size: 25px;
+    }
+
+</style>
+
 <div id="main-content" style="padding:100px;">
+
+    <button class="contact_feedback">Contact</button>
 
     <?php foreach($cart as $class => $products) { ?>
 
-        <h2><?php _e('My ' . $class); ?></h2>
+        <h2><?php _e($class . ' Cart'); ?></h2>
         <hr />
 
         <!-- Packages Grid -->
@@ -25,7 +41,18 @@ get_header();
 
             <?php foreach($products as $id => $cart_info) {
 
-                $product = $repo->findById($id);
+                $product = null;
+                switch ($class) {
+                    case 'Package':
+                       $product = $repo_package->findById($id);
+                        break;
+                    case 'Hotel':
+                        $product = $repo_hotel->findById($id);
+                        break;
+                    case 'Activity':
+                        $product = $repo_activity->findById($id);
+                        break;
+                }
 
                 if ( $product->getStatus() == "publish" ) {
                     Utils::includeCustom(plugin_dir_path( __FILE__ ) . 'partials/entity-card.php', array(
@@ -48,4 +75,9 @@ the_content();
 
 ?>
 
-<?php get_footer(); ?>
+<?php
+Utils::includeCustom(plugin_dir_path( __FILE__ ) . 'partials/cart-contact-form.php');
+
+get_footer();
+
+?>

@@ -6,24 +6,23 @@
  * Don't echo or die in classes, as it takes options away from the calling classes
  * (they can't change the output, they can't recover from errors, etc).
  */
-class Product
+class Product implements JsonSerializable
 {
     // properties
-    var $id;
-    var $blog_id;
-    var $author_id;
-    var $date_created;
-    var $date_modified;
-    var $status;
-    var $name;
-    var $short_description;
-    var $description;
-    var $price;
-    var $featured_image;
-    var $custom_order;
-    var $observations;
-
-    //var $stock;
+    private $id;
+    private $blog_id;
+    private $author_id;
+    private $date_created;
+    private $date_modified;
+    private $status;
+    private $name;
+    private $short_description;
+    private $description;
+    private $price;
+    private $featured_image;
+    private $custom_order;
+    private $observations;
+    //private $stock;
 
     /**
      * Product constructor.
@@ -37,7 +36,7 @@ class Product
      * @param $row
      * @return Product
      */
-    public static function withRow($row)
+    public static function withRow($row): Product
     {
         $instance = new self();
         $instance->id = $row->id;
@@ -262,6 +261,14 @@ class Product
     public function setFeaturedImage($featured_image)
     {
         $this->featured_image = $featured_image;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return (object) get_object_vars($this);
     }
 
     /*

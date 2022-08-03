@@ -39,7 +39,7 @@
 
 			$.ajax({
 				url: 'http://localhost/multisite/wp-admin/admin-ajax.php',
-				dataType: "json",
+				//dataType: "json",
 				type: "post",
 				data: {
 					action: "entities_cart_controller",
@@ -47,7 +47,29 @@
 					id: article_id,
 					class: article_class
 				}
+			}).done(function (response) {
+				console.log("add cart done");
+				refreshCartIcon(response);
+			}).fail(function (response) {
+				console.log("add cart fail");
+			}).always(function (response) {
+				console.log("add cart always");
 			});
+		});
+
+		function refreshCartIcon(size) {
+			console.log("refreshCartIcon");
+
+			$(".entities_cart_num").html(size);
+
+		}
+
+		$(".contact_feedback").click(function () {
+			// Show form
+		});
+
+		$("form#contact_feedback").submit(function () {
+
 		});
 
 	});

@@ -133,6 +133,20 @@ class Entities_Activator {
             ) $charset_collate;";
 
         dbDelta( $sql );*/
+
+        $table_name = $wpdb->prefix . 'entities_comments';
+        $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+              id mediumint(9) NOT NULL AUTO_INCREMENT,
+              blog_id int NOT NULL,
+              date_created datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+              author tinytext NOT NULL,
+              email tinytext,
+              phone tinytext,
+              message text,
+              PRIMARY KEY  (id)
+            ) $charset_collate;";
+
+        dbDelta( $sql );
 	}
 
 }
