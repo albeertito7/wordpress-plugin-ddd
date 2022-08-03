@@ -156,14 +156,47 @@ class Logger
         return self::add( $message, $name, 'info' );
     }
 
+    /**
+     * Add a log entry with a warning message.
+     *
+     * @param $message
+     * @param $name
+     * @return array|void
+     */
     public static function warning( $message, $name='' ) {
         return self::add( $message, $name, 'warning' );
     }
 
+    /**
+     * Add a log entry with an error.
+     *
+     * @param $message
+     * @param $name
+     * @return array|void
+     */
     public static function error( $message, $name = '' ) {
         return self::add( $message, $name, 'error' );
     }
 
+    /**
+     * Add a log entry with an error - usually followed by script termination.
+     *
+     * @param $message
+     * @param $name
+     * @return array|void
+     */
+    public static function fatal( $message, $name = '' ) {
+        return self::add( $message, $name, 'fatal' );
+    }
+
+    /**
+     * Start counting time, using $name as identifier.
+     *
+     * Returns the start time or false if a time tracker with the same name exists.
+     *
+     * @param string|null $name
+     * @return false|float
+     */
     public static function time( string $name = null ) {
 
         if ( $name == null ) {
@@ -179,6 +212,16 @@ class Logger
         }
     }
 
+    /**
+     * Stop counting time, and create a log entry reporting the elapsed amount of time.
+     *
+     * Returns the total time elapsed for the given time-tracker, or false if the time tracker is not found.
+     *
+     * @param string|null $name
+     * @param int $decimals
+     * @param $level
+     * @return false|string
+     */
     public static function timeEnd( string $name = null, int $decimals = 6, $level = 'debug' ) {
 
         $is_default_timer = $name === null;
@@ -208,12 +251,24 @@ class Logger
         }
     }
 
+    /**
+     * Add an entry to the log.
+     *
+     * This function does not update the pretty log.
+     *
+     * @param $message
+     * @param $name
+     * @param $level
+     * @return array|void
+     */
     public static function add( $message, $name='', $level='debug') {
 
+        /* Check if the logging level severity warrants writing this log */
         if ( self::$log_level_integers[ $level ] > self::$log_level_integers[ self::$log_level ] ) {
             return;
         }
 
+        /* Create the log entry */
         $log_entry = [
             'timestamp' => time(),
             'name' => $name,
@@ -221,12 +276,15 @@ class Logger
             'level' => $level
         ];
 
+        /* Add the lof entry to the incremental log */
         self::$log[] = $log_entry;
 
+        /* Initialize the logger if it hasn't been done already */
         if ( ! self::$logger_ready ) {
             self::init();
         }
 
+        /* Write the log to output, if requested */
         if ( self::$logger_ready && count( self::$output_streams ) > 0 ) {
             $output_line = self::format_log_entry( $log_entry ) . PHP_EOL;
             foreach ( self::$output_streams as $key => $stream ) {
@@ -237,6 +295,12 @@ class Logger
         return $log_entry;
     }
 
+    /**
+     * Take on log entry and return a one-line human-readable string.
+     *
+     * @param array $log_entry
+     * @return string
+     */
     public static function format_log_entry( array $log_entry ): string {
 
         $log_line = "";
@@ -256,6 +320,14 @@ class Logger
         return $log_line;
     }
 
+    /**
+     * Determine whether an where the log needs to be written; executed only once.
+     *
+     * @return {array} - An associative array with the output streams.
+     * The keys are 'output' for STDOUT and the filename for file streams.
+     *
+     * @return void
+     */
     public static function init() {
 
         if ( ! self::$logger_ready ) {
@@ -282,6 +354,19 @@ class Logger
         self::$logger_ready = true;
     }
 
+    /**
+     * Dump the whole log to the given file.
+     *
+     * Useful if you don't know beforehand the name of the log file. Otherwise,
+     * you should use the real-time logging option, that is,
+     * the $write_log or $print_log options.
+     *
+     * The method format_log_entry() is used to format the log.
+     *
+     * @param $file_path - Absolute path of the output file. If empty,
+     * will use the config property $log_file_path.
+     * @return void
+     */
     public static function dump_to_file( $file_path='' ) {
 
         if ( ! $file_path ) {
@@ -301,6 +386,13 @@ class Logger
         }
     }
 
+    /**
+     * Dump the whole log to string, and return it.
+     *
+     * The method format_log_entry() is used to format the log.
+     *
+     * @return string
+     */
     public static function dump_to_string() {
 
         $output = '';
@@ -313,6 +405,11 @@ class Logger
         return $output;
     }
 
+    /**
+     * Empty the log.
+     *
+     * @return void
+     */
     public static function clear_log() {
         self::$log = [];
     }
