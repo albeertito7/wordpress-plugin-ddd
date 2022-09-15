@@ -4,11 +4,113 @@ msgstr ""
 msgid "Entities"
 msgstr "Entities"
 
+msgid "Package"
+msgstr "Package"
+
+msgid "Packages"
+msgstr "Packages"
+
+msgid "Hotel"
+msgstr "Hotel"
+
 msgid "Hotels"
 msgstr "Hotels"
 
-msgid "Flights"
-msgstr "Flights"
+msgid "Activity"
+msgstr "Activity"
+
+msgid "Activities"
+msgstr "Activities"
+
+msgid "Comment"
+msgstr "Comment"
+
+msgid "Comments"
+msgstr "Comments"
 
 msgid "Add"
 msgstr "Add"
+
+msgid "Page"
+msgstr "Page"
+
+msgid "Are you sure?"
+msgstr "Are you sure?"
+
+msgid "Yes, I am sure"
+msgstr "Yes, I am sure"
+
+msgid "No, cancel it!"
+msgstr "No, cancel it!"
+
+msgid "Add Package"
+msgstr "Add Package"
+
+msgid "Add Hotel"
+msgstr "Add Hotel"
+
+msgid "Add Activity"
+msgstr "Add Activity"
+
+msgid "Add name"
+msgstr "Add name"
+
+msgid "Short description"
+msgstr "Short description"
+
+msgid "Add a short description"
+msgstr "Add a short description"
+
+msgid "Price"
+msgstr "Price"
+
+msgid "Order"
+msgstr "Order"
+
+msgid "Custom order to visualize the hotels at the front-end."
+msgstr "Custom order to visualize the hotels at the front-end."
+
+msgid "Insights to be taken into account by the customer."
+msgstr "Insights to be taken into account by the customer."
+
+msgid "Detailed description"
+msgstr "Detailed description"
+
+msgid "Featured image"
+msgstr "Featured image"
+
+msgid "Add Featured Image"
+msgstr "Add Featured Image"
+
+msgid "Delete Featured Image"
+msgstr "Delete Featured Image"
+
+msgid "Observations"
+msgstr "Observations"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Date created"
+msgstr "Date created"
+
+msgid "Date modified"
+msgstr "Date modified"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Draft"
+msgstr "Draft"
+
+msgid "Publish"
+msgstr "Publish"
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Update"
+msgstr "Update"

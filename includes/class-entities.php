@@ -177,17 +177,23 @@ class Entities {
 
         $directory = plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class/';
 
-        require_once $directory . 'Utils.php';
-        require_once $directory . 'Logger.php';
-        require_once $directory . 'Product.php';
-        require_once $directory . 'Package.php';
-        require_once $directory . 'Hotel.php';
-        require_once $directory . 'Activity.php';
-        require_once $directory . 'Comment.php';
+        require_once $directory . 'product/Product.php';
+        require_once $directory . 'product/Package.php';
+        require_once $directory . 'product/Hotel.php';
+        require_once $directory . 'product/Activity.php';
 
         // Product Value Objects
         //require_once $directory . 'product/ProductId.php';
         //require_once $directory . 'product/ProductStatus.php';
+
+        require_once $directory . 'logger/Logger.php';
+
+        // Data Transfer Object
+        //require_once $directory . 'logger/LoggerConfig.php';
+
+        require_once $directory . 'Utils.php';
+        require_once $directory . 'Comment.php';
+
     }
 
     /**

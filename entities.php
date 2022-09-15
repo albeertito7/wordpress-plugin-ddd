@@ -4,7 +4,7 @@
  * The plugin bootstrap file
  *
  * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
+ * admin area. This file also includes all the dependencies used by the plugin,
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
@@ -86,11 +86,16 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-entities.php';
  *
  * @since    1.0.0
  */
-function run_entities() {
-
-	$plugin = new Entities();
+function run_entities()
+{
+	$plugin = new Entities;
 	$plugin->run();
-
 }
 
 run_entities();
+
+/**
+ * The biggest benefits of using namespaces is that the class names which
+ * are declared in one namespaces will not clash with the same class names declared in another namespace.
+ * It is also referred as named group of classes having common features.
+ */

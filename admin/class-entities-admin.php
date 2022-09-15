@@ -71,7 +71,7 @@ class Entities_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Entities_Loader as all of the hooks are defined
+		 * defined in Entities_Loader as all the hooks are defined
 		 * in that particular class.
 		 *
 		 * The Entities_Loader will then create the relationship
@@ -183,10 +183,16 @@ class Entities_Admin {
     /**
      * Adding custom plugin page templates,
      * to visualize the entities at the front-end
+     *
+     * Hook: theme_page_templates
+     *  - Filters list of page templates for a theme.
+     *
+     * Hook: template_include
+     *  - Filters the path of the current template before including it.
      */
     public function add_page_templates() {
 
-        //Add our custom template to the admin's templates dropdown
+        // add our custom template to the admin's templates dropdown
         add_filter( 'theme_page_templates', 'entities_template_as_option', 10, 3 );
         function entities_template_as_option( $page_templates, $theme, $post ) {
 
@@ -209,7 +215,7 @@ class Entities_Admin {
             return $page_templates;
         }
 
-        //When our custom template has been chosen then display it for the page
+        // when our custom template has been chosen then display it for the page
         add_filter( 'template_include', 'entities_load_template', 99 );
         function entities_load_template( $template ) {
 

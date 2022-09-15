@@ -47,6 +47,6 @@ class Entities_i18n {
 		);
 	}
 
-
-
 }
+
+// check language switcher

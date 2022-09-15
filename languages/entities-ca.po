@@ -4,11 +4,110 @@ msgstr ""
 msgid "Entities"
 msgstr "Entitats"
 
+msgid "Package"
+msgstr "Paquet"
+
+msgid "Packages"
+msgstr "Paquets"
+
+msgid "Hotel"
+msgstr "Hotel"
+
 msgid "Hotels"
 msgstr "Hotels"
 
-msgid "Flights"
-msgstr "Vols"
+msgid "Activity"
+msgstr "Activitat"
+
+msgid "Activities"
+msgstr "Activitats"
+
+msgid "Comment"
+msgstr "Comentario"
+
+msgid "Comments"
+msgstr "Comentaris"
 
 msgid "Add"
 msgstr "Afegir"
+
+msgid "Page"
+msgstr "Pàgina"
+
+msgid "Are you sure?"
+msgstr "Estas segur?"
+
+msgid "Yes, I am sure"
+msgstr "Si, estic segur"
+
+msgid "No, cancel it!"
+msgstr "No, cancela-ho"
+
+msgid "Add Package"
+msgstr "Afegir Paquet"
+
+msgid "Add Hotel"
+msgstr "Afegir Hotel"
+
+msgid "Add Activity"
+msgstr "Afegir Activitat"
+
+msgid "Add name"
+msgstr "Afegir nom"
+
+msgid "Short description"
+msgstr "Descripció curta"
+
+msgid "Price"
+msgstr "Preu"
+
+msgid "Order"
+msgstr "Ordre"
+
+msgid "Custom order to visualize the hotels at the front-end."
+msgstr "Ordre personalitzat per visualitzar els hotels en el front-end."
+
+msgid "Insights to be taken into account by the customer."
+msgstr "Idees a tenir en compte pel client."
+
+msgid "Detailed description"
+msgstr "Descripció detallada"
+
+msgid "Featured image"
+msgstr "Imatge destacada"
+
+msgid "Add Featured Image"
+msgstr "Afegir Imatge Destacada"
+
+msgid "Delete Featured Image"
+msgstr "Eliminar Imatge Destacada"
+
+msgid "Observations"
+msgstr "Observacions"
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Date created"
+msgstr "Data de creació"
+
+msgid "Date modified"
+msgstr "Data de modificació"
+
+msgid "Status"
+msgstr "Estat"
+
+msgid "Draft"
+msgstr "Esbós"
+
+msgid "Publish"
+msgstr "Publicat"
+
+msgid "Pending"
+msgstr "Pendent"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Update"
+msgstr "Actualitzar"

@@ -72,6 +72,7 @@
 
 		});
 
+		console.log("JS Public Domain Loaded");
 	});
 
 })( jQuery );

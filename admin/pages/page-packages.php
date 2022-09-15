@@ -4,7 +4,7 @@ $blog_id = get_current_blog_id();
 
 ?>
 
-<style type="text/css">
+<style>
 
     .customer-photo {
         display: inline-block;
@@ -112,7 +112,7 @@ $blog_id = get_current_blog_id();
 
 <div class="wrap">
 
-    <h1 style="margin-bottom: 20px;">Page Packages</h1>
+    <h1 style="margin-bottom: 20px;"><?php _e('Packages', 'entities'); ?></h1>
 
     <div id="grid"></div>
 

@@ -65,7 +65,7 @@ else if ( isset( $_GET['copyid'] ) ) {
                             swal.fire({
                                 icon: 'success',
                                 showConfirmButton: true,
-                                html: '<h4>Package <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
+                                html: '<h4><?php _e('Package', 'entities'); ?> <?php echo ($type == "update") ? "updated" : "created"; ?></h4>'
                             }).then((result) => {
                                 if(result.isConfirmed && "<?php echo $type; ?>" === "create") {
                                     location.href = "admin.php?page=packages";
@@ -73,7 +73,7 @@ else if ( isset( $_GET['copyid'] ) ) {
                             });
                         }
                     })
-                    .error(function (response) {
+                    .fail(function (response) {
                         console.log("fail");
                     })
                     .always(function (response) {
@@ -89,9 +89,9 @@ else if ( isset( $_GET['copyid'] ) ) {
                     icon: "warning",
                     showConfirmButton: true,
                     showCancelButton: true,
-                    html: '<h4>Are you sure?</h4>',
-                    confirmButtonText: 'Yes, I am sure',
-                    cancelButtonText: "No, cancel it!"
+                    html: '<h4><?php _e('Are you sure?', 'entities'); ?></h4>',
+                    confirmButtonText: '<?php _e('Yes, I am sure', 'entities'); ?>',
+                    cancelButtonText: "<?php _e('No, cancel it!', 'entities'); ?>"
                 }).then((result) => {
                     if(result.isConfirmed) {
 
@@ -107,7 +107,7 @@ else if ( isset( $_GET['copyid'] ) ) {
                             }
                         }).done(function (response) {
                             location.href = "admin.php?page=packages";
-                        }).error(function (response) {
+                        }).fail(function (response) {
                         }).always(function (response) {
                             //closeLoading();
                             console.log("ajax deletePackage always");
@@ -133,7 +133,7 @@ else if ( isset( $_GET['copyid'] ) ) {
 
 <div class="wrap travel-management">
 
-    <h1 class="wp-heading-inline">Añadir Paquete</h1>
+    <h1 class="wp-heading-inline"><?php _e("Add Package", 'entities'); ?></h1>
 
     <form id="create_package" name="create_package" method="post" action="admin.php">
 
@@ -146,13 +146,13 @@ else if ( isset( $_GET['copyid'] ) ) {
                     <!-- Title -->
                     <div id="titlediv" class="block-field">
                         <label>
-                            <input type="text" name="name" size="30" value="<?php echo $package->getName(); ?>" id="title" spellcheck="true" autocomplete="off" placeholder="Añadir el nombre">
+                            <input type="text" name="name" size="30" value="<?php echo $package->getName(); ?>" id="title" spellcheck="true" autocomplete="off" placeholder="<?php _e('Add name', 'entities'); ?>">
                         </label>
                     </div>
 
                     <!-- Short description -->
                     <div class="block-field">
-                        <h3>Descripción corta</h3>
+                        <h3><?php _e('Short description', 'entities'); ?></h3>
                         <label>
                             <input type="text" name="short_description" id="short_description" value="<?php echo $package->getShortDescription(); ?>" autocomplete="off"/>
                         </label>
@@ -160,7 +160,7 @@ else if ( isset( $_GET['copyid'] ) ) {
 
                     <!-- Price -->
                     <div class="block-field">
-                        <h3>Price (€)</h3>
+                        <h3><?php _e('Price', 'entities'); ?> (€)</h3>
                         <label>
                             <input type="number" name="price" id="price" value="<?php echo $package->getPrice(); ?>" autocomplete="off"/>
                         </label>
@@ -168,7 +168,7 @@ else if ( isset( $_GET['copyid'] ) ) {
 
                     <!-- Order -->
                     <div class="block-field">
-                        <h3>Order</h3>
+                        <h3><?php _e('Order', 'entities'); ?></h3>
                         <label>
                             <input type="number" name="order" id="order" value="<?php echo $package->getCustomOrder(); ?>" autocomplete="off"/>
                         </label>
@@ -176,7 +176,7 @@ else if ( isset( $_GET['copyid'] ) ) {
 
                     <!-- Description -->
                     <div class="block-field">
-                        <h3>Descripción detallada</h3>
+                        <h3><?php _e('Detailed description', 'entities'); ?></h3>
                         <label>
                             <?php echo wp_editor( stripslashes( $package->getDescription() ), 'description' ); ?>
                         </label>
@@ -184,7 +184,7 @@ else if ( isset( $_GET['copyid'] ) ) {
 
                     <!-- Featured image -->
                     <div class="block-field">
-                        <h3>Imagen destacada</h3>
+                        <h3><?php _e('Featured image', 'entities'); ?></h3>
                         <div id="imagen-destacada">
                             <div id="uploaderImage">
                                 <label>
@@ -192,15 +192,16 @@ else if ( isset( $_GET['copyid'] ) ) {
                                 </label>
                             </div>
                             <div class="divImagenDestacada">
-                                <a href="#" class="upload_image_button">Añadir Imagen Destacada</a>
-                                <a href="#" class="remove_imagen_destacada" style="display: none;">Borrar Imagen Destacada</a>
+                                <a href="#" class="upload_image_button"><?php _e('Add Featured Image', 'entities'); ?></a>
+                                <a href="#" class="remove_imagen_destacada" style="display: none;"><?php _e('Delete Featured Image', 'entities'); ?></a>
                             </div>
                         </div>
                     </div>
 
                     <!-- Considerations -->
                     <div class="block-field">
-                        <h3>Observaciones</h3>
+                        <h3><?php _e('Observations', 'entities'); ?></h3>
+                        <p><?php _e('Insights to be taken into account by the customer.', 'entities'); ?></p>
                         <label>
                             <?php echo wp_editor( $package->getObservations(), 'observations' ); ?>
                         </label>
@@ -215,31 +216,31 @@ else if ( isset( $_GET['copyid'] ) ) {
                         <div id="submitdiv" class="postbox">
 
                             <div class="postbox-header">
-                                <h2 class="handle ui-sortable-handle">Guardar</h2>
+                                <h2 class="handle ui-sortable-handle"><?php _e('Save', 'entities'); ?></h2>
                             </div>
 
                             <div class="inside">
 
                                 <!-- Fecha de creación -->
                                 <div style="padding: 10px 10px 5px; display: flex; align-items: center; justify-content: space-between;">
-                                    <span>Fecha creación:</span>
+                                    <span><?php _e('Date created', 'entities'); ?>:</span>
                                     <span><?php echo $package->getDateCreated(); ?></span>
                                 </div>
 
                                 <!-- Fecha de modificación -->
                                 <div style="padding: 5px 10px; display: flex; align-items: center; justify-content: space-between;">
-                                    <span>Fecha modificación:</span>
+                                    <span><?php _e('Date modified', 'entities'); ?>:</span>
                                     <span><?php echo $package->getDateModified(); ?></span>
                                 </div>
 
                                 <!-- Status -->
                                 <div style="padding: 10px; display: flex; align-items: center; justify-content: space-between;">
-                                    <span>Estado: </span>
+                                    <span><?php _e('Status', 'entities'); ?>: </span>
                                     <label>
                                         <select name="status">
-                                            <option value="draft" <?php echo ($package->getStatus() == "draft") ? "selected" : ""; ?>>Draft</option>
-                                            <option value="publish" <?php echo ($package-> getStatus() == "publish") ? "selected" : ""; ?>>Publish</option>
-                                            <option value="pending" <?php echo ($package->getStatus() == "pending") ? "selected" : ""; ?>>Pending</option>
+                                            <option value="draft" <?php echo ($package->getStatus() == "draft") ? "selected" : ""; ?>><?php _e('Draft', 'entities'); ?></option>
+                                            <option value="publish" <?php echo ($package-> getStatus() == "publish") ? "selected" : ""; ?>><?php _e('Publish', 'entities'); ?></option>
+                                            <option value="pending" <?php echo ($package->getStatus() == "pending") ? "selected" : ""; ?>><?php _e('Pending', 'entities'); ?></option>
                                         </select>
                                     </label>
                                 </div>
@@ -248,7 +249,7 @@ else if ( isset( $_GET['copyid'] ) ) {
 
                                     <?php if ($type == "update") { ?>
                                         <div id="delete-action" style="display: inline-block; float: none !important;">
-                                            <a class="submitdelete deletion" href="#" style="color: red;">Eliminar</a>
+                                            <a class="submitdelete deletion" href="#" style="color: red;"><?php _e('Delete', 'entities'); ?></a>
                                         </div>
                                     <?php } ?>
 
@@ -256,9 +257,9 @@ else if ( isset( $_GET['copyid'] ) ) {
 
                                         <?php if($type == "update"): ?>
                                             <!--<input type="button" name="custom-duplicate" id="custom-duplicate" class="button button-primary" value="Duplicar">-->
-                                            <input type="submit" name="custom-update" id="custom-update" class="button button-primary" value="Actualizar">
+                                            <input type="submit" name="custom-update" id="custom-update" class="button button-primary" value="<?php _e('Update', 'entities'); ?>">
                                         <?php else: ?>
-                                            <input type="submit" name="custom-publish" id="custom-publish" class="button button-primary" value="Guardar">
+                                            <input type="submit" name="custom-publish" id="custom-publish" class="button button-primary" value="<?php _e('Save', 'entities'); ?>">
                                         <?php endif; ?>
 
                                     </div>

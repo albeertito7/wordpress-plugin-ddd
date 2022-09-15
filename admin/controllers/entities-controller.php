@@ -3,6 +3,7 @@
 /**
  * Class EntitiesController (Packages)
  */
+
 class EntitiesController extends MasterController
 {
     private $packageRepository;
@@ -79,7 +80,7 @@ class EntitiesController extends MasterController
      * @param bool $json_encode
      * @return false|Package|string|null
      */
-    public function getPackageById($id, $json_encode=false) {
+    public function getPackageById($id, bool $json_encode=false) {
 
         $package = $this->packageRepository->findById($id);
 
