@@ -22,7 +22,8 @@ class ProductCart
     {
         //self::$wp_session[self::KEY_NAME] = base64_encode(json_encode(self::$cart));
 
-        CustomCookie::set(self::KEY_NAME, base64_encode(json_encode(self::$cart)));
+        CustomCookie::set(self::KEY_NAME, json_encode(self::$cart));
+        //CustomCookie::set(self::KEY_NAME, base64_encode(json_encode(self::$cart)));
     }
 
     /**
@@ -33,7 +34,8 @@ class ProductCart
     {
         //self::$cart = json_decode(base64_decode(self::$wp_session[self::KEY_NAME]), true);
 
-        $decoded = json_decode(base64_decode($_COOKIE[self::KEY_NAME]), true);
+        $decoded = json_decode($_COOKIE[self::KEY_NAME], true);
+        //$decoded = json_decode(base64_decode($_COOKIE[self::KEY_NAME]), true);
         if (!$decoded) {
             self::$cart = [];
         } else {
@@ -41,7 +43,9 @@ class ProductCart
         }
 
         //self::$cart = json_decode(base64_decode($_COOKIE[self::KEY_NAME]), true);
-        CustomCookie::set(self::KEY_NAME, base64_encode(json_encode(self::$cart)));
+
+        CustomCookie::set(self::KEY_NAME, json_encode(self::$cart));
+        //CustomCookie::set(self::KEY_NAME, base64_encode(json_encode(self::$cart)));
     }
 
     /**

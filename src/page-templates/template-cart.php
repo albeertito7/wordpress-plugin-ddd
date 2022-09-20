@@ -2,9 +2,9 @@
 
 use Entities\Domain\cart\ProductCart;
 use Entities\Domain\Utils;
-use Entities\Services\ActivityRepository;
-use Entities\Services\HotelRepository;
 use Entities\Services\PackageRepository;
+use Entities\Services\HotelRepository;
+use Entities\Services\ActivityRepository;
 
 $cart = ProductCart::collect();
 
@@ -38,15 +38,17 @@ get_header();
     <button class="contact_feedback">Contact</button>
 
     <?php foreach ($cart as $class => $products) { ?>
+        <!-- Products Header -->
         <h2><?php _e($class . ' Cart'); ?></h2>
         <hr />
 
-        <!-- Packages Grid -->
+        <!-- Products Grid -->
         <div class="package-grid" style="margin-top: 30px; display: flex; justify-content: space-evenly; align-self: center; flex-wrap: wrap;">
 
             <?php foreach ($products as $id => $cart_info) {
                 $product = null;
-                switch ($class) {
+                $xarray = explode("\\", $class);
+                switch (end($xarray)) {
                     case 'Package':
                         $product = $repo_package->findById($id);
                         break;
@@ -58,11 +60,13 @@ get_header();
                         break;
                 }
 
+                echo get_class($product);
+                /*$product = Utils::objectToObject($product, "Entities\\Domain\\product\\Product");
                 if ($product->getStatus() == "publish") {
                     Utils::includeCustom(plugin_dir_path(__FILE__) . 'partials/entity-card.php', array(
                         'package' => $product // cast to product for the entity-card
                     ));
-                }
+                }*/
             } ?>
         </div>
 
