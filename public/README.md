@@ -1,1 +1,0 @@
-// Directory containing subdirectories with *.php, *.css, *.js, *.html files that take care of the front-end of the plugin.

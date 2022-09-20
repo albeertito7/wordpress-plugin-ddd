@@ -26,20 +26,14 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
-
-// tackling the naming collision problem
-if ( class_exists( 'Entities' ) ) {
+if (!defined('WPINC')) {
     die;
 }
 
 // checking Composer autoloader
-if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
-}
-else {
+} else {
     die;
 }
 
@@ -48,34 +42,43 @@ else {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'ENTITIES_VERSION', '1.0.0' );
+define('ENTITIES_VERSION', '1.0.0');
+
+/**
+ * The biggest benefits of using namespaces is that the class names which
+ * are declared in one namespace will not clash with the same class names declared in another namespace.
+ * It is also referred as named group of classes having common features.
+ *
+ * This solves the problem of tackling the naming collision problem.
+ * The namespaces should be used especially when building complex and large projects.
+ */
+use Entities\Includes\EntitiesEngine;
+use Entities\Includes\EntitiesActivator;
+use Entities\Includes\EntitiesDeactivator;
+
+// globals
+require_once 'src\my-config.php';
+require_once 'src\my-shortcodes.php';
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-entities-activator.php
+ * This action is documented in includes/EntitiesActivator.php
  */
-function activate_entities() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-entities-activator.php';
-	Entities_Activator::activate();
+function activate_entities()
+{
+    EntitiesActivator::activate();
 }
+register_activation_hook(__FILE__, 'activate_entities');
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-entities-deactivator.php
+ * This action is documented in includes/EntitiesDeactivator.php
  */
-function deactivate_entities() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-entities-deactivator.php';
-	Entities_Deactivator::deactivate();
+function deactivate_entities()
+{
+    EntitiesDeactivator::deactivate();
 }
-
-register_activation_hook( __FILE__, 'activate_entities' );
-register_deactivation_hook( __FILE__, 'deactivate_entities' );
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-entities.php';
+register_deactivation_hook(__FILE__, 'deactivate_entities');
 
 /**
  * Begins execution of the plugin.
@@ -88,14 +91,12 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-entities.php';
  */
 function run_entities()
 {
-	$plugin = new Entities;
-	$plugin->run();
+    /**
+     * The core plugin class that is used to define internationalization,
+     * admin-specific hooks, and public-facing site hooks.
+     */
+    $plugin_engine = new EntitiesEngine;
+    $plugin_engine->run();
 }
 
 run_entities();
-
-/**
- * The biggest benefits of using namespaces is that the class names which
- * are declared in one namespaces will not clash with the same class names declared in another namespace.
- * It is also referred as named group of classes having common features.
- */

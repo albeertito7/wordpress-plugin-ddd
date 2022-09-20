@@ -1,1 +1,0 @@
-// Los archivos *.php auxiliares que "incluyas" desde la sentencia include de PHP a tu complemento.

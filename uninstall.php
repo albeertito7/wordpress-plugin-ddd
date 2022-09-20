@@ -26,8 +26,8 @@
  */
 
 // If uninstall not called from WordPress, then exit.
-if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	exit;
+if (! defined('WP_UNINSTALL_PLUGIN')) {
+    exit;
 }
 
 /* Remove plugin add-ons */
@@ -39,11 +39,11 @@ $wpdb->query( "DROP TABLE IF EXISTS $table_name" );*/
 
 $table_name = $wpdb->prefix . 'entities_packages';
 
-$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
+$wpdb->query("DROP TABLE IF EXISTS $table_name");
 
 $table_name = $wpdb->prefix . 'entities_hotels';
 
-$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
+$wpdb->query("DROP TABLE IF EXISTS $table_name");
 
 /*$table_name = $wpdb->prefix . 'entities_flights';
 
@@ -54,5 +54,3 @@ $table_name = $wpdb->prefix . 'entities_activites';
 $wpdb->query( "DROP TABLE IF EXISTS $table_name" );*/
 
 //delete_option("my_plugin_db_version");
-
-
