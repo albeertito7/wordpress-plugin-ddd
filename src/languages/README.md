@@ -1,1 +1,0 @@
-// Directorio que contiene los archivos de internacionalización y localización del plugin.

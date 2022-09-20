@@ -19,7 +19,7 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @link       author_uri
+ * @link       https://albeertito7.github.io
  * @since      1.0.0
  *
  * @package    Entities
@@ -34,23 +34,18 @@ if (! defined('WP_UNINSTALL_PLUGIN')) {
 global $wpdb;
 
 /*$table_name = $wpdb->prefix . 'entities_config';
-
-$wpdb->query( "DROP TABLE IF EXISTS $table_name" );*/
+$wpdb->query("DROP TABLE IF EXISTS $table_name");*/
 
 $table_name = $wpdb->prefix . 'entities_packages';
-
 $wpdb->query("DROP TABLE IF EXISTS $table_name");
 
 $table_name = $wpdb->prefix . 'entities_hotels';
-
 $wpdb->query("DROP TABLE IF EXISTS $table_name");
 
-/*$table_name = $wpdb->prefix . 'entities_flights';
+$table_name = $wpdb->prefix . 'entities_activities';
+$wpdb->query("DROP TABLE IF EXISTS $table_name");
 
-$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
-
-$table_name = $wpdb->prefix . 'entities_activites';
-
-$wpdb->query( "DROP TABLE IF EXISTS $table_name" );*/
+$table_name = $wpdb->prefix . 'entities_comments';
+$wpdb->query("DROP TABLE IF EXISTS $table_name");
 
 //delete_option("my_plugin_db_version");

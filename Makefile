@@ -2,7 +2,7 @@
 
 # When you run 'make' without specifying the target name it will try to execute the first target. #
 # You can avoid this by setting the next special variable. #
-.DEFAULT_GOAL := info
+.DEFAULT_GOAL := help
 #.PHONY: install install-prod test info help
 #.PHONY: *
 .PHONY: $(filter-out vendor node_modules, $(MAKECMDGOALS))
@@ -18,12 +18,8 @@ test:
 	@composer test
 
 # To avoid outputting command, add '@' character in front of the target recipes. #
-info:
-	@echo "Some helper tasks for managing application"
-
 help:
-	@printf "\033[33mUsage:\033[0m\n make [target] [arg=\"val\"...]\n\n\033[33mTargets:\033[0m\n"
-	@grep -E '^[-a-zA-Z0-9_\.\/]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "	\033[32m%-15s\033[0m %s\n", $$1, $$2}'
+	@echo Silence is golden
 
 # Default 'Make' behavior is try remaking the targets files when prerequisite files are changed. #
 # targets: prerequisites #
