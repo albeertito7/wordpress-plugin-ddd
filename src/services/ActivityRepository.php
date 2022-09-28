@@ -19,7 +19,7 @@ class ActivityRepository extends MasterRepository
     private $instance;
 
     /**
-     * PackageRepository constructor.
+     * ActivityRepository constructor.
      */
     protected function __construct()
     {
