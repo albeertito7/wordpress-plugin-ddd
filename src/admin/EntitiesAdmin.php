@@ -69,7 +69,7 @@ class EntitiesAdmin
      *
      * @since    1.0.0
      */
-    public function enqueue_styles()
+    public function enqueueStyles()
     {
         /**
          * This function is provided for demonstration purposes only.
@@ -83,7 +83,7 @@ class EntitiesAdmin
          * class.
          */
 
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/entities-admin.css', array(), $this->version, 'all');
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/entities-admin.min.css', array(), $this->version, 'all');
     }
 
     /**
@@ -91,7 +91,7 @@ class EntitiesAdmin
      *
      * @since    1.0.0
      */
-    public function enqueue_scripts()
+    public function enqueueScripts()
     {
         /**
          * This function is provided for demonstration purposes only.
@@ -105,35 +105,43 @@ class EntitiesAdmin
          * class.
          */
 
-        wp_enqueue_script($this->plugin_name . '_admin', plugin_dir_url(__FILE__) . 'js/entities-admin.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name . '_admin', plugin_dir_url(__FILE__) . 'js/entities-admin.min.js', array('jquery'), $this->version, false);
         wp_localize_script($this->plugin_name . '_admin', 'my_vars', array(
             'ajaxurl' => admin_url('admin-ajax.php')
         ));
 
-        wp_enqueue_script('script-entities-utils', plugin_dir_url(__FILE__) . 'js/utils.js', array('jquery'), $this->version, false);
+        wp_enqueue_script('script-entities-utils', plugin_dir_url(__FILE__) . 'js/utils.min.js', array('jquery'), $this->version, false);
 
         if (isset($_GET['page'])) {
             switch ($_GET['page']) {
                 case "packages":
-                    wp_enqueue_script("script-entities-packages", plugin_dir_url(__FILE__) . 'js/packages.js', array('jquery'), $this->version, false);
+                    wp_enqueue_script("script-entities-packages", plugin_dir_url(__FILE__) . 'js/packages.min.js', array('jquery'), $this->version, false);
                     break;
                 case "hotels":
-                    wp_enqueue_script("script-entities-hotels", plugin_dir_url(__FILE__) . 'js/hotels.js', array('jquery'), $this->version, false);
+                    wp_enqueue_script("script-entities-hotels", plugin_dir_url(__FILE__) . 'js/hotels.min.js', array('jquery'), $this->version, false);
                     break;
                 case "activities":
-                    wp_enqueue_script("script-entities-activities", plugin_dir_url(__FILE__) . 'js/activities.js', array('jquery'), $this->version, false);
+                    wp_enqueue_script("script-entities-activities", plugin_dir_url(__FILE__) . 'js/activities.min.js', array('jquery'), $this->version, false);
                     break;
                 case "comments":
-                    wp_enqueue_script("script-entities-comments", plugin_dir_url(__FILE__) . 'js/comments.js', array('jquery'), $this->version, false);
+                    wp_enqueue_script("script-entities-comments", plugin_dir_url(__FILE__) . 'js/comments.min.js', array('jquery'), $this->version, false);
                     break;
             }
         }
     }
 
     /**
+     * @return void
+     */
+    public function enqueueMyAdminVariables()
+    {
+        ?><script type="text/javascript">const ajaxurl_admin = '<?php echo admin_url("admin-ajax.php"); ?>';</script><?php
+    }
+
+    /**
      *
      */
-    public function enqueue_plugins()
+    public function enqueuePlugins()
     {
         $plugins_dir = plugin_dir_url(__DIR__) . 'plugins/';
 
@@ -157,7 +165,7 @@ class EntitiesAdmin
     /**
      * Building the plugin WordPress menu
      */
-    public function add_plugin_menu()
+    public function addPluginMenu()
     {
         add_menu_page('Travel Manager', 'Travel Manager', 'administrator', 'travel-manager', array($this->router, 'match_request'), 'dashicons-database', 0);
         add_submenu_page('travel-manager', 'Desktop', 'Desktop', 'administrator', 'travel-manager', '', 1);
@@ -176,146 +184,5 @@ class EntitiesAdmin
 
         // Comments
         add_submenu_page('travel-manager', 'Comments', 'Comments', 'administrator', 'comments', array($this->router, 'match_request'), 5);
-
-        // Flights
-        //add_submenu_page('travel-manager', 'Flights', 'Flights', 'administrator', 'flights', array($this->router, 'match_request'), 5);
-        //add_submenu_page('flights', 'Add a flight', 'Add a flight', 'administrator', 'add-flight', array($this->router, 'match_request'), -1);
-    }
-
-    /**
-     * Adding custom plugin page templates,
-     * to visualize the entities at the front-end
-     *
-     * Hook: theme_page_templates
-     *  - Filters list of page templates for a theme.
-     *
-     * Hook: template_include
-     *  - Filters the path of the current template before including it.
-     *
-    public function add_page_templates()
-    {
-        // add our custom template to the admin's templates dropdown
-        add_filter('theme_page_templates', 'entities_template_as_option', 10, 3);
-        function entities_template_as_option($page_templates, $theme, $post)
-        {
-            $custom_templates = array(
-                'template-landing' => 'Template landing',
-                'template-landing-row' => 'Template landing row',
-                'template-packages-landing' => 'Template Packages landing',
-                'template-packages-landing-row' => 'Template Packages landing row',
-                'template-activities-landing' => 'Template Activities landing',
-                'template-activities-landing-row' => 'Template Activities landing row',
-                'template-hotels-landing' => 'Template Hotels landing',
-                'template-hotels-landing-row' => 'Template Hotels landing row',
-                'template-cart' => 'Template Cart'
-            );
-
-            foreach ($custom_templates as $key => $template) {
-                $page_templates[$key] = $template;
-            }
-
-            return $page_templates;
-        }
-
-        // when our custom template has been chosen then display it for the page
-        add_filter('template_include', 'entities_load_template', 99);
-        function entities_load_template($template)
-        {
-            global $post;
-            $page_template_slug = get_page_template_slug($post->ID);
-            $directory = plugin_dir_path(__FILE__) . '/src/page-templates/';
-
-            switch ($page_template_slug) {
-                case 'template-landing':
-                    return $directory . 'template-landing.php';
-                    break;
-                case 'template-landing-row':
-                    return $directory . 'template-landing-row.php';
-                    break;
-                case 'template-packages-landing':
-                    return $directory . 'template-packages-landing.php';
-                    break;
-                case 'template-packages-landing-row':
-                    return $directory . 'template-packages-landing-row.php';
-                    break;
-                case 'template-activities-landing':
-                    return $directory . 'template-activities-landing.php';
-                    break;
-                case 'template-activities-landing-row':
-                    return $directory . 'template-activities-landing-row.php';
-                    break;
-                case 'template-hotels-landing':
-                    return $directory . 'template-hotels-landing.php';
-                    break;
-                case 'template-hotels-landing-row':
-                    return $directory . 'template-hotels-landing-row.php';
-                    break;
-                case 'template-cart':
-                    return $directory . 'template-cart.php';
-                    break;
-            }
-
-            return $template;
-        }
-    }*/
-
-    function entities_template_as_option($page_templates)
-    {
-        $custom_templates = array(
-            'template-landing' => 'Template landing',
-            'template-landing-row' => 'Template landing row',
-            'template-packages-landing' => 'Template Packages landing',
-            'template-packages-landing-row' => 'Template Packages landing row',
-            'template-activities-landing' => 'Template Activities landing',
-            'template-activities-landing-row' => 'Template Activities landing row',
-            'template-hotels-landing' => 'Template Hotels landing',
-            'template-hotels-landing-row' => 'Template Hotels landing row',
-            'template-cart' => 'Template Cart'
-        );
-
-        foreach ($custom_templates as $key => $template) {
-            $page_templates[$key] = $template;
-        }
-
-        return $page_templates;
-    }
-
-    function entities_load_template($template)
-    {
-        global $post;
-        $page_template_slug = get_page_template_slug($post->ID);
-        $directory = plugin_dir_path(dirname(__FILE__)) . 'page-templates/';
-
-        switch ($page_template_slug) {
-            case 'template-landing':
-                return $directory . 'template-landing.php';
-                break;
-            case 'template-landing-row':
-                return $directory . 'template-landing-row.php';
-                break;
-            case 'template-packages-landing':
-                return $directory . 'template-packages-landing.php';
-                break;
-            case 'template-packages-landing-row':
-                return $directory . 'template-packages-landing-row.php';
-                break;
-            case 'template-activities-landing':
-                return $directory . 'template-activities-landing.php';
-                break;
-            case 'template-activities-landing-row':
-                return $directory . 'template-activities-landing-row.php';
-                break;
-            case 'template-hotels-landing':
-                return $directory . 'template-hotels-landing.php';
-                break;
-            case 'template-hotels-landing-row':
-                return $directory . 'template-hotels-landing-row.php';
-                break;
-            case 'template-cart':
-                return $directory . 'template-cart.php';
-                break;
-        }
-
-        return $template;
     }
 }

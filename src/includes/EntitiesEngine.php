@@ -79,52 +79,18 @@ class EntitiesEngine
      */
     public function __construct()
     {
-        if (defined('ENTITIES_VERSION')) {
-            $this->version = ENTITIES_VERSION;
-        } else {
-            $this->version = '1.0.0';
-        }
         $this->plugin_name = 'entities';
-
-        $this->loadDependencies();
-        $this->setLocale();
+        $this->version = '1.0.0';
+        $this->loader = new EntitiesLoader; // Hook custom loader
 
         $this->definePublicDomain();
-        $this->defineAdminDomain();
-    }
-
-    /**
-     * Load the required dependencies for this plugin.
-     *
-     * Include the following files that make up the plugin:
-     *
-     * - Entities_Loader. Orchestrates the hooks of the plugin.
-     * - Entities_i18n. Defines internationalization functionality.
-     * - Entities_Admin. Defines all hooks for the admin area.
-     * - Entities_Public. Defines all hooks for the public side of the site.
-     *
-     * Create an instance of the loader which will be used to register the hooks
-     * with WordPress.
-     *
-     * @since    1.0.0
-     * @access   private
-     */
-    private function loadDependencies()
-    {
-        /**
-         * Cart.
-         */
-        $this->loadCart();
-
-        /**
-         * Request handlers.
-         */
-        $this->loadControllers();
-
-        /**
-         * Hook custom loader.
-         */
-        $this->loader = new EntitiesLoader;
+        if (function_exists('is_admin')) {
+            if (is_admin()) {
+                $this->defineAdminDomain();
+            }
+        } else {
+            $this->defineAdminDomain();
+        }
     }
 
     /**
@@ -132,13 +98,19 @@ class EntitiesEngine
      */
     private function definePublicDomain()
     {
-        /**
-         * The class responsible for defining all actions that occur in the public-facing
-         * side of the site.
-         */
-        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-entities-public.php';
+        $this->loadCart();
+        $plugin_public = new EntitiesPublic($this->getPluginName(), $this->getVersion());
 
-        $this->definePublicHooks();
+        $this->loader->addAction('init', $this, 'gas');
+
+        $this->loader->addAction('wp_head', $plugin_public, 'enqueueMyVariables');
+
+        //$this->loader->addAction('wp_enqueue_scripts', $plugin_public, 'enqueuePlugins');
+        $this->loader->addAction('wp_enqueue_scripts', $plugin_public, 'enqueueStyles');
+        $this->loader->addAction('wp_enqueue_scripts', $plugin_public, 'enqueueScripts');
+
+        $this->loader->addFilter('theme_page_templates', $plugin_public, 'entitiesTemplateAsOption');
+        $this->loader->addFilter('template_include', $plugin_public, 'entitiesLoadTemplate');
     }
 
     /**
@@ -146,17 +118,21 @@ class EntitiesEngine
      */
     private function defineAdminDomain()
     {
-        /**
-         * The class responsible for defining all actions that occur in the admin area.
-         */
-        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-entities-admin.php';
+        $plugin_admin = new EntitiesAdmin($this->getPluginName(), $this->getVersion());
 
-        /**
-         * Custom Router.
-         */
-        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-entities-router.php';
+        $this->loader->addAction('admin_init', $this, 'turbo');
 
-        $this->defineAdminHooks();
+        //$this->loader->addAction('admin_head', $plugin_admin, 'enqueueMyAdminVariables');
+
+        // add the plugin menu
+        $this->loader->addAction('admin_menu', $plugin_admin, 'addPluginMenu');
+
+        // enqueue plugins scripts and styles
+        $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueuePlugins');
+
+        // enqueue main admin js and styles
+        $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueStyles');
+        $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
     }
 
     /**
@@ -204,54 +180,9 @@ class EntitiesEngine
      */
     private function setLocale()
     {
-        $plugin_i18n = new EntitiesI18n($this->getPluginName());
-
-        $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
-    }
-
-    /**
-     * Register all the hooks related to the admin area functionality
-     * of the plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     */
-    private function defineAdminHooks()
-    {
-        $plugin_admin = new EntitiesAdmin($this->getPluginName(), $this->getVersion());
-
-        // enqueue plugins scripts and styles
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_plugins');
-
-        // enqueue main admin js and styles
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
-
-        // add the plugin menu
-        $this->loader->add_action('admin_menu', $plugin_admin, 'add_plugin_menu');
-
-        $this->loader->add_filter('theme_page_templates', $plugin_admin, 'entities_template_as_option');
-        $this->loader->add_filter('template_include', $plugin_admin, 'entities_load_template');
-
-        // add custom page templates
-        //$this->loader->add_action('init', $plugin_admin, 'add_page_templates');
-
-        //$this->loader->add_action('init', $plugin_admin, 'entities_my_custom_posts');
-    }
-
-    /**
-     * Register all the hooks related to the public-facing functionality
-     * of the plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     */
-    private function definePublicHooks()
-    {
-        $plugin_public = new EntitiesPublic($this->getPluginName(), $this->getVersion());
-
-        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
-        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+        global $textdomain, $lang_dir;
+        $plugin_i18n = new EntitiesI18n($textdomain, $lang_dir);
+        $this->loader->addAction('plugins_loaded', $plugin_i18n, 'loadPluginTextDomain');
     }
 
     /**
@@ -296,5 +227,21 @@ class EntitiesEngine
     public function run()
     {
         $this->loader->run();
+    }
+
+    /**
+     * N/A for beginners.
+     */
+    public function gas()
+    {
+        $this->loadControllers();
+        $this->setLocale();
+    }
+
+    /**
+     * No one knows.
+     */
+    public function turbo()
+    {
     }
 }

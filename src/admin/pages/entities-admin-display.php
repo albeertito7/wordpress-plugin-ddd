@@ -20,14 +20,10 @@ print_r($charset_collate);
 
 ?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
-
 <style>
-
     #plugin-img {
         width: 100%;
     }
-
 </style>
 
 <div class="wrap">

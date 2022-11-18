@@ -1,0 +1,1 @@
+.cart_icon{position:fixed;z-index:999999;background:#fff;border-radius:100px;width:70px;height:70px;display:flex;align-items:center;justify-content:center;right:20px;top:60px;color:#000!important}.cart_icon:hover{transition:.2s;transform:scale(1.1)}.cart_icon>i.fa-shopping-cart{font-size:25px;margin-right:4px}.cart_icon .entities_cart_num{position:relative;bottom:-8px}

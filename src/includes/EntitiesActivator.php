@@ -12,8 +12,6 @@
 
 namespace Entities\Includes;
 
-use wpdb;
-
 /**
  * This class defines all code necessary to run during the plugin's activation.
  *
@@ -35,6 +33,11 @@ class EntitiesActivator
      */
     public static function activate()
     {
+        // check admin logged
+        if (!function_exists('is_admin') || !is_admin()) {
+            exit('Not logged in.');
+        }
+
         // Check and creation database tables
         global $wpdb;
 
@@ -55,6 +58,9 @@ class EntitiesActivator
 
         dbDelta($sql);*/
 
+        /**
+         *
+         */
         $table_name = $wpdb->prefix . 'entities_packages';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -75,6 +81,9 @@ class EntitiesActivator
 
         dbDelta($sql);
 
+        /**
+         *
+         */
         $table_name = $wpdb->prefix . 'entities_hotels';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -97,6 +106,9 @@ class EntitiesActivator
 
         dbDelta($sql);
 
+        /**
+         *
+         */
         $table_name = $wpdb->prefix . 'entities_activities';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -117,6 +129,9 @@ class EntitiesActivator
 
         dbDelta($sql);
 
+        /**
+         *
+         */
         $table_name = $wpdb->prefix . 'entities_comments';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,

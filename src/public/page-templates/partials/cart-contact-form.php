@@ -1,30 +1,21 @@
-<?php ?>
+<?php
+
+$home_url = get_home_url();
+
+?>
 
 <style>
-
     form#contact_feedback {
-
     }
-
 </style>
 
 <!-- Cart Contact Feedback Form -->
 <form id="contact_feedback">
 
-
 </form>
 
-
-
-<?php
-/* Global PHP File vars */
-$home_url = get_home_url();
-
-?>
-
-<!-- contact pop-up styles -->
+<!-- Contact pop-up styles -->
 <style>
-
     .contact-modal-wrapper {
         display: none;
         width: 100%;
@@ -36,7 +27,6 @@ $home_url = get_home_url();
         overflow: auto;
         background-color: rgba(67, 67, 67, 0.8);
     }
-
     button.cross {
         background: transparent;
         position: absolute;
@@ -47,16 +37,13 @@ $home_url = get_home_url();
         -webkit-text-stroke: 1px white;
         padding: 0;
     }
-
     button.cross > i {
         font-size: 25px;
     }
-
     button.cross:hover {
         transition: 0.2s;
         transform: scale(1.1);
     }
-
     #contact-modal {
         max-width: 800px;
         width: 87%;
@@ -66,7 +53,6 @@ $home_url = get_home_url();
         border-radius: 5px;
         /*background: white;*/
     }
-
     .contact-modal-header {
         background: white;
         background-size: cover;
@@ -74,30 +60,25 @@ $home_url = get_home_url();
         text-align: center;
         color: white;
     }
-
     .contact-modal-body {
         color: black;
         padding: 40px 40px;
         background: white;
     }
-
     .contact-modal-body-wrapper {
         max-width: 600px;
         margin: 0 auto;
     }
-
     #contactForm {
         color: black !important;
         font-size: 14px !important;
     }
-
     #contactForm > label > input {
         display: block;
         width: 100%;
         color: black !important;
         background: #e9e9e9 !important;
     }
-
     #contactForm > label > textarea {
         display: block;
         resize: vertical;
@@ -106,31 +87,25 @@ $home_url = get_home_url();
         color: black !important;
         background: #e9e9e9 !important;
     }
-
     #contactForm > label > input, #contactForm > label > textarea {
         border: 0;
         border-bottom: 1px solid black;
     }
-
     #contactForm > label > input::placeholder, #contactForm > label > textarea::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
         color: black;
         position: relative;
         top: -5px;
         opacity: 1; /* Firefox */
     }
-
     #contactForm > *, #contactForm > label > * {
         margin-bottom: 30px;
     }
-
     #contactForm > p, #contactForm > label > textarea {
         margin-bottom: 10px;
     }
-
     #contactForm:last-child {
         margin-bottom: 0;
     }
-
     #contactForm button[type=submit] {
         display: block;
         margin-left: auto;
@@ -140,14 +115,12 @@ $home_url = get_home_url();
         border-radius: 8px;
         background-color: #0c6ca0;
     }
-
     .contact-modal-footer {
         position: relative;
         padding: 20px 20px;
         background: white;
         text-align: center;
     }
-
     .contact-modal-footer:before {
         content: "";
         position: absolute;
@@ -157,7 +130,6 @@ $home_url = get_home_url();
         height: 1px;
         background-color: lightgrey;
     }
-
 </style>
 
 <!-- Contact modal main wrapper -->
@@ -214,9 +186,7 @@ $home_url = get_home_url();
 
 <!-- Contact pop-up js -->
 <script type="application/javascript">
-
     (function ($) {
-
         /* Show the contact form pop-up */
         $(".contact_feedback").click(function (event) {
             event.preventDefault();
@@ -259,5 +229,4 @@ $home_url = get_home_url();
             });
         });
     }(jQuery));
-
 </script>

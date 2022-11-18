@@ -1,6 +1,6 @@
 //var $ = jQuery.noConflict();
 
-(function ( $ ) {
+(function ($) {
 
     /**
      * All of the code for your admin-facing JavaScript source

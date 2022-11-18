@@ -17,17 +17,14 @@
     top: 60px;
     color: black !important;
 }
-
 .cart_icon:hover {
     transition: 0.2s;
     transform: scale(1.1);
 }
-
 .cart_icon > i.fa-shopping-cart {
     font-size: 25px;
     margin-right: 4px;
 }
-
 .cart_icon .entities_cart_num {
     position: relative;
     bottom: -8px;

@@ -21,7 +21,6 @@ class EntitiesRouter
             switch ($page) {
                 case 'packages':
                     include $directory .'/page-packages.php';
-                    //wp_enqueue_script( "test", plugin_dir_url( __DIR__ ) . 'admin/js/test.js', array( 'jquery' ), $this->version, false );
                     break;
                 case 'add-package':
                     include $directory . '/page-add-package.php';

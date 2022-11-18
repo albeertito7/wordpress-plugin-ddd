@@ -5,7 +5,7 @@
  *  - kendo
  */
 
-(function ( $ ) {
+(function ($) {
 
     const statusEntityTypes = [
         { id: 'publish', text: 'publish' },

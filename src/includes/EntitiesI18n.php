@@ -31,23 +31,40 @@ class EntitiesI18n
      * Load the plugin text domain for translation.
      *
      * @since    1.0.0
+     * @return   string     The plugin textdomain.
      */
-    private $domain;
+    private string $textdomain;
 
-    public function __construct($domain)
+    /**
+     * Relative path to WPç_PLUGIN_DIR where the .mo file resides.
+     * @var string
+     */
+    private string $lang_dir;
+
+    /**
+     * @param string $textdomain
+     * @param string $lang_dir
+     */
+    public function __construct(string $textdomain, string $lang_dir)
     {
-        $this->domain = $domain;
+        $this->textdomain = $textdomain;
+        $this->lang_dir = $lang_dir;
     }
 
     /**
-     * @return void
+     * Callback function.
+     * Loads the plugin's translated strings.
+     * True when textdomain is successfully loaded, false otherwise.
+     *
+     * @since   1.0.0
+     * @return bool
      */
-    public function load_plugin_textdomain()
+    public function loadPluginTextDomain(): bool
     {
-        load_plugin_textdomain(
-            $this->domain,
-            false,
-            dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
-        );
+        /**
+         * If the path is not given then it will be the root of the plugin directory.
+         * The .mo file should be named based on the text domain with a dash, and then the locale exactly.
+         */
+        return load_plugin_textdomain($this->textdomain, false, $this->lang_dir);
     }
 }

@@ -3,6 +3,13 @@
     "description": "Entities WordPress plugin, based on the Domain-Driven Design approach",
     "type": "wordpress-plugin",
     "license": "MIT License",
+    "keywords": [
+        "wordpress",
+        "plugin",
+        "domain driven design",
+        "test driven design",
+        "php"
+    ],
     "authors": [
         {
             "name": "albert",
@@ -48,6 +55,12 @@
             "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 entities.php uninstall.php src tests",
             "phpunit --configuration phpunit.xml"
         ],
-        "install-prod": "composer install --no-ansi --no-dev --nointeracion --no-progress --no-scripts --optimize-autoloader --prefer-dist"
+        "install-prod": "composer install --no-ansi --no-dev --nointeracion --no-progress --no-scripts --optimize-autoloader --prefer-dist",
+        "build": "composer install --no-dev"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }

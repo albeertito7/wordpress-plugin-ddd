@@ -63,7 +63,7 @@ class EntitiesLoader
      * @param    int                  $priority         Optional. The priority at which the function should be fired. Default is 10.
      * @param    int                  $accepted_args    Optional. The number of arguments that should be passed to the $callback. Default is 1.
      */
-    public function add_action($hook, $component, $callback, $priority = 10, $accepted_args = 1)
+    public function addAction($hook, $component, $callback, $priority = 10, $accepted_args = 1)
     {
         $this->actions = $this->add($this->actions, $hook, $component, $callback, $priority, $accepted_args);
     }
@@ -78,7 +78,7 @@ class EntitiesLoader
      * @param    int                  $priority         Optional. The priority at which the function should be fired. Default is 10.
      * @param    int                  $accepted_args    Optional. The number of arguments that should be passed to the $callback. Default is 1
      */
-    public function add_filter($hook, $component, $callback, $priority = 10, $accepted_args = 1)
+    public function addFilter($hook, $component, $callback, $priority = 10, $accepted_args = 1)
     {
         $this->filters = $this->add($this->filters, $hook, $component, $callback, $priority, $accepted_args);
     }
@@ -118,7 +118,6 @@ class EntitiesLoader
      */
     public function run()
     {
-
         foreach ($this->filters as $hook) {
             add_filter($hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args']);
         }

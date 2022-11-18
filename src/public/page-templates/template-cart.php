@@ -8,21 +8,25 @@ use Entities\Services\ActivityRepository;
 
 $cart = ProductCart::collect();
 
-/*$packages = $cart['Package'];
-$activity = $cart['Activity'];
-$hotels = $cart['Hotel'];*/
+//$packages = $cart['Entities\Domain\product\Package'];
+//$activity = $cart["Entities\\Domain\\product\\Activity"];
+//$hotels = $cart['Entities\Domain\product\Hotel'];
 
 $repo_package = PackageRepository::getInstance();
 $repo_hotel = HotelRepository::getInstance();
 $repo_activity = ActivityRepository::getInstance();
 
 // adds the header built upon the theme builder to the page
-get_header();
+if (wp_is_block_theme()) {
+    block_template_part('header');
+    wp_head();
+} else {
+    get_header();
+}
 
 ?>
 
 <style>
-
     .contact_feedback {
         outline: none;
         padding: 8px 40px;
@@ -30,7 +34,6 @@ get_header();
         float: right;
         font-size: 25px;
     }
-
 </style>
 
 <div id="main-content" style="padding:100px;">
@@ -47,7 +50,7 @@ get_header();
 
             <?php foreach ($products as $id => $cart_info) {
                 $product = null;
-                $xarray = explode("\\", $class);
+                $xarray = explode("\\\\", $class);
                 switch (end($xarray)) {
                     case 'Package':
                         $product = $repo_package->findById($id);
@@ -60,18 +63,16 @@ get_header();
                         break;
                 }
 
-                echo get_class($product);
-                /*$product = Utils::objectToObject($product, "Entities\\Domain\\product\\Product");
+                //echo get_class($product);
+                $product = Utils::objectToObject($product, "Entities\\Domain\\product\\Product");
                 if ($product->getStatus() == "publish") {
                     Utils::includeCustom(plugin_dir_path(__FILE__) . 'partials/entity-card.php', array(
                         'package' => $product // cast to product for the entity-card
                     ));
-                }*/
+                }
             } ?>
         </div>
-
     <?php } ?>
-
 </div>
 
 <?php
@@ -85,6 +86,12 @@ the_content();
 <?php
 Utils::includeCustom(plugin_dir_path(__FILE__) . 'partials/cart-contact-form.php');
 
-get_footer();
+// load footer theme
+if (wp_is_block_theme()) {
+    block_template_part('footer');
+    wp_footer();
+} else {
+    get_footer();
+}
 
 ?>

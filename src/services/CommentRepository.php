@@ -14,7 +14,7 @@ class CommentRepository extends MasterRepository
     private $instance;
 
     /**
-     * PackageRepository constructor.
+     * CommentRepository constructor.
      */
     protected function __construct()
     {

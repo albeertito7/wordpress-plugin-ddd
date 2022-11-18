@@ -259,23 +259,13 @@ if (isset($_GET["id"])) {
                                         <?php endif; ?>
 
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div><!-- /post-body -->
-
             <br class="clear">
-
         </div><!-- /poststuff -->
-
     </form>
-
 </div>

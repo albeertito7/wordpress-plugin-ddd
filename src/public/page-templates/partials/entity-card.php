@@ -8,15 +8,12 @@ if (!isset($package)) {
 
 <!-- Main Entity card styles -->
 <style>
-
     .entity-card > * {
         margin-bottom: 10px;
     }
-
     .entity-card > *:last-child {
         margin-bottom: 0;
     }
-
     .card-1 {
         width: 300px;
         min-height: 300px;
@@ -27,11 +24,9 @@ if (!isset($package)) {
         background: purple;
         /*box-shadow: 0 5px 5px 1px #d0d0d0;*/
     }
-
     .card-1 img {
         max-width: 100%;
     }
-
     .card-1 button {
         outline: none;
         border: none;
@@ -44,11 +39,8 @@ if (!isset($package)) {
         /*margin: 0 auto;*/
         display: block;
     }
-
     .product-meta {
-
     }
-
 </style>
 
 <!-- Card -->
@@ -81,5 +73,4 @@ if (!isset($package)) {
             <button class="btn-add-to-cart"><?php _e('Add to cart') ?></button>
         </div>
     </article>
-
 </div>

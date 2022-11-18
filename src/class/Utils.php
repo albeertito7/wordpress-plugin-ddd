@@ -1,9 +1,21 @@
 <?php
 
+/**
+ * @link       https://compsaonline.com
+ * @since      1.0.0
+ *
+ * @package    Entities
+ * @subpackage src/class
+ */
+
 namespace Entities\Domain;
 
 /**
- * Class Utils
+ * Class Utils.
+ *
+ * @package    Entities
+ * @subpackage src/class
+ * @author     albert <albertperez@compsaonline.com>
  */
 class Utils
 {
@@ -15,17 +27,19 @@ class Utils
     }
 
     /**
-     * @param $filePath
-     * @param array $variables
+     * @param string $filePath
+     * @param array|null $variables
      * @param bool $print
      * @return false|string|null
      */
-    public static function includeCustom($filePath, array $variables = array(), bool $print = true)
+    public static function includeCustom(string $filePath, ?array $variables = array(), bool $print = true)
     {
         $output = null;
         if (file_exists($filePath)) {
             // Extract the variables to a local namespace
-            extract($variables);
+            if ($variables) {
+                extract($variables);
+            }
 
             // Start output buffering
             ob_start();
@@ -49,7 +63,7 @@ class Utils
      * @param $className
      * @return mixed
      *
-     * PHP Custom object class typecasting
+     * PHP Custom object class typecasting.
      */
     public static function objectToObject($instance, $className)
     {

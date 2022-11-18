@@ -18,7 +18,12 @@ $hotelRepository = HotelRepository::getInstance();
 $hotels = $hotelRepository->findAll();
 
 // adds the header built upon the theme builder to the page
-get_header();
+if (wp_is_block_theme()) {
+    block_template_part('header');
+    wp_head();
+} else {
+    get_header();
+}
 
 ?>
 
@@ -80,4 +85,14 @@ the_content();
 
 ?>
 
-<?php get_footer(); ?>
+<?php
+
+// load footer theme
+if (wp_is_block_theme()) {
+    block_template_part('footer');
+    wp_footer();
+} else {
+    get_footer();
+}
+
+?>

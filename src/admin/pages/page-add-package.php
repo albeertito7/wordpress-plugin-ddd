@@ -26,7 +26,6 @@ if (isset($_GET['id'])) {
 <script type="application/javascript">
 
     (function ($) {
-
         $(document).ready(function () {
 
             utils.inicializarCargadorImagenes();
@@ -116,19 +115,14 @@ if (isset($_GET['id'])) {
                 });
             });
             <?php } ?>
-
         });
-
     }(jQuery.noConflict()));
-
 </script>
 
 <style>
-
     .block-field {
         margin-bottom: 40px;
     }
-
 </style>
 
 <div class="wrap travel-management">
@@ -263,23 +257,13 @@ if (isset($_GET['id'])) {
                                         <?php endif; ?>
 
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div><!-- /post-body -->
-
             <br class="clear">
-
         </div><!-- /poststuff -->
-
     </form>
-
 </div>
