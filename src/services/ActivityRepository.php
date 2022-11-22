@@ -16,7 +16,7 @@ use Exception;
 class ActivityRepository extends MasterRepository
 {
     // singleton
-    private $instance;
+    private static ActivityRepository $instance;
 
     /**
      * ActivityRepository constructor.
@@ -37,11 +37,11 @@ class ActivityRepository extends MasterRepository
      */
     public static function getInstance(): ActivityRepository
     {
-        if (isset($instance)) {
-            return $instance;
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
         }
 
-        return new self();
+        return self::$instance;
     }
 
     /*

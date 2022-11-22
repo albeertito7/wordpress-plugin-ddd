@@ -29,7 +29,7 @@
      * practising this, we should strive to set a better example in our own work.
      */
 
-    $(document).ready(function () {
+    $(function () {
 
         $(".btn-add-to-cart").click(function () {
 
@@ -38,7 +38,7 @@
                 article_class = article.attr("data-class-product");
 
             $.ajax({
-                url: 'http://localhost/multisite/wp-admin/admin-ajax.php',
+                url: ajaxurl,
                 //dataType: "json",
                 type: "post",
                 data: {

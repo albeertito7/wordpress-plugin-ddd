@@ -11,7 +11,7 @@ use Exception;
 class CommentRepository extends MasterRepository
 {
     // singleton
-    private $instance;
+    private static CommentRepository $instance;
 
     /**
      * CommentRepository constructor.
@@ -32,11 +32,11 @@ class CommentRepository extends MasterRepository
      */
     public static function getInstance(): CommentRepository
     {
-        if (isset($instance)) {
-            return $instance;
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
         }
 
-        return new self();
+        return self::$instance;
     }
 
     /**

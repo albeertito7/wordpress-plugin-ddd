@@ -13,7 +13,7 @@
         function getAvailability()
         {
             return $.ajax({
-                url: my_vars.ajaxurl,
+                url: ajaxurl_admin,
                 dataType: "json",
                 type: "post",
                 data: {
@@ -41,7 +41,7 @@
                 },
                 update: function (options) {
                     $.ajax({
-                        url: my_vars.ajaxurl,
+                        url: ajaxurl_admin,
                         type: "POST",
                         dataType: "json",
                         data: {
@@ -209,7 +209,7 @@
                                 let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid(uid);
 
                                 $.post({
-                                    url: my_vars.ajaxurl,
+                                    url: ajaxurl_admin,
                                     type: "post",
                                     data: {
                                         action: "entities_activities_controller",
@@ -247,7 +247,7 @@
             // scrollbar
             toggleScrollbar(e);
 
-        };
+        }
 
         function addEventListeners()
         {
@@ -280,7 +280,7 @@
                         let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid(uid);
 
                         $.post({
-                            url: my_vars.ajaxurl,
+                            url: ajaxurl_admin,
                             type: "post",
                             data: {
                                 action: "entities_hotels_controller",
@@ -303,7 +303,7 @@
         {
             let gridWrapper = e.sender.wrapper, gridTable = e.sender.table, gridArea = gridTable.closest(".k-grid-content");
             gridWrapper.toggleClass("no-scrollbar", gridTable[0].offsetHeight < gridArea[0].offsetHeight)
-        };
+        }
 
         function openLoading(html)
         {

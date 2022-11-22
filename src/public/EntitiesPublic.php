@@ -99,9 +99,9 @@ class EntitiesPublic
          */
 
         wp_enqueue_script($this->plugin_name . '_public', plugin_dir_url(__FILE__) . 'js/entities-public.min.js', array('jquery'), $this->version, false);
-        wp_localize_script($this->plugin_name . '_public', 'my_vars', array(
+        /*wp_localize_script($this->plugin_name . '_public', 'my_vars', array(
             'ajaxurl' => admin_url('admin-ajax.php')
-        ));
+        ));*/
 
         /* Sweetalert2 */
         wp_enqueue_script('script-entities-es6-promise', plugin_dir_url(__FILE__) .  '../plugins/sweetalert2/es6-promise.min.js', array(), $this->version, false);

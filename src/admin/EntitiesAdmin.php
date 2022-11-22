@@ -106,9 +106,9 @@ class EntitiesAdmin
          */
 
         wp_enqueue_script($this->plugin_name . '_admin', plugin_dir_url(__FILE__) . 'js/entities-admin.min.js', array('jquery'), $this->version, false);
-        wp_localize_script($this->plugin_name . '_admin', 'my_vars', array(
+        /*wp_localize_script($this->plugin_name . '_admin', 'my_vars', array(
             'ajaxurl' => admin_url('admin-ajax.php')
-        ));
+        ));*/
 
         wp_enqueue_script('script-entities-utils', plugin_dir_url(__FILE__) . 'js/utils.min.js', array('jquery'), $this->version, false);
 

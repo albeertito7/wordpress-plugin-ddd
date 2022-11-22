@@ -29,17 +29,17 @@ namespace Entities;
 
 // check whether the WordPress environment loaded or not
 if (!defined('ABSPATH')) {
-    die;
+    exit('WordPress is not loaded.');
 }
 
 // if this file is called directly, abort
 if (!defined('WPINC')) {
-    die;
+    exit('No WordPress includes.');
 }
 
 // checking Composer autoloader
-if (!is_readable(__DIR__ . './vendor/autoload.php')) {
-    die;
+if (!is_readable(__DIR__ . '/vendor/autoload.php')) {
+    exit('No readable composer autoloader dependency.');
 }
 
 require_once __DIR__ . '/vendor/autoload.php';

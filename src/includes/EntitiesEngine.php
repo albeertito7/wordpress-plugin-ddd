@@ -122,7 +122,7 @@ class EntitiesEngine
 
         $this->loader->addAction('admin_init', $this, 'turbo');
 
-        //$this->loader->addAction('admin_head', $plugin_admin, 'enqueueMyAdminVariables');
+        $this->loader->addAction('admin_head', $plugin_admin, 'enqueueMyAdminVariables');
 
         // add the plugin menu
         $this->loader->addAction('admin_menu', $plugin_admin, 'addPluginMenu');

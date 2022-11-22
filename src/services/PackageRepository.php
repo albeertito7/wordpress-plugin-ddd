@@ -16,7 +16,7 @@ use Exception;
 class PackageRepository extends MasterRepository
 {
     // singleton
-    private $instance;
+    private static PackageRepository $instance;
 
     /**
      * PackageRepository constructor.
@@ -37,11 +37,11 @@ class PackageRepository extends MasterRepository
      */
     public static function getInstance(): PackageRepository
     {
-        if (isset($instance)) {
-            return $instance;
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
         }
 
-        return new self();
+        return self::$instance;
     }
 
     /*

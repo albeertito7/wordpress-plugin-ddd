@@ -1,7 +1,7 @@
 /**
  * Dependencies:
  *  - jQuery
- *  - my_vars
+ *  - ajaxurl_admin
  *  - kendo
  */
 
@@ -14,7 +14,7 @@
         function getAvailability()
         {
             return $.ajax({
-                url: my_vars.ajaxurl,
+                url: ajaxurl_admin,
                 dataType: "json",
                 type: "post",
                 data: {
@@ -27,7 +27,7 @@
         function updateAvailability(data_json)
         {
             return $.ajax({
-                url: my_vars.ajaxurl,
+                url: ajaxurl_admin,
                 type: "POST",
                 dataType: "json",
                 data: {
@@ -176,7 +176,7 @@
                                 let dataItem = dataSource.getByUid(uid);
 
                                 $.post({
-                                    url: my_vars.ajaxurl,
+                                    url: ajaxurl_admin,
                                     type: "post",
                                     data: {
                                         action: "entities_comments_controller",
@@ -242,4 +242,4 @@
         }
     });
 
-})(jQuery, kendo, my_vars);
+})(jQuery);

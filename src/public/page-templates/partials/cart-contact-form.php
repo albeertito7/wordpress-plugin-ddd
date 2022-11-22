@@ -209,7 +209,7 @@ $home_url = get_home_url();
                 window.alert("contactForm not valid");
             }*/
             $.ajax({
-                url: my_vars.ajaxurl,
+                url: ajaxurl,
                 type: "post",
                 dataType: "json",
                 data: {
@@ -228,5 +228,5 @@ $home_url = get_home_url();
                 window.alert("always contact");
             });
         });
-    }(jQuery));
+    }(jQuery, ajaxurl));
 </script>

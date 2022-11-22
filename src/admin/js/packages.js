@@ -6,13 +6,13 @@
         { id: 'pending', text: 'pending' }
     ];
 
-    $(document).ready(function () {
+    $(function () {
         debugger;
 
         function getAvailability()
         {
             return $.ajax({
-                url: my_vars.ajaxurl,
+                url: ajaxurl_admin,
                 dataType: "json",
                 type: "post",
                 data: {
@@ -42,7 +42,7 @@
                 update: function (options) {
                     console.log("update");
                     $.ajax({
-                        url: my_vars.ajaxurl,
+                        url: ajaxurl_admin,
                         type: "POST",
                         dataType: "json",
                         data: {
@@ -214,7 +214,7 @@
                                 let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid(uid);
 
                                 $.post({
-                                    url: my_vars.ajaxurl,
+                                    url: ajaxurl_admin,
                                     type: "post",
                                     dataType: "json",
                                     data: {
@@ -289,7 +289,7 @@
                         let dataItem = $("#grid").data("kendoGrid").dataSource.getByUid(uid);
 
                         $.post({
-                            url: my_vars.ajaxurl,
+                            url: ajaxurl_admin,
                             type: "post",
                             data: {
                                 action: "entities_packages_controller",
